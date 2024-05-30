@@ -1,0 +1,7 @@
+ Fernet  BebidaAlcohólica 1100 10.50
+ Vodka  BebidaAlcohólica 6100 15.75
+ Cerveza  BebidaAlcohólica 2300 8.99
+ Whisky  BebidaAlcohólica 300 20.00
+ Ron  BebidaAlcohólica 1600 12.25
+ Ron  BebidaAlcohólica 1600 12.25
+ Ron  ebida Alcohólica 800 12.25

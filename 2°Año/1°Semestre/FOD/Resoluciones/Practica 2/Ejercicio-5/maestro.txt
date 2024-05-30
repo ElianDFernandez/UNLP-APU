@@ -1,0 +1,14 @@
+1 10.50 1000 100 Fernet 
+BebidaAlcohólica
+2 15.75 5000 200 Vodka 
+BebidaAlcohólica
+3 8.99 2000 150 Cerveza 
+BebidaAlcohólica
+4 20.00 300 50 Whisky 
+BebidaAlcohólica
+5 12.25 800 80 Ron 
+BebidaAlcohólica
+6 12.25 800 80 Ron 
+BebidaAlcohólica
+7 12.25 800 80 Ron 
+Bebida Alcohólica
