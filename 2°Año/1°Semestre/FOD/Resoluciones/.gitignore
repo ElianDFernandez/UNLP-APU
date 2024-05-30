@@ -1,5 +1,2 @@
-# Ignorar archivos con extensión .exe en la carpeta resoluciones
-resoluciones/*.exe
-
-# Ignorar archivos con extensión .o en la carpeta resoluciones
-resoluciones/*.o
+*.exe 
+*.o
