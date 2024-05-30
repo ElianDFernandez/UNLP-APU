@@ -1,0 +1,2 @@
+10 50 1 buenosaires
+20 100 3 santafe

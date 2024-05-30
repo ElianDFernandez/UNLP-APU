@@ -1,0 +1,3 @@
+600 4000 buenosaires
+100 1500 jujuy
+300 3500 santafe

@@ -1,0 +1,5 @@
+Codigo: 1 Apellidos:  Sanchez Nombres: Alberto Materias con final aprobado: 7 Materias con cursada aprobada: 8
+Codigo: 2 Apellidos:  Fernandez Nombres: Carmen Materias con final aprobado: 3 Materias con cursada aprobada: 12
+Codigo: 3 Apellidos:  Pascal Nombres: Alberto Materias con final aprobado: 21 Materias con cursada aprobada: 11
+Codigo: 4 Apellidos:  Messi Nombres: Leonel Materias con final aprobado: 11 Materias con cursada aprobada: 30
+Codigo: 5 Apellidos:  Gutierrez Nombres: Gustavo Materias con final aprobado: 3 Materias con cursada aprobada: 4

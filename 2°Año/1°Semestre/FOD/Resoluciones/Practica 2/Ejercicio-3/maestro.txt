@@ -1,0 +1,6 @@
+1 200 10 9 Yerba
+2 120 7 2 Fernet
+3 400 12 20 Azucar
+4 100 12 10 Coca
+5 140 10 10 Agua
+7 300 15 11 Dulce
