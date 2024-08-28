@@ -13,7 +13,7 @@ Secuencia de pasos (instrucciones) a realizar sobre una computadora para alcanza
 Es una representación de un objeto del mundo real mediante el cual podemos modelizar aspectos del problema sobre una computadora.
 
 ### Tipos de datos:
-![](images/Captura%20de%20pantalla%202024-08-28%20184401.png)
+![](images/tipoVariables.png)
 
 * **Simples**
   
@@ -189,8 +189,8 @@ Codigo a modo de muestra:
 ```
 
 ### Alcance de variables
-![](images/Captura%20de%20pantalla%202024-08-28%20190312.png)
-## Casos 
+![](images/alcance.png)
+**Casos** 
 * Si es una variable utilizada en un proceso
     - 1° Se busca si es variable loca
     - 2° Se busca si es un parámetro
@@ -229,3 +229,41 @@ Codigo a modo de muestra:
 * El número y tipo de los argumentos utilizados en la invocación a un
     módulo deben coincidir con el número y tipo de parámetros del
     encabezamiento del módulo.
+
+
+## Tipo de datos 
+### Arreglos
+Un **arreglo** (ARRAY) es una estructura de datos compuesta que permite acceder a cada componente por una variable índice, que da la posición de la componente dentro de la estructura de datos.
+
+![](images/array.png)
+
+### Vectores
+Es una colección de elementos que se guardan consecutivamente en la memoria y se pueden referenciar a través de un índice.
+* HOMOGENEA Los elementos pueden son del mismo tipo 
+* ESTATICA El tamaño no cambia durante la ejecución (se calcula en el momento de compilación)
+* INDEXADA Para acceder a cada elemento de la estructura se debe utilizar una variable ‘índice’ que es de tipo ordinal.
+**Datos importantes** ❗
+* Permite rapido acceso por tener indice(Que tiene que ser de tipo ordnial)
+* Se utiliza en casos en los que se sabe la longitud, y se precisa un acceso rapido
+* No se utiliza cuando no se conoce la longitud y se precisa agregar y eliminar de manera mas eficiente.
+
+```pascal
+Program uno;
+Type
+vector = array [rango] of tipo;
+```
+* Dimensiones 
+    - DIMENSION FISICA
+    Se especifica en el momento de la declaración y determina su ocupación máxima de memoria. La cantidad de memoria total reservada no variará durante la ejecución del programa.
+    - DIMENSION LOGICA
+    Se determina cuando se cargan contenidos a los elementos del arreglo. Indica la cantidad de posiciones de memoria ocupadas con contenido real. Nunca puede superar la dimensión física.
+
+**Operaciones vistas en la teoria** 
+* Carga de valores
+* Lectura / Escritura
+* Recorridos
+* Agregar elementos al final
+* Insertar elementos (Corrimientos)
+* Borrar elementos (Corrimientos)
+* Búsqueda de un elemento (Busqueda mejorada O(n), Busqueda dicotomica O(log n))
+* Ordenación de los elementos
