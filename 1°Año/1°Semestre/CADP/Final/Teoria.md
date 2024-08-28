@@ -188,4 +188,44 @@ Codigo a modo de muestra:
     end.
 ```
 
-##
+### Alcance de variables
+![](images/Captura%20de%20pantalla%202024-08-28%20190312.png)
+## Casos 
+* Si es una variable utilizada en un proceso
+    - 1° Se busca si es variable loca
+    - 2° Se busca si es un parámetro
+    - 3° Se busca si es variable global al programa
+* Si es una variable usada en un programa
+    - 1° Se busca si es variable local al programa
+    - 2° Se busca si es variable global al programa
+
+### Comunicacion entre modulos 
+* Variables globales:  
+    - Demasiados identificadores
+    - No se especifica la comunicación entre los módulos
+    - Conflictos de nombres de identificadores utilizados por diferentes programadores.
+    - Posibilidad de perder integridad de los datos.
+
+* Parametros:
+    - El uso de parámetros significa que los datos compartidos se deben
+    especificar como parámetros que se trasmiten entre módulos.
+    - **Parámetros por valor**: Con él puede realizar operaciones y/o cálculos, pero no producirá ningún cambio ni tampoco tendrá incidencia fuera del módulo.
+    ```pascal
+    procedure uno (num: integer);
+    ```
+    - **Parametros por referencia**: Puede operar con ella y su valor original dentro del módulo, y las modificaciones que se produzcan se reflejan en los demás módulos que conocen la variable.
+    ```pascal
+    procedure uno (var num: integer);
+    ```
+
+* El número y tipo de los argumentos utilizados en la invocación a un
+    módulo deben coincidir con el número y tipo de parámetros del
+    encabezamiento del módulo.
+* Un parámetro por valor debiera ser tratado como una variable de la
+    cuál el módulo hace una copia y la utiliza localmente. Algunos
+    lenguajes permiten la modificación local de un parámetro por valor,
+    pero toda modificación realizada queda en el módulo en el cual el
+    parámetro es utilizado.
+* El número y tipo de los argumentos utilizados en la invocación a un
+    módulo deben coincidir con el número y tipo de parámetros del
+    encabezamiento del módulo.
