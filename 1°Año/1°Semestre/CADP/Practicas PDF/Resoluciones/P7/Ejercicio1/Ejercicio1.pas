@@ -9,6 +9,8 @@
 // c. Realizar un módulo que reciba un DNI, lo busque y lo elimine de la estructura. El DNI puede no
 // existir. Invocar dicho módulo en el programa principal.
 
+//! ESTA MAL POR QUE ESTO Una vez finalizada la lectura de todas las personas, El procesamiento es despues de cargar los datos
+
 Program productora;
 const 
     dimf = 5;
