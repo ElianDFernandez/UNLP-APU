@@ -267,3 +267,80 @@ vector = array [rango] of tipo;
 * Borrar elementos (Corrimientos)
 * Búsqueda de un elemento (Busqueda mejorada O(n), Busqueda dicotomica O(log n))
 * Ordenación de los elementos
+
+
+## Alocacion estatica y alocacion dinamica
+
+* Variables estaticas 
+  No permiten modificar su tamaño en timepo de ejecucion.
+  Las variables y tipos reservan memoria en su declracion y se mantienen durante todo el programa. El lenguaje peude validar previo a la ejecucion.
+
+* Variables dinamicas
+  Permiten modificar en timep ode ejecucion la memoria utilizada
+
+![](images/punteros.png)
+
+### Puntero 
+  Es un tipo de variable usada para almacenar una direccion en memoria. En esa diraccion de memoria se encuentra el valor que puede ser de cualquiera de los tipos vistos.
+  Un puntero es un **tipo de dato simple**.
+
+  Declaracion: 
+  ```pascal
+    Program tres;
+    Type
+    puntero = ^integer;
+  ```
+
+  **Operaciones**
+  * Creacion de una varaible puntero ( new (puntero) )
+  * Liberacion (puntero:=nil)
+    - Libera la conexión que existe entre la variable y la posición de memoria.
+    - La memoria sigue ocupada.
+    - La memoria no se puede referenciar ni utilizar.
+  * Destruccion dispose (puntero)
+    - Libera la conexión que existe entre la variable y la posición de memoria.
+    - Libera la posición de memoria.
+    - La memoria liberada puede utilizarse en otro momento del programa.
+  * Asignacion entre variables puntero (puntero1 := puntero2)
+  * Asignacion de un valor al contenido de una variable puntero (puntero^:= dato)
+  * Comparacion de una vairable puntero (puntero1 = puntero2)
+
+  **Datos importantes** ❗
+  * if (p = nil) then, compara si el puntero p no tiene direccion asignada
+  * if (p = q) then, compara si los punteros p y q apuntan a la misma direccion de memoria
+  * if (p^ = q^) then,compara si los puntero p y q tienen el mismo contenido.
+  * no se puede hacer read(p), si p es una variable de tipo puntero
+  * no se puede hacer write(p) si p es una variabel de tipo puntero
+  * no se puede asignar una direccion a un  puntero de manera manual p:=ABCD
+  * no se puede comprar por mayor o menor direcciones de punteros (p>q)
+
+### Calculo de memoria 
+  Memoria de un programa: En rasgos generales la memoria necesaria para la ejecucion de un programa puede dividirse en dos:
+
+  * **Memoria Estatica**: variables locales y globales del programa.
+  * **Memoria Dinamica**: Solo cuando en la ejecucion de un programa se reserva o libera memoria.
+
+## Listas
+
+Coleccion de nodos, donde cada nodo contiene un elemento y en que direccion de memotia se enceuntra el siguiente nodo.
+
+Declaracion: 
+```pascal
+  Program uno;
+  Type
+    lista = ^nodo;
+    nodo = record 
+      dato: integer;
+      sig: lista;
+    end;
+  Var 
+    pri: lista; {Memoria estática reservada}
+```
+
+**Operaciones**
+* Creación de una lista.
+* Agregar nodos al comienzo de la lista.
+* Recorrido de una lista.
+* Agregar nodos al final de la lista.
+* Insertar nodos en una lista ordenada
+* Eliminar nodos de una lista
