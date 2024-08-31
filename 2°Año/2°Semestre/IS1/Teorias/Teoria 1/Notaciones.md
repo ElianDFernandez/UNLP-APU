@@ -1,5 +1,5 @@
-Email teoria profesora
-rmunoz@linti.info.unlp.edu.ar
+    Email teoria profesora
+    rmunoz@linti.info.unlp.edu.ar
 
 Caracteristicas de los software
 No siguen una clasica de envejecimiento 
@@ -12,17 +12,17 @@ Tipo de producto de software libre
 (Libre no gratis)
 permite poder ver que pasa adentro
 
-* Ingeniería de software
+## Ingeniería de software
 La ingeniería de software es una disciplina de ingeniería que se interesa por todos los
 aspectos de la producción de software, desde las primeras etapas de la especificación del
 sistema hasta el mantenimiento del sistema después de que se pone en operación
 
-* Fuentes de Requerimientos
+## Fuentes de Requerimientos
 - Documentación
 - Stakeholders
 - Especificaciones de sistemas similares
 
-* Stakeholder
+## Stakeholder
 El término stakeholder se utiliza para referirse a cualquier persona o grupo que se verá afectado 
 por el sistema, directa o indirectamente.
 Entre los stakeholders se encuentran:
@@ -32,26 +32,26 @@ Entre los stakeholders se encuentran:
 - Expertos del dominio
 Diferentes visiones.
 
-* Puntos de vista
-* Los puntos de vista clasifican a los Stakeholders
+## Puntos de vista
+### Los puntos de vista clasifican a los Stakeholders
 Existen tres tipos genéricos de puntos de vista:
 - Punto de vista de los interactuadores: representan a las personas u otros sistemas que interactúan directamente con el sistema. Pueden influir en los requerimientos del sistema de algún modo.
 - Punto de vista indirecto: representan a los stakeholders que no utilizan el sistema ellos mismos pero que influyen en los requerimientos de algún modo.
 - Punto de vista del dominio: representan las características y restricciones del dominio que influyen en los requerimientos del sistema.
 (Dominio no clasifica a los stakeholders, son restricciones sobre el dominio)
 
-* Elicitacion de requerimientos
+## Elicitacion de requerimientos
 Es el proceso de adquirir todo el conocimiento relevante necesario para producir un modelo delos requerimientos de un dominio de problema.
-* Tecnicas de Elicitacion de Requerimientos
-    Metodos discretos (Menos pertubadores, insuficientes para recopilar informacion)
-        Muestreo de la documentación, los formularios y los datos existentes.
-        Investigación y visitas al lugar.
-        Observación del ambiente de trabajo.
-    Métodos interactivos
-        Cuestionarios.
-        Entrevistas.
-        Planeación conjunta de Requerimientos (JRP o JAD).
-        Lluvia de Ideas - Brainstorming.
+### Tecnicas de Elicitacion de Requerimientos
+- Metodos discretos (Menos pertubadores, insuficientes para recopilar informacion)
+    Muestreo de la documentación, los formularios y los datos existentes.
+    Investigación y visitas al lugar.
+    Observación del ambiente de trabajo.
+- Métodos interactivos
+    Cuestionarios.
+    Entrevistas.
+    Planeación conjunta de Requerimientos (JRP o JAD).
+    Lluvia de Ideas - Brainstorming.
         
 
 
