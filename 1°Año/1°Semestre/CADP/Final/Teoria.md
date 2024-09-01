@@ -344,3 +344,51 @@ Declaracion:
 * Agregar nodos al final de la lista.
 * Insertar nodos en una lista ordenada
 * Eliminar nodos de una lista
+
+## Correccion y eficiencia
+
+### Correccion 
+  Un programa es correcto si se realiza de acuerdo a sus especificaciones
+
+  **Tecnicas** 
+  * Testing: Consiste en proveer evidencias convincentes que el programa hace el trabajo esperado
+    -En esta tecnica aparece el plande de pruebas, que consiste en decidicir que ver que aspectos del programa deben ser testeados y econtrar datos de pruebas de cada uno de esos aspectos.
+  * Debugging: Es el proceso de descubrir y reparar la causa del error. Es agregar setencias adicionales en el programa para poder manitorear su comportamiento mas cercanamente.
+  * Walkthrough: Es recorrer un programa frente a una audiencia.
+  * Verificacion: Significa controlar las pre y pos condiciones del mismo.
+
+### Eficiencia 
+  El analisis de la eficiencia de un algoritmo estudia el timepo que tarda un algoritmo en ejecutarse y la memoria que requiere.
+
+**Tiempos de ejecucion**
+* Analisis empirico: Es necesario realizar el programa y medir el tiempo consumido.
+* Analisis teorico: Imploica encontrar una cota maxima para expresar el tiempo de nuestro algoritmo, sin necesidad de ejecutarlo.
+
+### Calcuclo de timepos de ejecucion (Analisis teorico)
+
+Dado un algoritmo que es correcto se calcula el timepo de ejecucion de cada una de sus intrucciones.
+Solo las intrucciones elementales del algoritmo: Asignacion y operaciones aritmetico/logicas
+Una instruccion elemental utiliza un tiempo contrante para su ejecucion. 1UT.
+
+  ![](images/timepos.png)
+
+* Estructura IF 
+  evaluar condicion (c/u 1UT) + cuerpo del if. Se suma el peor de los casos if o else.
+
+* Estructura FOR 
+  (3N + 2) + N(Cuerpo)
+  Siendo N la cantidad de veces que se ejecuta el for
+
+  Ejemplo: 
+  ![](images/timepoFor.png)
+
+* Estructura WHILE 
+  C(N+1)+ N(cuerpo)
+  Siendo C la condiciones
+  
+  Ejemplo:
+  ![](images/timepoWhile.png)
+
+* Estructura REPEAT 
+  C(N) + N(cuerpo)
+  ![](images/tiempoRepeat.png)
