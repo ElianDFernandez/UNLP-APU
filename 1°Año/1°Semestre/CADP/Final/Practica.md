@@ -407,3 +407,172 @@ Tener en cuentra la diml en los recorridos siempre
             l:=act;
     end;
 ```
+
+
+procedure ordenarVector(var v:vector; diml:integer);
+var 
+    i,j,aux:integer;
+begin   
+    for i:=2 to diml do begin 
+        j:=i-1;
+        aux:=v[i];
+        while (j > 0) and (v[j] > aux) do begin   
+            v[j+1] := v[j];   
+            j:=j-1;
+        end;
+        v[j+1] := aux;
+    end;
+end;
+
+procedure Ordenacion_Insercion (var v: vector; DimL: integer);
+var
+    j, i, aux: integer; 
+begin
+    for i:= 2 to DimL do  begin
+        aux:= v[i];
+        j:= i-1;
+        while (j > 0) and (v[j] > aux) do begin
+            v[j+1] := v[j];
+            j:= j -1;
+        end;
+        v[j+1]:= aux;
+    end;
+end;
+
+procedure busquedaDicotomica(v:vector; diml:integer; num:integer; var ok:boolean);
+var 
+    pri,ult,medio:integer;
+begin 
+    pri:=1;
+    ult:=diml;
+    medio:= (pri + ult) DIV 2;
+    while (pri <= ult) and (v[medio] <> num) do begin 
+        if (ult < medio) then   
+            ult:= medio -1
+        else 
+            pri:=medio+1;
+        medio := (pri + ult) DIV 2;
+    end;
+    if (pri <= ult) and (v[medio] = num) then 
+        ok:=true
+    else 
+        ok:=false;
+end;
+
+procedure busquedaDicotomica(var vec:numeros; diml:integer; num:integer; var ok:boolean);
+var 
+    pri,ult,medio:integer;
+begin 
+    ok:=false;
+    pri:=1; ult:=diml; medio:=(pri+ult) div 2;
+    while (pri <= ult ) and (bus <> vec[medio]) do begin 
+        if (num < v[medio]) then 
+            ult:= medio-1
+        else 
+            pri:= medio+1;
+        medio := (pri + ult) div 2;
+    end;
+    if (pri <= ult) and (v[medio] = num) then ok:=true;
+end;
+
+
+program listas;
+type 
+    lista=^nodo;
+    nodo=record
+        dato:integer;
+        sig:lista;
+    end;
+
+procedure agregarAdelante(var l:lista; num:integer);
+var 
+    nue:lista;
+begin 
+    new(nue); nue^.dato:=num; nue^.sig:=l;
+    l:=nue;
+end;
+
+procedure agregarAtras(var l:lista; var ult:lista; num:integer);
+var 
+    nue:lista;
+begin   
+    new(nue); nue^.dato:=num; nue^.sig:=nil;
+    if (l = nil) then begin 
+        l:=nue;
+        ult:=nue;
+    end 
+    else begin 
+        ult^.sig:=nue;
+        ult:=nue;
+    end;
+end;
+
+procedure eliminarElementosRepsListaOrdena(var l:lista; num:integer);
+var 
+    ant,act,temp:lista;
+    cantidad:integer;
+begin 
+    cantidad:=0;
+    act:=l; 
+    ant:=nil;
+    while (act <> nil) and (act^.dato < num) do begin 
+        ant:=act;
+        act:=act^.sig;
+    end;
+    while (act <> nil) and (act^.dato = num) do begin   
+        temp:=act;
+        dispose(temp);
+        act:=act^.sig;
+        cantidad:=cantidad+1;
+    end; 
+    if (ant <> nil) then 
+        ant^.sig:=act
+    else 
+        l:=act;
+    write('Se eliminaron ',cantidad);
+end;
+
+procedure ordenacionVector(var v:vector; diml:integer);
+var 
+    i,j,aux:integer;
+begin 
+    for i:=2 to diml do begin 
+        j:=i-1;
+        aux:=v[i];
+        while (j > 0) and (v[j] > aux) do begin 
+            v[j+1] := v[j];
+            j:=j-1;
+        end;
+        v[j+1]:=aux;
+    end;
+end;
+
+procedure ordenarVector( var v:vector; diml:integer);
+var 
+    i,j,aux:integer;
+begin 
+    for i:=2 to diml do begin 
+        j:=i-1;
+        aux:=v[i];
+        while (j > 0) and (v[j] > aux) do begin 
+            v[j+1]:=v[j];
+            j:=j-1;
+        end;
+        v[j+1]:=aux;
+    end;
+end;
+
+
+procedure insetar(var v:vector; var diml:integer; pos:integer; num:integer; var ok:boolean)
+var 
+    i:integer;
+begin 
+    ok:=false;
+    if (diml+1 <=dimf) and (pos > 1) and (pos < dimf) then begin 
+        ok:=true;
+        for i:=diml downto pos
+            v[i+1] := v[i]
+        v[post]:=num;
+        diml:=diml+1;
+    end;
+end;
