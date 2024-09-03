@@ -270,14 +270,11 @@ Tener en cuentra la diml en los recorridos siempre
     begin
         i := 1;
         ok := false;
-
-        // Recorremos el vector buscando el número a eliminar
         while (i <= diml) do begin
             if (v[i] = num) then begin
-                // Desplazar los elementos a la izquierda para eliminar la ocurrencia
                 for j := i to diml - 1 do
                     v[j] := v[j + 1];
-                diml := diml - 1; // Reducir el tamaño lógico
+                diml := diml - 1;
                 ok := true;
             end
             else
@@ -404,7 +401,7 @@ Tener en cuentra la diml en los recorridos siempre
             act:=act^.sig;
         end;
         if (ant <> nil) then begin 
-            ant^.sig:=act^.sig;
+            ant^.sig:=act;
         end
         else 
             l:=act;
