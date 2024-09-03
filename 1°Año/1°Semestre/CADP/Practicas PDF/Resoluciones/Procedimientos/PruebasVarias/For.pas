@@ -4,7 +4,7 @@ program forProblems;
 var 
     i:integer;
 begin 
-    for i:=1 to -1 do begin 
+    for i:=10 to 10 do begin 
         writeln('Hola');
     end;
 end.

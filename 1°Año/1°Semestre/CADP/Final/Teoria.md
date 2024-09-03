@@ -230,7 +230,23 @@ Codigo a modo de muestra:
     módulo deben coincidir con el número y tipo de parámetros del
     encabezamiento del módulo.
 
+## ESTRUCTURA DE DATOS
+Permite al programador definir un tipo al que se asocian diferentes datos que tienen  valores lógicamente relacionados y asociados bajo un nombre único.
 
+### Clasificacion 
+* Por Elementos 
+  - Homogenea: Los elementos que la componen son del mismo tipo
+  - Heterogenea: Los elementos que la componen pueden ser de distinto tipo
+* Por Acceso 
+  - Secuencial: Para acceder a un elemento particular se debe respetar un orden predeterminado, por ejemplo, pasando por todos los elementos que le preceden, por ese orden.
+  - Directo: Se puede acceder a un elemento particular, directamente, sin necesidad de pasar por los anteriores a él, por ejemplo, referenciando una posición.
+* Por Tamaño
+  - Estatica: EL tramaño dela estructrua no varia durante la ejecucion del programa
+  - Dinamica: El tamaño de la estructura puede variar durante la ejecucion del programa
+* Por linealidad
+  - Lineal: Esta formada por ningun, un o varios elementos que guardan una relacion adyacente ordenada donde a cada elemento le sigue uno y le precede uno solamente.
+  - No lineal: Para un elemento dado puede existir 0,1 o mas elementos que le seuceden y 0,1 o mas elementos que le preceden.
+  
 ## Tipo de datos 
 ### Arreglos
 Un **arreglo** (ARRAY) es una estructura de datos compuesta que permite acceder a cada componente por una variable índice, que da la posición de la componente dentro de la estructura de datos.
@@ -385,7 +401,10 @@ Una instruccion elemental utiliza un tiempo contrante para su ejecucion. 1UT.
 * Estructura WHILE 
   C(N+1)+ N(cuerpo)
   Siendo C la condiciones
-  
+
+* Estructura REPEAT
+  C(N) + N(cuerpo)
+
   Ejemplo:
   ![](images/timepoWhile.png)
 
