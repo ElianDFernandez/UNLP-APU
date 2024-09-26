@@ -1,0 +1,77 @@
+<mxfile host="65bd71144e">
+    <diagram id="RF9qFFD-1qI0U3tRLTc3" name="Página-1">
+        <mxGraphModel dx="721" dy="881" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="none" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="4" value="Diagrama de casos de uso" style="swimlane;startSize=20;horizontal=1;containerType=tree;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;connectable=0;fillColor=#cdeb8b;strokeColor=#36393d;labelBackgroundColor=none;swimlaneFillColor=default;rounded=0;fillStyle=auto;" parent="1" vertex="1">
+                    <mxGeometry x="25" y="62" width="1009" height="693" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" value="Cargar carrera" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="4">
+                    <mxGeometry x="409" y="153" width="140" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="54" style="edgeStyle=none;html=1;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="4" source="38" target="37">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="38" value="Empleado administrativo" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="4">
+                    <mxGeometry x="86" y="132" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="40" value="Cerrar sesion" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="4">
+                    <mxGeometry x="261" y="515" width="140" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="47" style="edgeStyle=none;html=1;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="4" source="55" target="39">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="48" style="edgeStyle=none;html=1;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="4" source="41" target="42">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="49" style="edgeStyle=none;html=1;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="4" source="41" target="40">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="57" style="edgeStyle=none;html=1;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="4" source="41" target="56">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="41" value="Alumno" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="4">
+                    <mxGeometry x="99" y="402" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="39" value="Registrarse" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="4">
+                    <mxGeometry x="409" y="262" width="140" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="42" value="Inscribirse" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="4">
+                    <mxGeometry x="447" y="491" width="140" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="44" value="Pagar con tarjeta" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="4">
+                    <mxGeometry x="656" y="435" width="140" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="45" value="Servidor del banco" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="4">
+                    <mxGeometry x="930" y="440" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="50" value="Extends" style="endArrow=block;endSize=16;endFill=0;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="4" source="44" target="42">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="409" y="407" as="sourcePoint"/>
+                        <mxPoint x="638" y="639" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="52" value="" style="endArrow=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.3333333333333333;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="4" source="44" target="45">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="464" y="432" as="sourcePoint"/>
+                        <mxPoint x="514" y="382" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="53" value="" style="endArrow=none;html=1;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="4" source="41" target="44">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="464" y="432" as="sourcePoint"/>
+                        <mxPoint x="583" y="444" as="targetPoint"/>
+                        <Array as="points"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="55" value="Alumno no registrado" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="4">
+                    <mxGeometry x="103" y="267" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="56" value="Iniciar sesion" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="4">
+                    <mxGeometry x="261" y="346" width="140" height="70" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
