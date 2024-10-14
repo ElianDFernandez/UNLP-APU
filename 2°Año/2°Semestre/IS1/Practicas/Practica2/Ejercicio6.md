@@ -63,8 +63,8 @@ Dado que el alumno 'Dieguito' no esta asociado.
 Cuando el alumno solicite el prestamo de cualquier libro.
 El sistema informara que el alumno debe asociarse antes de realizar un prestamo.
 **Escenario 3:** Prestamo no completado por exceder maximo de prestamos
-Dado que el alumno 'Matias' esta asociado, tiene 3 prestamos y que el libro 'Gaturro' copia '1' esta en codiciones para prestar.
-Cuando la biliotecaria ingresa estos datos y el sistema verifica que el alumno no esta suspendido y que no tiene ningun prestamos vencido.
+Dado que el alumno 'Matias' esta asociado, tiene 3 prestamos
+Cuando la biliotecaria ingresa estos datos y el sistema verifica que el alumno no esta suspendido y que tiene 3 prestamos.
 Entonces el sistema informara que no se puede realizar el prestamos por exceder el maximo de prestamos permitidos.
 **Escenario 4:** Prestamo no completado por tener prestamo vencido
 Dado que el alumno 'Elian' esta asociado, tiene 2 prestamos y que el libro 'Eternauta' copia '2' esta en condiciones para prestar.
