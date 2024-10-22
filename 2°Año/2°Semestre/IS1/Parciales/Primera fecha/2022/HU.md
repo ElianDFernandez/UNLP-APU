@@ -83,21 +83,19 @@ Entonces el sistema informara que el usuario deber estar autenticado para poder 
 # ID: Acceder al listado de noticias.
 # TITULO: Como visitante deseo ver el listado de noticias para informarme.
 # Reglas de negocio:
-    * El sistema debe establecer conexión con el servidor proveedor de noticias.
-    * El sistema debe convertir el formato JSON recibido a HTML para mostrar las noticias.
 
 # Criterios de aprobacion (Acceder al lsitado de noticias):
 **Escenario 1: Acceso al listado exitoso**
-Dado que un visitante accede al sistema.
-Cuando el sistema establece conexion con el servidor proveedor y recibe el conjunto de noticias en formato JSON.
+Dado que un visitante accede al sistema, y este establece conexion con el servidor proveedor.
+Cuando el sistema recibe el conjunto de noticias en formato JSON.
 Entonces el sistema convierte el JSON a formato HTML y las noticia son mostradas en pantalla.
 
 **Escenario 2: Acceso al listado fallido por formato inesperado**
-Dado que un visitante accede al sistema.
-Cuando el sistema establece conexion con el servidor proveedor y recibe el conjunto de noiticas en otro formtato que no es JSON.
+Dado que un visitante accede al sistema, y este establece conexion con el servidor proveedor.
+Cuando el sistema recibe el conjunto de noiticas en otro formtato que no es JSON.
 Entonces el sistema informa que no se recibio el conjunto de noticias correctamente.
 
 **Escenario 3: Acceso al listado fallido por falla de conexion con servidor proveedor**
-Dado que un visitante accede al sistema.
-Cuando el sistema no establece una conexion exitosa con el servidor proveedor.
+Dado que un visitante accede al sistema, y este no establece una conexion exitosa con el servidor proveedor.
+Cuando el sistema intenta acceder al servidor proveedor para obtener el listado.
 Entonces el sistema informa que el servicio no se encuentra disponible.
