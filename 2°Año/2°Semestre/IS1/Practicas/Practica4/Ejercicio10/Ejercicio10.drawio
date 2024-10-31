@@ -1,0 +1,112 @@
+<mxfile host="65bd71144e">
+    <diagram id="ZRjJKoENAZ1yQbKuHIk9" name="Página-1">
+        <mxGraphModel dx="819" dy="703" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="13" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontSize=10;fontColor=#FFFFFF;" edge="1" parent="1" source="10" target="12">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="Se presiona enceder / Habilitar display, &lt;br&gt;Mostrar mensaje de bienvenida, &lt;br&gt;Setear velocidad en 0, &lt;br&gt;Mostrar velocidad,&lt;br&gt;Mostrar opciones &quot;+&quot; y &quot;-&quot;,&lt;br&gt;Mostras programas predefinidos (Inicial, Intermedio, Maximo),&lt;br&gt;Mostrar boton apagar" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#FFFFFF;" vertex="1" connectable="0" parent="13">
+                    <mxGeometry x="-0.313" y="-1" relative="1" as="geometry">
+                        <mxPoint x="1" y="9" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="10" value="" style="ellipse;fillColor=strokeColor;fontSize=10;fontColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="570" y="30" width="30" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" style="edgeStyle=none;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;fontSize=10;fontColor=#FFFFFF;" edge="1" parent="1" source="12" target="16">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="Se selecciono un programa /&amp;nbsp;&lt;br&gt;Ocultar mensaje de bienvenida,&lt;br&gt;Ocultar programas predefinidos,&lt;br&gt;Mostrar boton &quot;cambiar programa&quot;,&lt;br&gt;Mostrar boton &quot; fin de programa&quot;,&lt;br&gt;Encender la cinta,&lt;br&gt;Aumentar velocidad en 1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#FFFFFF;" vertex="1" connectable="0" parent="17">
+                    <mxGeometry x="-0.4363" y="2" relative="1" as="geometry">
+                        <mxPoint x="-22" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="29" style="edgeStyle=none;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;fontColor=#FFFFFF;" edge="1" parent="1" source="12" target="28">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="30" value="Se presiona apagar cinta / apagar la cinta,&lt;br&gt;apagar display" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#FFFFFF;" vertex="1" connectable="0" parent="29">
+                    <mxGeometry x="0.4923" relative="1" as="geometry">
+                        <mxPoint x="63" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="12" value="Reposando" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;fontSize=10;fontColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="515" y="150" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" style="edgeStyle=none;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;fontSize=10;fontColor=#FFFFFF;" edge="1" parent="1" source="16" target="12">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="Se presiono &quot;cambiar programa&quot;/&lt;br&gt;Apargar&amp;nbsp; la cinta,&lt;br&gt;Poner velocidad en 0,&lt;br&gt;Ocultar boton &quot;cambiar programa&quot;,&lt;br&gt;Ocultar boon &quot; fin de programa&quot;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#FFFFFF;" vertex="1" connectable="0" parent="19">
+                    <mxGeometry x="-0.4271" y="2" relative="1" as="geometry">
+                        <mxPoint x="32" y="9" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="32" style="edgeStyle=none;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;fontColor=#FFFFFF;" edge="1" parent="1" source="16" target="31">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="33" value="Se presiona apagar la cinta / apagar la cinta,&lt;br&gt;apagar display" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#FFFFFF;" vertex="1" connectable="0" parent="32">
+                    <mxGeometry x="-0.3219" y="-1" relative="1" as="geometry">
+                        <mxPoint x="75" y="17" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="16" value="Funcionando&lt;br&gt;en programa seleccionado" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;fontSize=10;fontColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="515" y="360" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="Se presiona aumentar velocidad [ velodicad actual &amp;lt; 9 ] /&amp;nbsp;&lt;br&gt;Aumentar velocidad de la cinta en 1" style="edgeStyle=none;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;fontSize=10;fontColor=#FFFFFF;" edge="1" parent="1" source="16" target="16">
+                    <mxGeometry x="0.0297" y="-10" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="310" y="440"/>
+                            <mxPoint x="310" y="380"/>
+                            <mxPoint x="310" y="350"/>
+                        </Array>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="23" value="Se presiona aumentar velocidad [ velocidad actual = 9 ] /&amp;nbsp;&lt;br&gt;Emitir pitido de operacion invalida" style="edgeStyle=none;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;fontSize=10;fontColor=#FFFFFF;" edge="1" parent="1" source="16" target="16">
+                    <mxGeometry x="-0.0139" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="480" y="480"/>
+                            <mxPoint x="340" y="480"/>
+                        </Array>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="24" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;fontSize=10;fontColor=#FFFFFF;" edge="1" parent="1" source="16" target="16">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="550" y="490"/>
+                            <mxPoint x="710" y="490"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="25" value="Se presiona disminuir velocidad [ velocidad acutal&amp;nbsp; &amp;gt; 1] /&lt;br&gt;Disminuir velocidad de la cinta en 1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#FFFFFF;" vertex="1" connectable="0" parent="24">
+                    <mxGeometry x="-0.2759" y="4" relative="1" as="geometry">
+                        <mxPoint x="47" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="26" style="edgeStyle=none;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;fontColor=#FFFFFF;" edge="1" parent="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="655" y="380" as="sourcePoint"/>
+                        <mxPoint x="655" y="160" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="800" y="380"/>
+                            <mxPoint x="800" y="160"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="27" value="Se presciona disminuir velocidad de la cinta [ velocidad actual = 1 ] /&amp;nbsp;&lt;br&gt;Apagar cinta,&amp;nbsp;&lt;br&gt;ocultar boton &quot; cambiar programa&quot;,&lt;br&gt;ocultar boton &quot;fin de programa &quot;&amp;nbsp;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#FFFFFF;" vertex="1" connectable="0" parent="26">
+                    <mxGeometry x="0.0478" y="-1" relative="1" as="geometry">
+                        <mxPoint x="49" y="132" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="28" value="" style="ellipse;html=1;shape=endState;fillColor=strokeColor;fontSize=10;fontColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="220" y="155" width="30" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="31" value="" style="ellipse;html=1;shape=endState;fillColor=strokeColor;fontSize=10;fontColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="920" y="450" width="30" height="30" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
