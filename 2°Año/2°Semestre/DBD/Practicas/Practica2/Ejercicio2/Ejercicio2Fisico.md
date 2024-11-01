@@ -1,0 +1,15 @@
+# Modelo Fisico
+
+Personas = (<u>DNI</u>, Apellido)
+Clietnes = (<u>Cuil</u>, DNI(fk) , Calle, Numero, Departamento?, Piso?)
+Proveedores = (<u>RazonSocial</u>, DNI(fk), Nombre, Numero)
+Pedidos = (<u>Cuil(fk), FechaHoraRealizado</u>, FechaHoraEntrega, PrecioTotal, NumeroZona(fk))
+Telefonos = (<u>Telefono</u>)
+Tiene3 = (<u>Telefono(fk),Cuil(fk)</u>)
+Zonas =  (<u>NumeroZona</u>,CostoEnvio)
+Tienen1 = (<u>{Cuil(fk), FechaHoraRealizado}(fk), CodigoPlato(fk)</u>, PrecioPlato)
+Platos = (<u>CodigoPlato</u>, PrecioActual, Descripcion)
+Formado = (<u>CodigoPlato(fk), CodigoProd(fk)</u>)
+Productos = (<u>CodigoProd</u>,Descripcion, PrecioActual, Stock, CantidadMinima)
+Tienen2 = (<u>CodigoProd(fk),{Fecha,Hora,RazonSocial}(fk)</u>, PrecioProducto)
+Compras = (<u>fecha,hora,RazonSocial(fk)</u>)
