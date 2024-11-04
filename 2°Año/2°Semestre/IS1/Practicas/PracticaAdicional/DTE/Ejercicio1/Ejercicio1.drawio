@@ -1,0 +1,82 @@
+<mxfile host="65bd71144e">
+    <diagram id="JVsMYSsR4U0z_nhuFv2Q" name="Página-1">
+        <mxGraphModel dx="1384" dy="779" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="none" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="3" value="Se recibe una orden" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="2" target="4">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="700" y="120" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="2" value="" style="ellipse;fillColor=strokeColor;" vertex="1" parent="1">
+                    <mxGeometry x="570" y="10" width="30" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="Se confirma que la carga esta lista / Seleccionar tramo, Iniciar motores" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="4" target="7">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="Esperando carga" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;" vertex="1" parent="1">
+                    <mxGeometry x="515" y="80" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="Llega a interseccion&lt;br&gt;[Si hay robot y tiene mayor prioridad] /&lt;br&gt;Detener motores" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="7" target="9">
+                    <mxGeometry x="0.4146" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="790" y="200"/>
+                        </Array>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="15" value="Se detecta objeto /&lt;br&gt;Detener motores" style="edgeStyle=none;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="7">
+                    <mxGeometry x="0.0003" y="20" relative="1" as="geometry">
+                        <mxPoint x="550.1428571428571" y="360" as="targetPoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="20" value="Se llega a destino / Detener motores, Enviar mensaje" style="edgeStyle=none;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="7" target="19">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="830" y="190"/>
+                            <mxPoint x="830" y="175"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="7" value="Realizando recorrido" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;" vertex="1" parent="1">
+                    <mxGeometry x="515" y="180" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="Se recibe orden continuar / &lt;br&gt;Seleccionar nuevo tramo,&lt;br&gt;Iniciar motores" style="edgeStyle=none;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="9" target="7">
+                    <mxGeometry x="-0.5068" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="670" y="340"/>
+                        </Array>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="9" value="Esperando a cruzar" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;" vertex="1" parent="1">
+                    <mxGeometry x="830" y="320" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="Llega a interssion&amp;nbsp;&lt;br&gt;[No hay otro robot&amp;nbsp; o hay robot y con menor prioridad]/&lt;br&gt;Seleccionar siguiente tramo.&lt;br&gt;Confirmar cruce por interseccion" style="edgeStyle=none;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="7" target="7">
+                    <mxGeometry x="-0.1901" y="-40" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="410" y="200"/>
+                            <mxPoint x="410" y="280"/>
+                            <mxPoint x="310" y="280"/>
+                            <mxPoint x="310" y="190"/>
+                        </Array>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="18" value="No se detecta objeto /&amp;nbsp;&lt;br&gt;Iniciar motores" style="edgeStyle=none;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="16" target="7">
+                    <mxGeometry x="-0.5714" y="25" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="16" value="Esperando &lt;br&gt;no detectar objeto" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;" vertex="1" parent="1">
+                    <mxGeometry x="480" y="360" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="" style="ellipse;html=1;shape=endState;fillColor=strokeColor;" vertex="1" parent="1">
+                    <mxGeometry x="1000" y="160" width="30" height="30" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
