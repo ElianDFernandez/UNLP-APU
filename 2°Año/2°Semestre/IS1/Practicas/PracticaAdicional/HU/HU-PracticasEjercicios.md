@@ -457,6 +457,30 @@ Reglas de negocio:
 Dorso 
 
 Criterios de aprobacion: 
-Escenario 1: Compra exitosa 
-Dado que el usuario con nombre 'Elian', apellido 'Fernandez' con una tarjeta valida y se pudo establecer conexion con el servidor.
-Cuando el usuario ingrese los datos de la tarjeta Nombre 'Elian' y apellido 'Fernandez' y numero de la tarjea '123'.
+Escenario 1: Compra exitosa
+Dado que el ISBN '123' es válido y el usuario 'Elian Fernandez' cuenta con una tarjeta válida, y el sistema logra establecer conexión con el servidor de la tarjeta.
+Cuando el usuario ingresa el ISBN '123' e ingresa los datos de la tarjeta con Nombre 'Elian', Apellido 'Fernandez' y Número de Tarjeta '123'.
+Entonces el sistema valida los datos, confirma la coincidencia del nombre y apellido, procesa el pago exitosamente y envía un enlace de descarga al correo del usuario registrado.
+
+Escenario 2: Compra fallida por datos incorrectos
+Dado que el ISBN '123' es válido y el usuario 'Elian Fernandez' está registrado correctamente, pero los datos de tarjeta ingresados son Nombre 'Juan', Apellido 'Perez' y Número de Tarjeta '456'.
+Cuando el usuario ingresa el ISBN '123' e intenta realizar la compra con estos datos incorrectos.
+Entonces el sistema rechaza la transacción, indicando que el nombre y apellido no coinciden con los datos del usuario registrado.
+
+Escenario 3: Compra fallida por error del servidor de la tarjeta
+Dado que el ISBN '123' es válido y el usuario 'Elian Fernandez' cuenta con una tarjeta válida.
+Cuando el sistema intenta establecer conexión con el servidor de la tarjeta y no lo consigue debido a un error externo.
+Entonces el sistema informa al usuario que no se pudo completar la compra y le sugiere intentarlo más tarde.
+
+Escenario 4: Compra fallida por falta de conexión con el servidor de la tarjeta
+Dado que el ISBN '123' es válido y el usuario 'Elian Fernandez' cuenta con una tarjeta válida, pero el sistema no logra establecer conexión con el servidor de la tarjeta.
+Cuando el usuario ingresa el ISBN '123' e ingresa los datos de la tarjeta con Nombre 'Elian', Apellido 'Fernandez' y Número de Tarjeta '123'.
+Entonces el sistema debe mostrar un mensaje de error al usuario indicando que no se pudo procesar el pago debido a problemas de conexión y sugerir que intente nuevamente más tarde.
+
+Escenario 5: Compra fallida por ISBN inválido
+Dado que el ISBN '999' no es válido y el usuario 'Elian Fernandez' está registrado correctamente, y cuenta con una tarjeta válida.
+Cuando el usuario ingresa el ISBN '999' e ingresa los datos de la tarjeta con Nombre 'Elian', Apellido 'Fernandez' y Número de Tarjeta '123'.
+Entonces el sistema informa al usuario que el ISBN no es válido y no permite continuar con la compra.
+--------------
+14. Manejo de tarjetas de credito
+--------------
