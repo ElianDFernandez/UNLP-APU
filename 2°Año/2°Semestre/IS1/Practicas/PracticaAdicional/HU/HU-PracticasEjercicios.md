@@ -180,9 +180,9 @@ Dorso
 
 Criterios de aprobacion:
 Escenario 1: Registro exitoso
-Dado que el docente con Mail 'docente1@gmail.com' no se encuentra registrado en el sistema y con DNI 33789123.
-Cuando el docente ingrese DNI 33789123, Nombre 'Docente', apellido 'Historio', y mail 'docente1@gmail.com'.
-Entonces el sistema registra el usuario, informa el registro exitoso y envia con mail la contraseña.
+Dado que el docente con Mail 'docente1@gmail.com' no se encuentra registrado en el sistema y si DNI es 550000000 mayor a 12 millones y menor a 55 millones.
+Cuando el docente ingrese DNI 550000000, Nombre 'Docente', apellido 'Historio', y mail 'docente1@gmail.com'.
+Entonces el sistema registra el usuario, informa el registro exitoso y envia al mail la contraseña.
 
 Escenario 2: Registro fallido por Mail ya existente
 Dado que el docente con Mail 'docente2@gmail.com' se encuentra registrado en el sistema.
@@ -190,7 +190,7 @@ Cuando el docente ingrese DNI 123901234, Nombre 'Doc', apellido 'Mate', y mail '
 Entonces el sistema informa que el mail ya se encuentra registrado en el sistema.
 
 Escenario 3: Registro fallido por DNI no valido 
-Dado que el docente con Mail 'docente3@gmail.com' no se encuentra registrado en el sistema y con DNI 88900900.
+Dado que el docente con Mail 'docente3@gmail.com' no se encuentra registrado en el sistema y con DNI 88900900 no estra entre 12 millones y 55000000 millones.
 Cuando el docente ingrede DNI 88900900, Nombre 'Doc', apellido 'Soc', y mail 'docente3@gmail.com'.
 Entonces el sistema informa que el DNI es invalido, debe ser mayor a 12 millones y menor a 55 millones.
 
@@ -451,8 +451,6 @@ Frente
 Id: Comprar libro
 Titulo: Como usuario quiero comprar un libro del catalogo para poder leerlo
 Reglas de negocio:
-* Conexion con el servidor de la tarjeta
-* Mismo nombre en la tarjeta que el usuario
 
 Dorso 
 
@@ -484,3 +482,42 @@ Entonces el sistema informa al usuario que el ISBN no es válido y no permite co
 --------------
 14. Manejo de tarjetas de credito
 --------------
+Escenario 1: Compra exitosa 
+Dado que el ISBN '123' es valido y las condiciones son las adecuadas para un pago exitoso.
+Cuando el usuario ingrese el ISBN '123' y seleccion 'comprar' 
+Entonces el sistema redirige al usuario al pago de libro con tarjeta, espera respueta, genera un enalce de descarga y lo envia por el correo del usuario.
+
+Escenario 2: Compra fallida por ISBN no valido 
+Dado que el ISBN '321' no es valido.
+CUando el usuario ingrese el ISBN '321' y seleccione 'comprar'.
+Entonces el sistema informa que el ISBN ingresado no es valido.
+
+Escenario 3: Compra fallida por error en el pago
+Dado que el ISBN '123' es valido y las condiciones son las adecuadas para un pago exitoso.
+Cuando el usuario ingrese el ISBN '123' y seleccion 'comprar' 
+Entonces el sistema redirige al usuario al pago de libro con tarjeta, espera respueta, genera un enalce de descarga y lo envia por el correo del usuario.
+--------------
+Frente 
+
+Id: Pago con tarjeta
+Titulo: Como usuario quiero poder pagar con tarjeta para realizar la compra de un libro.
+Regls de negocio:
+* Mismo nombre y apelldio de usuario que el titular de la tarjeta
+
+Dorso
+
+Criterios de aprobacion:
+Escenario 1: Pago exitoso
+Dado que la conexion con el servidor de la tarjeta es exitosa, y que el usuario que solicita el pago tiene nombre 'Elian', apellido 'Fernandez' y el numero de tarjeta '123' es valido.
+Cuando el usuario ingrese los datos de la tarjeta numero '123', nombre del titular 'Elian', y apellido del titular 'Fernandez'.
+Entonces el sistema registra el pago y retorna un resultado de exito.
+
+Escenario 2: Pago fallido por nombre o apellido de titulo distinto al usuario 
+Dado que el usuario que solicita el pago tien nombre 'David' y apellido 'Gonzalez', y el numero de tarjeta '123' es valido.
+Cuando el usuario ingrese los datos de la tarjeta numero '123', nombre del titulo 'Elian', y apellido del titulo 'Gusman'.
+Entonces el sistema informa que el nombre y apellido titular de la tarjeta debe coincidir con el registrado en el usuario.
+
+Escenario 3: Pago fallido por falla en la conexion con el servidor de la tarjeta
+Dado que la conexion con el servidor de la tarjeta no es exitosa.
+Cuando el usuario ingrese los datos de la tarjeta numero '123', nombre del titular 'Elian', y apellido del titular 'Fernandez'.
+Entonces el sistema informa que no es posible realizar la operacion en ese momento reintete mas tarde.
