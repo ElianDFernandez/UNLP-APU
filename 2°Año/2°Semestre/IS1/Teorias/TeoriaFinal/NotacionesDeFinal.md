@@ -237,7 +237,7 @@ Es el proceso de certificar la correccion del modelo de requerimientos contra la
 Es importante, porque los errores en los requerimientos pueden conducir a grandes costos si se descubren mas tarde.
 - Validacion: Al final del desarrollo evaluar el software para asegurar que el software cumple los requerimientos.
 - Verificacion: El software cumple los requerimientos correctamente.
-*Comprenden* 
+*Comprenden*  
 - Verificacion de validez
 - Verificacion de consistencia
 - Verificacion de completitud 
@@ -245,3 +245,110 @@ Es importante, porque los errores en los requerimientos pueden conducir a grande
 - Verificabilidad 
 
 # Teoria 3
+*Tecnica de especificacion Dinamica*
+## Casos de uso 
+Proceso de modelado de las "funcionalidades" del sistema en termino de los eventos que interactuan entre los usuarios y el sistema.
+El uso de CU facilita y alienta la participación de los usuarios.
+**Beneficios**
+- Herramienta para capturar requerimientos funcionales 
+- Descompone le alcance del sistema en piezas mas manejables 
+- Medio de comunicacion con los usuario 
+- Utiliza lenguaje comun y facil de entender por las partes 
+- Permite estimar el alcance del proyecto y el esfuerzo a realizar 
+- Define una linea base para la definicion de los planes de prueba
+- Define una linea base para toda la documentacion del sistema 
+- Proporciona una herramienta para el seguimiento de los requisitos 
+**Componentes**
+- Diagrama de casos de uso 
+    Componentes del diagrama:
+    * Caso de uso 
+    * Actores
+    * Relaciones 
+    * Asociaciones
+    * Extension (<extends>)
+    * Usu o inclusion (<uses>)
+    * Herencia
+- Escenarios 
+    En el escenario se describen 
+    * La interaccion del escenario 
+    * Eventos alternativos
+**Caracteristicas importantes**
+- Un caso de uso debe represntar una funcionalidad concreta
+- La descripcion de lso pasos en los escenarios debe contener mas de un paso, para reprentar la interaccion entre los componentes
+- El uso de condicionales en el curso normal, es limitado a la invocacion de excepciones, ya que este flujo representa la ejecucion del caso sin alteraciones
+- Las pre condiciones no deben representarse en los cursos alternativos, ya que al ser una pre condicion no va a ocurrir
+- Los 'uses' deben ser accedidos por lo menos desde dos CU.
+
+# Teoria 4 
+*Tecnica de especificacion Dinamica*
+## Diagrama de transicion de estados 
+**Máquinas de Estado Finito**
+- Describe al sistema como un conjunto de estados donde el sistema reacciona a ciertos eventos posibles (externos o internos). 
+- f(Si, Cj) = Sk
+    * Al estar en el estado Si, la ocurrencia de la condición Cj hace que el sistema cambie al estado Sk.
+Definicion formal: Formalmente, un automata finiti(AF) puede ser descrito como una **5-tupla (S,Σ,T,s,A)** donde:
+- Σ es un alfabeto; 
+- S un conjunto de estados; 
+- T es la función de transición; 
+- s es el estado inicial; 
+- A es un conjunto de estados de aceptación o finales. 
+
+![alt text](img/DiagramaTE.png)
+
+**Compenentes**
+- Evento 
+    Es un suceso significativo que debe tenerse en cuenta, que influje en el comportamiento y evolucion del sistema.
+    Tiene lugar en un punto del tiempo y carece de duracion respecto a la granularidad temporal del sistema.
+    No tiene sentido preguntarse por lo que sucede mientras esta teniendo lugar el evento.
+- Transicion 
+    Las transiciones se producen como consecuencia de eventos. Pueden o no tener un procesamiento asociado.
+    * Evento: obligatorio
+    * Condición: opcional, depende del problema, puede haber transiciones sin condiciones
+    * Acción: opcional, puede haber transiciones sin acciones                                                                
+    
+# Teoria 5 
+*Tecnica de especificacion Dinamica*
+## Redes de petri
+Utilizadas para especificar sistemas de tiempo real en los que son necesarios representar aspectos de concurrencia.
+*Los sistemas concurrentes se diseñan para permitir la ejecución simultánea de componentes de programación, llamadas tareas o procesos, en varios procesadores o intercalados en un solo procesador.*
+- Las tareas concurrentes deben estar sincronizadas para permitir la comunicación entre ellas (pueden operar a distintas velocidades, deben prevenir la modificación de datos compartidos o condiciones de bloqueo).
+- Pueden realizarse varias tareas en paralelo, pero son ejecutados en un orden impredecible.
+- Éstas NO son secuenciales
+**Componentes**
+- Eventos o acciones
+Los eventos se representan como transiciones(T)
+- Estados o condiciones
+Los estados se representan como lugares o sitios(P)
+**Definicion formal** 
+- Una estructua de red de petri es una 4-tupla **C=(P,T,I.O)**
+    * P (Lugares)
+    * T (Transiciones)
+    * I (Funcion de entrada)
+    * O (Funcion de salida)
+
+Los arcos indican a traves de una flecha la relacion entre sitios y trasiciones y viceversa
+A los lugares se les asignan tokens (fichas) que se representan mediante un número o puntos dentro del sitio
+Luego de una marcación inicial se puede simular la ejecución de la red. El número de tokens asignados a un sitio es ilimitado
+
+![alt text](img/DiagramaRP.png)
+
+# Teoria 6
+*Tecnica de especificacion Dinamica*
+## Tablas de decision 
+Es una herramienta que permite presentar de forma concisa las reglas logicas que hay que utilizar para decidir acciones a ejecutar en funcion de las condiciones y la lofica de descicion de un problema especifico.
+Describe el sistema como un conjunto de:
+Posibles **CONDICIONES** satisfechas por el sistema en un momento dado
+**REGLAS** para reaccionar ante los estimulos que ocurren cuando se reunen determinados conjuntos de condiciones y **ACCIONES** a ser tomadas como un reusltado
+**Componentes** 
+- condiciones simples y acciones simples
+- Las condiciones toman sólo valores Verdadero o Falso
+- Hay 2^N Reglas donde N es la cantidad de condiciones
+**Especificaciones**
+- Especificaciones completas 
+Aquellas que determinan acciones (una o varias) para todas las reglas posibles.
+- Especificaciones redundantes
+Aquellas que marcan para reglas que determinan las mismas condiciones acciones iguales.
+- Especificaciones contradictorias
+Aquellas que especifican para reglas que determinan las mismas condiciones acciones distintas.
+
+## Analisis estructurado 
