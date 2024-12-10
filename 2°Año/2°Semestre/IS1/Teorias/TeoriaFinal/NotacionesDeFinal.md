@@ -672,3 +672,102 @@ Kanban se presenta como una herramienta de gestión que prescribe solo 3 prácti
 - limitar el trabajo en curso 
 - visualizar el flujo de trabajo
 - medir el tiempo promedio de entrega. 
+
+# Teoria 9 
+## Desarrollo de Software Basado en Modelos. (MBD)
+El desarrollo de software basado en modelos, introducido por De Marco en los años 70, plantea que la construcción de un sistema debe precederse por la creación de un modelo, como en otras disciplinas de ingeniería. Este modelo conceptualiza el dominio del problema y sirve como una especificación precisa de los requerimientos del sistema, facilitando la abstracción, comunicación y negociación con el usuario.
+
+Construccion de un sistema de software:
+![alt text](img/MBD.png)
+
+## Desarrollo de Software Dirigido por Modelos. (MDD)
+El término "dirigido" en MDD resalta que los modelos tienen un rol central y activo, equiparándose en importancia al código fuente. Este enfoque promueve:
+
+Mayor abstracción en la especificación del problema y su solución.
+Confianza en la automatización para análisis, diseño y ejecución asistidos por computadora.
+Uso de estándares industriales para mejorar comunicación, interoperabilidad y especialización tecnológica.
+Los modelos son el eje principal en todas las etapas del desarrollo de software.
+En el paradigma MDD, los modelos evolucionan de ser entidades meramente contemplativas, utilizadas para interpretación por diseñadores y programadores, a convertirse en entidades productivas que permiten derivar la implementación automáticamente.
+![alt text](img/MDD.png)
+
+**Ciclo de vida** 
+![alt text](image.png)
+
+**Platform Independent Model (PIM):** “Un modelo de un sistema que no contiene información acerca de la plataforma o la tecnología que es usada para implementarlo”
+**Platform Specific Model (PSM):** “Un modelo de un sistema que incluye información acerca de la tecnología específica que se usará para su implementación sobre  una plataforma específica”
+**Transformación de modelos:** “Especifica el proceso de conversión de un modelo en otro modelo del mismo sistema.”
+- Cada transformación incluye (al menos):
+    * un PIM, 
+    * un Modelo de la Plataforma, 
+    * una Transformación, y 
+    * un PSM
+
+![alt text](img/TransformacionMDD.png)
+
+**Beneficios** 
+- Incremento en la productividad (modelos y transformaciones).
+- Adaptación a los cambios tecnológicos.
+- Adaptación a los cambios de requisitos.  
+- Consistencia (automatización).
+- Re-uso (de modelos y transformaciones).
+- Mejoras en la comunicación con los usuarios y la comunicación entre los desarrolladores (los modelos permanecen actualizados).
+- Captura de la experiencia (cambio de experto).
+- Los modelos son productos de larga duración (resisten cambios).
+- Posibilidad de demorar decisiones tecnológicas.
+
+## Calidad
+***¿Qué es la Calidad?***
+La calidad es un concepto comúnmente usado pero percibido de distintas formas, asociándose a menudo con bienes de lujo o altos precios. Su significado es ambiguo y varía según la interpretación personal, lo que resalta la necesidad de unificar su definición.
+
+**Criterios erróneos**
+- Un producto de calidad es un producto de lujo. 
+- La calidad es intangible y por lo tanto no mensurable. 
+- Los problemas son originados por los trabajadores de producción.
+- La calidad se origina en el Depto de calidad
+
+Las principales normas internacionales definen la calidad como :
+***“El grado en el que un conjunto de características inherentes cumple con los requisitos“ ( ISO 9000)***
+
+***“Conjunto de propiedades o características de un producto o servicio que le confieren aptitud para satisfacer unas necesidades expresadas o implícitas” (ISO 8402)***
+
+## Calidad de los Sistemas de Información 
+
+![alt text](img/VisionHolisticaCalidad.png)
+
+## Calidad de Software
+La calidad del software ha mejorado considerablemente en los últimos años debido a una mayor conciencia sobre la gestión de la calidad y la adopción de técnicas específicas en la industria del software. Esta mejora se divide en dos áreas principales:
+
+- Calidad del producto obtenido: Se refiere a las características del software final, como su funcionalidad, rendimiento y fiabilidad.
+- Calidad del proceso de desarrollo: Se enfoca en la eficiencia y efectividad de los procesos utilizados durante el desarrollo del software.
+
+### Calidad del Producto y Proceso
+- Producto
+La estandarización del producto define las propiedades que debe satisfacer el producto software resultante.
+- Proceso
+La estandarización del proceso define la manera de desarrollar el producto software.
+
+**Sin un buen proceso de desarrollo es casi imposible obtener un buen producto.**
+
+***PRODUCTO***
+La **ISO/IEC 25000** establece directrices internacionales para evaluar y mejorar la calidad tanto del producto como del proceso de desarrollo, proporcionando un marco integral para asegurar que el software cumpla con altos estándares de calidad.
+
+***PROCESO DE DESARROLLO***
+Las metodologías y marcos de trabajo como PMBOK, SWEBOOK, Six Sigma, y normas como **ISO/IEC 12207, ISO/IEC 15504 (ISO 33000) y ISO/IEC 90003**, proporcionan las bases para gestionar y optimizar el proceso de desarrollo de software, garantizando eficiencia, calidad y cumplimiento de estándares.
+
+***ORGANIZACIÓN***
+La **ISO/IEC 9001 (calidad total)** y la ISO/IEC 27001 (seguridad de la información) se complementan para asegurar la calidad organizacional en todos los niveles: desde la gestión de procesos hasta la protección de la información. Estas normas permiten una gestión coherente e integral de la calidad en productos, procesos y seguridad, creando un entorno seguro y eficiente.
+
+Este formato refuerza la idea de integración y continuidad entre los tres elementos clave: producto, proceso y organización.
+
+La **ISO/IEC 25000 (SQuaRE)** es un conjunto de normas para gestionar y evaluar la calidad del software, dividido en varios grupos clave:
+
+- ISO/IEC 25010: Define las características de calidad del producto, como funcionalidad, confiabilidad, facilidad de uso, eficiencia, portabilidad, seguridad, facilidad de mantenimiento, compatibilidad
+
+- ISO/IEC 25020: Establece métodos y métricas para medir la calidad del software.
+
+- ISO/IEC 25030: Se enfoca en los requisitos de calidad que debe cumplir el software durante su desarrollo.
+
+- ISO/IEC 25040: Proporciona directrices para evaluar la calidad del software con base en las métricas definidas.
+
+- ISO/IEC 25050: Brinda directrices para gestionar la calidad a lo largo del ciclo de vida del software.
+
