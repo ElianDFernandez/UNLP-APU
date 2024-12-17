@@ -107,7 +107,6 @@ Solo se incluyen si ayudan a aclarar información en el modelo conceptual, pero 
 # Clase 3
 
 ## Modelo logico 
-
 Convertir el esquema coneptual en un esquema logico.
 Eleccion del modelo logico objetivo (OO, relacional, jerarquico, o red) dependiendo la eleccion es la conversion.
 Usamos relacional en la cursada, ya que se utiliza a nivel mundial.
@@ -141,7 +140,6 @@ Ver que relaciones se pueden omitir. Es decir se puede acceder a la misma inform
 # Clase 4
 
 ## Modelo fisico 
-
 El modelo fisico (relacional) representa la BD como una coleccion de relaciones. Cada tabla de valores resultante se denomina relacion.
 
 *Pasos de conversion*
@@ -170,9 +168,7 @@ En la eliminacion o modificacion se debe tener cuidado.
 - **Restringida**: No se permite la eliminación o modificación de una fila en la tabla principal si hay filas relacionadas en la tabla secundaria.
 - **No hacer nada**
 
-# Clase 5
-
-## Restricciones 
+**Restricciones**
 - **Restricciones de Dominio:**
 Es el conjunto de valores permitidos para un atributo. Define el tipo y el rango de valores que un atributo puede tener.
 
@@ -187,3 +183,206 @@ Ningun valor de la calve primaria puede ser nulo.
 
 - **Restricciones de Integridad referencial:**
 Garantiza que las relaciones entre tablas sean consistentes, es decir, que las claves foráneas siempre apunten a registros válidos en otras tablas.
+
+# Clase 5 
+
+## Depencia funcional
+Una depencia funciona es una resticcion entre dos conjuntos de atributos de la Base de datos. No es malo, simplemente existen.
+- Las restriccion indica que si t1 y t2 son dos tuplas cualquieras de r y que si t1[x] = t2[x] entonces debe ocurrir que t1[y] = t2[y].  
+- Esto significa que los valores del componente y de una tupla r dependen de los valores del componente x.
+- claves univocas y primarias determinan al resto de los atributos.  
+Por ejemplo:
+En una tabla de estudiantes, si tienes una columna "Número de identificación" (X) y otra columna "Nombre del estudiante" (Y), entonces:
+Si dos filas tienen el mismo "Número de identificación" (X), siempre deben tener el mismo "Nombre del estudiante" (Y).
+Esto significa que el Nombre del estudiante depende del Número de identificación.
+
+*Tipos*
+*Generan repeticiones innecesarias, atentan contra la minimalidad, solucionarlas*
+- **Dependencia funcional completa** : Si A y B son atributos en una tabla r, B depende funcionalmente de manera completa de A, si B depende de A pero de ningun subconjunto de A.
+- **Dependencia funcional parcial** : A->B es uan depencia funcional parcial si existe algun atributo que puede eliminarse de A y la dependencia continua verificandose.  
+- **Dependencia funcional transitiva** : Una condicion en la que A,B y C son atributos de una relacion tales que A->B y B->C, entonces C depende transitivamente de A a traves de B.
+- **Dependencia de Boyce Codd** : Una relación (tabla) está en BCNF si para toda dependencia funcional de la forma: X → Y (X determina a Y), se cumple que X es una clave candidata de la tabla.
+
+**Dependencia Multivaludada**
+La existencia de dependencia multivaluadas en una tabla se debe a 1FN que impide que una tupla tenga un cojunto de valores diferentes.
+Una tabla tiene una dependencia multivaluada si para un atributo A y dos conjuntos de atributos B y C:
+- Los valores de B dependen de A, pero C también depende de A de manera independiente.
+- Es decir, los valores de B no tienen relación con los valores de C, solo con A.
+Se expresa como:
+A →→ B (A multivalúa a B). Se un valor de A y por este valor muchos de B.
+
+*Triviales y no triviales*
+Una dependencia multivaluada A →→ B se dice trivial si B es:
+- Un subconjunto de A.
+- O si A y B juntos cubren todos los atributos de la tabla.
+
+## Normalizacion
+Una base de datos que contenga solo dependencias funcionales deseadas va a estar normalizada.
+
+- Primera forma normal
+    * Una tabla que contiene uno o mas grupos repetitivos no esta en 1FN o sea una tabla que tenga atributos polivalentes.  
+    * Un modelo estara en 1FN si para toda relacion r del modelo (tabla) cada uno de los atributos que la forman son si y solo si monovalentes.
+
+- Segunda forma normal 
+    * Una tabla que tenga atributos que dependan parcialmente de otro no esta en 2FN.  
+    * Un modelo esta en 2FN si y solo si esta en 1FN y para toda relacion r del mismo (tabla) no existen depencias parciales.  
+
+- Tercera forma normal 
+    * Una tabla que tenga atributos que dependan transitivamente de otro no esta en 3FN.
+    * un modelo esta en 3FN si y solo si esta en 2FN y para toda relacion r del mismo (tabla) no existen depencencias transitivas.
+
+- Boyce Codd forma normal 
+    * Una tabla que tenga atributos que dependen de acuerdo con la definicion de Boyce Codd de otro no esta en BCNF.
+    * Un modelo esta en BCNF si y solo si esta en 3FN y para toda relacion de r del mismo (tabla) no existen dependencia de Boyce Codd.  
+
+- Cuarta forma normal 
+    * un modelo esta en 4FN si y solo si esta en BCNF (Se puede pasar por alto en la practica) y para toda relacion r del mismo (tabla) solo existen dependencia multivaluadas triviales.
+
+- Quinta forma normal 
+    * Un modelo está en quinta forma normal (5FN) si y solo si está en 4FN y no existen dependencias de unión en la relación (tabla). Esto significa que los datos de la tabla no pueden ser descompuestos de forma más eficiente sin perder información.
+
+## Algebra relacional
+*Operaciones*
+
+- Selección (σ): se utiliza para filtrar filas de una relación que cumplen con una condición específica. 
+- Proyección (π): se utiliza para filtrar columnas de una relación.
+- Unión (∪): se utiliza para combinar dos relaciones que tienen el mismo número de atributos y tipos de datos.
+- Diferencia (−): se utiliza para obtener las tuplas que están en una relación R, pero no en otra relación S.
+- Producto Cartesiano (×): se utiliza para combinar todas las tuplas de una relación R con todas las tuplas de otra relación S.
+
+*Operaciones adicinales*
+
+- Intersección (∩): se utiliza para obtener las tuplas que son comunes entre dos relaciones.
+- Producto Natural (⋈):  elimina las columnas duplicadas que tengan el mismo nombre. En otras palabras, realiza un producto cartesiano, pero compara las tuplas que tienen los mismos valores en los atributos con el mismo nombre y solo une las tuplas cuando esas columnas coinciden.
+- Asignación Temporal (←): se utiliza para guardar el resultado de una operación relacional en una nueva variable o relación.
+- Producto Tita (Θ): es una operación que combina dos relaciones R y S usando un predicado o condición personalizada.
+
+*operaciones de updates* 
+- Actualizar: δ nombre ← nombre=Golf (Deportes)
+- Eliminar: Deportes ← Deportes - σ(nombre = 'golf' (Deportes))
+- Crear: Deportes ← Deportes ∪ {'golf', 2}
+
+# Clase 6 
+
+## SQL 
+*Lenguaje de definicion de datos (DDL)* 
+- CREATE database 
+- DROP database 
+- CREATE table 
+- ALTER table 
+- DROP table 
+
+*Lenguaje de Manipulación de Datos (DML)*
+- SELECT: Consultar datos.
+- INSERT: Insertar nuevos datos.
+- UPDATE: Actualizar datos existentes.
+- DELETE: Eliminar datos.
+
+Consulta básica:
+- SELECT *
+- FROM tabla
+Variaciones:
+- Cláusula SELECT:
+    * Atributos específicos: SELECT atr1, atr2, ...
+    * Eliminación de duplicados: SELECT DISTINCT atr1, atr2, ...
+    * Funciones de agregación: SELECT COUNT(*), AVG(atr1), SUM(atr2), ...
+        - AVG: Promedio.  
+        - COUNT: Conteo. 
+        - SUM: Suma.
+        - MIN: minimo.
+        - MAX: maximo.
+    * Alias de atributos: SELECT atr1 AS alias1, atr2 AS alias2, ...
+- Cláusula FROM:
+    * Múltiples tablas: FROM tabla1, tabla2, ...
+    * Producto natural: FROM tabla1 INNER JOIN tabla2 ON (condición)
+    * Variantes de producto natural:
+        - LEFT OUTER JOIN
+        - RIGHT OUTER JOIN
+        - FULL OUTER JOIN
+    * Subconsultas: FROM (SELECT ... FROM ... WHERE ...)
+- Cláusula WHERE:
+    * Condiciones de selección: WHERE condición1 AND/OR condición2 ...
+    * Operadores lógicos: AND, OR, NOT
+    * Operadores de comparación: =, !=, >, <, >=, <=
+    * Operadores de rango: BETWEEN, LIKE, IN, NOT IN
+    * Subconsultas: WHERE atr1 operador (SELECT ... FROM ... WHERE ...)
+    * Valores nulos: WHERE atr1 IS NULL/IS NOT NULL
+- Cláusula GROUP BY:
+    * Agrupación de resultados: GROUP BY atr1, atr2, ...
+- Cláusula HAVING:
+    * Condiciones de filtro para grupos: HAVING condición1 AND/OR condición2 ...
+- Cláusula ORDER BY:
+    * Ordenamiento de resultados: ORDER BY atr1 ASC/DESC, atr2 ASC/DESC, ...
+- Cláusula LIMIT:
+* Limitar el número de resultados: LIMIT cantidad
+Consideraciones:
+- Se pueden combinar múltiples variaciones en una misma consulta.
+- El orden de las cláusulas en una consulta SQL es importante.
+- La optimización de consultas busca la forma más eficiente de obtener los resultados.
+- Se pueden crear vistas para simplificar consultas complejas.
+```
+    [SELECT]
+        |
+        ├── [Proyección de columnas]
+        |       └── SELECT columna1, columna2, ...
+        |
+        ├── [Eliminación de duplicados]
+        |       └── SELECT DISTINCT departamento
+        |
+        ├── [Funciones de agregación]
+        |       └── SELECT COUNT(*), SUM(salario), ...
+        |
+        ├── [Operadores aritméticos]
+        |       └── SELECT salario * 1.1, salario + 500, ...
+        |
+        ├── [Filtrado de datos]
+        |       └── WHERE salario > 5000, nombre LIKE 'J%'
+        |
+        ├── [Operadores lógicos]
+        |       └── WHERE salario > 5000 AND departamento = 'Ventas'
+        |
+        |
+        ├── [Unión de tablas]
+        |       └── INNER JOIN, LEFT JOIN, ...
+        |
+        ├── [Agrupación de datos]
+        |       └── GROUP BY departamento
+        |
+        ├── [Filtrado posterior a la agrupación]
+        |       └── HAVING AVG(salario) > 3000
+        |
+        ├── [Ordenamiento de resultados]
+        |       └── ORDER BY salario DESC
+        |
+        └── [Límite de resultados]
+                └── LIMIT 10, TOP 5
+```
+
+# Clase 7
+
+## Optimizacion de consultas 
+
+*Componentes del 'Costo' de ejecucion de una consulta*
+- Costo de acceso a almacenamiento secundario -> Acceder al bloque de dato que reside en disco.
+- Costo de computo -> Costo de realizar opreaciones sobre memoria RAM.  
+- Costo de comunicaciones -> Costo de enviar la consulta y los resultados
+
+*Optimizacion de consultas*
+Cuando el DBMS recibe la consulta: 
+```
+    Consulta 
+        └─(Parser)── Forma interna
+                        └── Proceso de optimizacion
+                                └── Eleccion de indices
+                                        └── Acceso a disco
+```
+*Optimizacion logico* 
+Se encarga el DMBS, nosotros priorizamos legibilidad. El DBMS siempre analiza si se puede mejorar.
+
+*Valores en la optimizacion de consulta*
+- CT tabla: cantidad total.  
+- CB tabla: peso en bytes de la tabla.
+- CV (a, tabla): Cuantos son los valores disntintos de un valor en un tabla.  
+
+*costos* 
+![alt text](img/OPConsultas.png)
