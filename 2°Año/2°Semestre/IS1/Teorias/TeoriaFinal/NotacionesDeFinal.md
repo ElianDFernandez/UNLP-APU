@@ -404,7 +404,6 @@ El mantenimiento es una actividad a tener en cuenta en el proceso de desarrollo 
 ### ¿Qué es un modelo de proceso de software?
 - Es una representación simplificada de un proceso de software que presenta una visión de ese proceso.
 - Estos modelos pueden incluir actividades que son partes de los procesos y productos de software, y el papel de las personas involucradas.
-
 **Caracteristicas** 
 - Establece todas las actividades 
 - Utiliza recursos, esta sujeto a restrucciones y genera productos intermedios y finales
