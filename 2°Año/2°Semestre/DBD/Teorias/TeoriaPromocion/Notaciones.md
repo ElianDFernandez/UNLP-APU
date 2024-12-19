@@ -386,3 +386,242 @@ Se encarga el DMBS, nosotros priorizamos legibilidad. El DBMS siempre analiza si
 
 *costos* 
 ![alt text](img/OPConsultas.png)
+
+
+# Clase 8
+
+## Seguridad e integridad de datos
+- Transacciones 
+    * Prioridades
+    * Estados
+- Transacciones monousuarios 
+    * Atomicidad
+    * Protocolos 
+- Transacciones centralizadas 
+    * Aislamiento
+    * Consistencia
+    * Durabilidad
+
+**Transacciones**
+Coleccion de operaciones que forman una unica unidad logica de trabajo.
+***Propiedades ACID***
+
+- Atomicidad: Todas las operaciones de la transaccion se ejecutan o no lo hacen ninguna de ellas.
+- Consistencia: La ejecucion aislada de la transaccion conserva la consistencia de la BD.
+- Aislamiento (isolation): Cada transaccion ignora el resto de las transacciones que se ejecutan concurrentemente en el sistema, actua c/u como unica.
+- Durabilidad: Una transaccion terminada con exito realiza cambios permanentes en la BD, incluso si hay fallos en el sistema.
+
+***Estados***
+*Estados de una transaccion*
+- Activa: Estado inicial, estado normal durante la ejecucion.
+- Parcialmente cometida: Despues de ejecutarse la ultima instruccion.
+- Fallada: Luego de descubrir que no puede seguir la ejecucion normal.
+- Abortada: Despues de haber retrocedido la transaccion y restablecido la BD al estado anterior al comienzo de la transaccion.
+- Cometida: Tras completarse con exito.
+```
+                 +---------+
+                 |  Activa |
+                 +---------+
+                     |
+       +-------------+-------------+
+       |                           |
+       v                           v
++-------------------+     +--------------------+
+| Parcialmente      |---->|      Fallada       |
+|     Cometida      |     +--------------------+
++-------------------+               |
+       |                            |
+       v                            v
++-------------------+     +--------------------+
+|    Cometida       |     |     Abortada       |
++-------------------+     +--------------------+
+```
+
+## Transacciones monousuarios
+***Sistemas monousuarios***
+Hay un usario disparando transacciones. Entonces, hay una sola transaccion activar actuando sobre el dbms. Nuetro unico inconveniente es asegurar la atomicidad (asilamiento se cumple si o si) mediantes bitacora o doble paginacion.
+
+***¿Que hacer luego de un fallo?***
+- Solucion: indicar las modificaciones.
+    * Registro Historico(bitacora).  
+    * Doble paginacion.  
+
+### Registro Historico (Bitacora, Log)
+Secuencia de actividades realizadas sobre la BD. Antes de ejecutarse. Impresidible para valor de escrituras, de lectura no importa.
+Contenido dela bitacora: 
+- <T iniciada> (indicador de inicio)
+- <T,E,Va,Vn>
+    * Identificador de la transaccion.  
+    * Identificador del elemento de datos.  
+    * Valor anterior.   
+    * Valor nuevo. 
+- <T commit> (indicador de finalizacion) o - <T Abort> (indicador de aborto) o Nada (indica por ejemplo corte de luz).  
+
+*Orden de ejecucion de bitacora*
+1. Write bitacora
+2. Write BD
+3. Output Bitacora
+4. Output BD
+
+*Tecnicas de trabajo de bitacora*
+1. Modificación diferida
+- Descripción:
+    Las operaciones WRITE no se aplican directamente en la base de datos mientras la transacción está activa. En su lugar, se registran en la bitácora y solo se escriben en la base de datos después de que la transacción esté parcialmente cometida.
+- Proceso normal:
+    1. Se registran en la bitácora los cambios planeados.
+    2. Tras el COMMIT, se aplican los cambios en la base de datos utilizando la información de la bitácora.
+- Manejo de fallos:
+    REDO(Ti): Si una transacción tiene un registro de START y COMMIT en la bitácora, los cambios se vuelven a aplicar para garantizar la consistencia.
+    Sin acción: Si no tiene un registro de COMMIT, no se necesita hacer nada porque los cambios nunca se aplicaron a la base de datos.
+- Ventajas:
+    Garantiza que no se apliquen cambios parciales, lo que simplifica la recuperación.
+- Desventajas:
+    Los cambios se aplazan, lo que puede causar retrasos si las transacciones son largas.
+
+2. Modificación inmediata
+- Descripción:
+    Los cambios en la base de datos se realizan tan pronto como la transacción los ejecuta, incluso antes de que se confirme el COMMIT.
+- Proceso normal:
+    1. Los cambios se aplican directamente a la base de datos y se registran en la bitácora.
+    2. Si la transacción se confirma (COMMIT), no es necesario realizar más ajustes.
+- Manejo de fallos:
+    REDO(Ti): Para transacciones con registros de START y COMMIT en la bitácora, los cambios deben volver a aplicarse para asegurar la consistencia.
+    UNDO(Ti): Para transacciones con un registro de START pero sin COMMIT, los cambios deben deshacerse utilizando los registros de la bitácora.
+- Ventajas:
+    Cambios más rápidos, ya que se aplican inmediatamente. Mejor distribuida la carga de trabajo.
+- Desventajas:
+    Mas complejo que diferida. Requiere mayor manejo en caso de fallos porque se pueden dejar cambios parciales.
+
+*Puntos de verificacion* 
+Ante un fallo, que hacer 
+- REDO, UNDO: segundo el caso
+- Revisar la bitacora
+    * Checkpoints(monousuario): Se agregan periodicamente indicando desde alli hacia atras todo OK. Periodicidad? no hay respuesta, podria ser cuando graba el buffer en disco. 
+
+### Doble paginacion
+- Ventaja: Menos accesos a disco. 
+- Desventaja: Comlicada en un ambiente concurrente/distribuido.
+- N paginas equivalente a pagisnas del SO.
+    * Tabla de paginas actual.
+    * Tabla de paginas sombra.  
+
+*Funcionamiento*
+1. Inicio de la transacción:
+    Se crea una copia de la tabla de páginas actual, conocida como tabla de páginas sombra.
+    La tabla de páginas sombra permanece sin cambios durante la transacción.
+2. Ejecución de cambios:
+    Los cambios se realizan sobre la tabla de páginas actual, afectando únicamente las páginas activas.
+    Las páginas modificadas no se reflejan en la tabla de páginas sombra.
+3. Confirmación de la transacción (COMMIT):
+    La tabla de páginas actual se convierte en la nueva tabla de páginas sombra.
+    Los cambios se consideran permanentes.
+4. Fallos durante la transacción:
+    Si ocurre un fallo antes del COMMIT, se descartan los cambios en la tabla de páginas actual.
+    La tabla de páginas sombra se utiliza para restaurar el estado inicial de la base de datos.
+
+## Transaccion Centralizadas
+
+- Varias trasnacciones ejecutandose simultaneamente compartiendo recursos.
+- Debe evitarse los mismo problemas de consistencia de datos.
+- Transancciones correctas, en ambientes concurrente pueden llevar a fallos.  
+
+### Planificcion: secuencia de ejecucion de transacciones 
+- Involucra todas las instrucciones de las transacciones.
+- Convervan el orden de ejecucion de las mismas. 
+- Un conjunto de M transacciones generas M! (factorial) planificaciones en serie.   
+- La ejecucion concurrente no necesita una planificion en serie. 
+
+*La inconsistencia temporal puede ser causa de inconsistencia en planificaciones en paralelo*
+*Una planificacion concurrente debe equivaler a una planificacion en serie*
+*Solo las instruccions de READ y WRITE son importantes y deben considerarse*
+
+**Conflicto de planificaciones serializables**
+i1,i2 Instrucciones T1 y T2 
+- Si operan sobre datos distintos no hay conflicto.
+- Si operaon sobre el mismo dato: 
+    * i1 = READ(q) = i2, no importa el orden de ejecucion
+    * i1 = READ(q), i2 = WRITE(q) depende del orden de ejecucion (i1 leera valores distintos)
+    * i1 = WRITE(q), i2 = READ (q) depende del orden de ejecucion (i2 leera valroes distintos)
+    * i1 = WRITE(q) = i2, depende el estado final de la BD
+
+- i1,i2 esta en conflicto si actuan sobre el mismo dato y almenos una es un write.
+
+Una planificacion concurrente es valida si se puede transformar en una planificacion serializable.
+
+**Metodos de control de concurrencia** 
+Aseguran que la ejecucion simultanea de dos o mas transacciones no conflictue.
+- Bloqueo 
+- Basado en hora de entrada 
+
+### Protocolo de Bloqueo
+- Compartido Lock_c (dato)(Solo Lectura)
+- Exclusivo Lock_e (dato) (Lectura/Escritura)
+- Las transacciones piden lo que necesitan 
+- Los bloqueos pueden ser compatibles y existir simultaneamente (Compartidos)
+
+*Se deben llevar los bloqueos de las transacciones al comienzo*
+ 
+Situaciones 
+**Deadlock**
+Situacion en la que una transaccion espera un recurso de otra y viceversa. Preferible antes de inconsistencia.
+Se aborta alguna de las transacciones bloqueadas.
+
+**Protocolo de bloqueo**
+- Dos fases (Pido, uso y libero)
+    * Cremiento se obtienen los datos 
+    * Decrecimiento se liberan los datos
+
+### Protocolo base en hora de entrada 
+El orden de ejecucion se determina por adelantado, no depende de quie llega primero.
+- C/ transaccion rebie una Hora de entrada.
+    * Hora del servidor 
+    * Un contador 
+- Si HDE(Ti) < HDE(Tj), Ti es anterior.
+- C/ Dato
+    * Hora en que se ejecuto ulitmo WRITE 
+    * Hora en que se ejecuto ultimo READ 
+    * Las operaciones READ y WRITE que pueden entrar en conflicto se ejecutan y eventualmente fallan por HDE
+
+**Como funciona:** 
+- Ti Solicita READ(q)
+    * HDE(Ti) < HW(q): rechazo (Solicita un dato que fue escrito por una transaccion posterior)
+    * HDE(Ti) >= HW (q): Ejecuta y actualiza HR(q) = MAX {HDE(ti), HR(Ti)}
+- Ti Solicita WRITE(q)
+    * HDE(Ti) < HR(q): rechazo (Q fue utilizado por otra transaccion anteriormente y supuso que no cambiaba)
+    * HDE(Ti) > HW(q): rechazo (Se intenta escribir un valor viejo)
+    * HDE(Ti) > [HW(q) y HR(q)]: Ejecuta y HW(q) se establece con HDE(Ti).
+
+Si Ti falla y se rechaza entonces puede recomenzar con una nueva HDE.
+
+*Otras operaciones Conflictivas*
+- Delete(q) Requiere un uso completo del registro.
+- Insert(q) El dato permanece bloquedo hasta que la operacion finalice.  
+
+### Falloes en concurrencias 
+
+**Consideraciones del protocolo basado en bitacora**
+- Existe un unico buffer de datos compartidso y uno para la bitacora. 
+- C/Transaccion tiene un area donde lleva sus datos. 
+- El retroceso de una transaccion puede llevar al retroceso de otras transacciones.  
+**Retroceso en cascada**
+- Falta una transaccion -> pueden llevar a abortar otras. 
+- Puede llevar a deshacer gran cantidad de trabajo.  
+
+
+### Durabilidad 
+Transaccion que alcance el estado de cometido no se puede volver hacia atras.
+
+En retroceso en cascada como hacemos???
+
+- Protocolo de bloqueo de dos fasese: Los bloqueos exclusivos deben conservarse hasta que Ti(inicial) termina.
+- HDE, agrega un bit, para escrbir el dato, ademas de lo analizado revisar el bit si esta en o proceder, si esta en 1 la transaccion anterior no termino, esperar.
+
+
+### Bitacora en concurrentes 
+- Similar a sistemas monousuarios 
+- Como proceder con los checkpoint 
+    * Colocarlo cuando ninguna transaccion este activa. Puede que no exista el momento .
+    * Checkpoint<L> L lista de transacciones activa al momento del checkpoint.
+- Ante un fallo 
+    * UNDO Y REDO segun el caso. 
+    * Debemos buscar antes del checkpoint solo aquellas transacciones que este en la lista.
