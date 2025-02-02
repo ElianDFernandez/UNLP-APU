@@ -1,0 +1,76 @@
+programa p2eje1
+procesos 
+  proceso juntarFlores(ES f:numero)
+  comenzar   
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f:=f+1
+  fin
+  proceso realizarRecorrido(ES f:numero)
+  comenzar 
+    f:=0
+    repetir 10
+      juntarFlores(f)
+      mover
+  fin
+areas
+  ciudad: AreaC(1,1,100,100)
+robots
+  robot competidor1
+  variables
+    f:numero
+    comp:numero
+    id:numero
+  comenzar
+    RecibirMensaje(id,jefe)
+    realizarRecorrido(f)
+    EnviarMensaje(id,jefe)
+    EnviarMensaje(f,jefe)
+  fin
+  robot competidor2
+  variables
+    f:numero
+    comp:numero
+    id:numero
+  comenzar
+    RecibirMensaje(id,jefe)
+    realizarRecorrido(f)
+    EnviarMensaje(id,jefe)
+    EnviarMensaje(f,jefe)
+  fin
+  robot fiscalizador
+  variables
+    quien:numero
+    fmax:numero
+    f1:numero
+    f2:numero
+  comenzar
+    fmax:=0
+    EnviarMensaje(1,elian)
+    EnviarMensaje(2,julieta)
+    repetir 2
+      RecibirMensaje(quien,*)
+      si quien = 1
+        RecibirMensaje(f1,elian)
+      sino 
+        RecibirMensaje(f2,julieta)
+    si f1 > f2 
+      Informar(1)
+    sino 
+      si f1 = f1
+        Informar(3)
+      sino
+        Informar(2)
+  fin 
+variables
+  elian:competidor1
+  julieta:competidor2
+  jefe:fiscalizador
+comenzar
+  AsignarArea(jefe,ciudad)
+  AsignarArea(elian,ciudad)
+  AsignarArea(julieta,ciudad)
+  Iniciar(jefe,3,1)
+  Iniciar(elian,1,1)
+  Iniciar(julieta,2,11)
+fin

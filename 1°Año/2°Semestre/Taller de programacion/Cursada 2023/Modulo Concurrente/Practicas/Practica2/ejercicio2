@@ -1,0 +1,78 @@
+programa ejercicio2
+procesos 
+  proceso juntarFlores(ES f:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f:=f+1
+  fin
+  proceso juntarPapeles(ES p:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      p:=p+1
+  fin
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  proceso escalon(ES cant:numero)
+  variables
+    f:numero
+    p:numero
+  comenzar 
+    f:=0
+    p:=0
+    cant:=0
+    repetir 4
+      juntarFlores(f)
+      juntarPapeles(p)
+      mover 
+      juntarFlores(f)
+      juntarPapeles(p)
+      derecha
+      mover 
+      izquierda 
+      si f > p 
+        cant:=cant +1 
+      f:=0
+      p:=0
+  fin 
+areas
+  ciudad: AreaC(1,1,100,100)
+robots
+  robot escalador
+  variables
+    esc:numero
+  comenzar
+    esc:=0
+    escalon(esc)
+    EnviarMensaje(esc,robot0)
+  fin
+  robot jefe 
+  variables
+    total:numero
+    aux:numero
+  comenzar
+    total:=0
+    repetir 3
+      RecibirMensaje(aux,*)
+      total:=aux + total
+    Informar(total)
+  fin
+variables
+  robot1:escalador
+  robot2:escalador
+  robot3:escalador
+  robot0:jefe
+comenzar
+  AsignarArea(robot1,ciudad)
+  AsignarArea(robot2,ciudad)
+  AsignarArea(robot3,ciudad)
+  AsignarArea(robot0,ciudad)
+  Iniciar(robot0,1,1)
+  Iniciar(robot1,2,1)
+  Iniciar(robot2,7,1)
+  Iniciar(robot3,12,1)
+fin
