@@ -1,0 +1,83 @@
+programa ejercicio3
+
+procesos   
+  proceso responder(E av:numero; E ca:numero)
+  variables
+    avOrigen:numero
+    caOrigen:numero
+    hayFlorEnLaEsquina:boolean
+  comenzar
+    avOrigen:=PosAv
+    caOrigen:=PosCa
+    BloquearEsquina(av,ca)
+    Pos(av,ca)
+    tomarFlor
+    si (HayFlorEnLaEsquina)
+      hayFlorEnLaEsquina:=V
+    sino
+      hayFlorEnLaEsquina:=F
+    Pos(avOrigen,caOrigen)
+    LiberarEsquina(av,ca)
+    EnviarMensaje(hayFlorEnLaEsquina,jefe)
+  fin
+  
+robots
+  robot recolector
+  variables
+    av:numero
+    ca:numero
+  comenzar
+    RecibirMensaje(av,jefe)
+    RecibirMensaje(ca,jefe)
+    responder(av,ca)
+  fin
+    
+  robot fiscal
+  variables
+    tot1:numero
+    tot2:numero
+    tot3:numero
+    tot4:numero
+    av:numero
+    ca:numero
+    hayFlorEnLaEsquina:boolean
+    aux:numero
+  comenzar
+    tot1:=0
+    tot2:=0
+    tot3:=0
+    tot4:=0
+    Random(av,2,10)
+    Random(ca,2,10)
+    hayFlorEnLaEsquina:=V
+    mientras(hayFlorEnLaEsquina)
+      Random(aux,1,4)
+      si aux = 1
+        EnviarMensaje(av,robot1)
+        EnviarMensaje(ca,robot1)
+        RecibirMensaje(hayFlorEnLaEsquina,robot1)
+        tot1:=tot1+1
+      sino
+        si aux = 2 
+          EnviarMensaje(av,robot2)
+          EnviarMensaje(ca,robot2)
+          RecibirMensaje(hayFlorEnLaEsquina,robot2)
+          tot2:=tot2+1
+        sino 
+          si aux = 3 
+            EnviarMensaje(av,robot3)
+            EnviarMensaje(ca,robot3)
+            RecibirMensaje(hayFlorEnLaEsquina,robot3)
+            tot3:=tot3+1
+          sino
+            si aux = 4
+              EnviarMensaje(av,robot4)
+              EnviarMensaje(ca,robot4)
+              RecibirMensaje(hayFlorEnLaEsquina,robot4)
+              tot4:=tot4+1
+  fin
+      
+      
+    
+    
+    
