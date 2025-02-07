@@ -1,0 +1,115 @@
+programa ejercicio6
+procesos 
+  proceso juntarFlores(ES f:numero)
+  comenzar 
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f:=f+1
+  fin
+  proceso juntarPapeles(ES p:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      p:=p+1
+  fin
+  proceso juntarAmbos(ES f:numero; ES p:numero)
+  comenzar 
+    juntarFlores(f)
+    juntarPapeles(p)
+  fin
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+areas
+  cuadrantes:AreaPC(2,2,16,16)
+  deposito:AreaPC(1,20,100,22)
+  areaJefe:AreaP(1,1,1,1)
+robots 
+  robot colector1
+  variables
+    f:numero
+    cuadrante:numero
+  comenzar
+    cuadrante:=6
+    f:=0
+    repetir 4
+      repetir cuadrante
+        juntarFlores(f)
+        si (PosAv = 5) & (PosCa = 8)
+          BloquearEsquina(6,8)
+          mover
+        sino
+          si (PosAv = 6) & (PosCa = 8)
+            mover
+            LiberarEsquina(6,8)
+          sino
+            si (PosAv = 8) & (PosCa = 6)
+              BloquearEsquina(8,5)
+              mover
+            sino
+              si (PosAv = 8) & (PosCa = 5)
+                mover
+                LiberarEsquina(8,5)
+              sino
+                mover
+      derecha 
+  fin
+  robot colector2
+  variables
+    p:numero
+    f:numero
+    cuadrante:numero
+  comenzar
+    cuadrante:=10
+    f:=0
+    p:=0
+    repetir 4
+      repetir cuadrante 
+        juntarAmbos(f,p)
+        si (PosAv = 5) & (PosCa = 7)
+          BloquearEsquina(5,8)
+          mover
+        sino
+          si (PosAv = 5) & (PosCa = 8)
+            mover
+            LiberarEsquina(5,8)
+          sino
+            si (PosAv = 9) & (PosCa = 5)
+              BloquearEsquina(8,5)
+              mover
+            sino
+              si (PosAv = 8) & (PosCa = 5)
+                mover
+                LiberarEsquina(8,5)
+              sino
+                mover
+      derecha
+  fin
+  robot colector3
+  variables
+    p:numero
+    cuadrante:numero
+  comenzar
+    cuadrante:=7
+    p:=0
+    repetir 4
+      repetir cuadrante
+        juntarPapeles(p)
+        mover
+      derecha
+  fin
+variables
+  robot1:colector1
+  robot2:colector2
+  robot3:colector3
+comenzar 
+  AsignarArea(robot1,cuadrantes)
+  AsignarArea(robot2,cuadrantes)
+  AsignarArea(robot3,cuadrantes)
+  Iniciar(robot1,2,2)
+  Iniciar(robot2,5,5)
+  Iniciar(robot3,9,9)
+fin
+  
