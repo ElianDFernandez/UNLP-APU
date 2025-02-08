@@ -1,0 +1,102 @@
+programa ejercicio2p4
+procesos 
+  proceso producir
+  variables
+    p:numero
+    avOrigen:numero
+    caOrigen:numero
+  comenzar
+    p:=0
+    repetir 99
+      mientras(HayPapelEnLaEsquina)
+        mientras (HayPapelEnLaEsquina) & (p < 5)
+          tomarPapel
+          p:=p+1
+        si (p = 5)
+          avOrigen:=PosAv
+          caOrigen:=PosCa
+          BloquearEsquina(50,50)
+          Pos(50,50)
+          repetir p
+            depositarPapel 
+            p:= p - 1
+          Pos(avOrigen,caOrigen)
+          LiberarEsquina(50,50)
+      mover
+  fin
+  proceso contarPapeles(ES contador:numero)
+  variables
+    p:numero
+  comenzar
+    p:=0
+    mientras(HayPapelEnLaEsquina)
+      p:=p+1
+      tomarPapel
+    contador:=p
+    repetir p
+      depositarPapel
+  fin
+  proceso consumir
+  variables
+    p:numero
+    intentos:numero
+    conteo:numero
+    avOrigen:numero
+    caOrigen:numero
+  comenzar
+    intentos:=0
+    mientras (intentos < 8)
+      Random(p,1,5)
+      avOrigen:=PosAv
+      caOrigen:=PosCa
+      BloquearEsquina(50,50)
+      Pos(50,50)
+      contarPapeles(conteo)
+      si (conteo >= p)
+        repetir p
+          tomarPapel
+        intentos:=0
+        Pos(avOrigen,caOrigen)
+        LiberarEsquina(50,50)
+        repetir p
+          depositarPapel
+      sino
+        intentos:=intentos+1
+        Pos(avOrigen,caOrigen)
+        LiberarEsquina(50,50)
+  fin
+areas
+  deposito:AreaC(50,50,50,50)
+  consumidoresArea:AreaPC(11,1,12,1)
+  productoresRecoriddo:AreaPC(5,1,10,100)
+robots
+  robot productor
+  comenzar
+    producir
+  fin
+  robot consumidor
+  comenzar
+    consumir
+  fin
+variables
+  robot1:productor
+  robot2:productor
+  robot3:consumidor
+  robot4:consumidor
+comenzar
+  AsignarArea(robot1, deposito)
+  AsignarArea(robot2, deposito)
+  AsignarArea(robot3, deposito)
+  AsignarArea(robot4, deposito)
+  AsignarArea(robot1, productoresRecoriddo)
+  AsignarArea(robot2, productoresRecoriddo)
+  AsignarArea(robot3, consumidoresArea)
+  AsignarArea(robot4, consumidoresArea)
+  Iniciar(robot1,5,1)
+  Iniciar(robot2,10,1)
+  Iniciar(robot3,11,1)
+  Iniciar(robot4,12,1)
+fin
+  
+      
+    
