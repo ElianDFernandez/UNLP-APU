@@ -16,12 +16,27 @@ public class Ejercicio3 {
         int dias = 5;
         int entrevistas = 8;
         int []diml = new int[dias];
+        Persona entrevistados[][]=new Persona[dias][entrevistas];
         
         GeneradorAleatorio.iniciar();
-        
-        for (int i=0; i<dias; i++) {
-            for (int j =0; j<entrevistas; j++) {
-                  
+        int i;
+        int j;
+        for ( i=0; i<dias; i++) {
+            for ( j =0; j<entrevistas; j++) {
+                  String nombre = GeneradorAleatorio.generarString(10);
+                  if (nombre.equals("ZZZ")) break;
+                  Integer edad = GeneradorAleatorio.generarInt(100);
+                  Integer dni = GeneradorAleatorio.generarInt(8);
+                  entrevistados[i][j] = new Persona(nombre,edad,dni);
+            }
+            diml[i] = j;
+        }
+
+        for ( i=0; i<dias; i++) {
+            System.out.println("Dia " + (i+1));
+            for ( j =0; j<diml[i]; j++) {
+                System.out.println("Entrevista nro " +(j+1));
+                System.out.println("Entrevistado: " + entrevistados[i][j]);
             }
         }
     }
