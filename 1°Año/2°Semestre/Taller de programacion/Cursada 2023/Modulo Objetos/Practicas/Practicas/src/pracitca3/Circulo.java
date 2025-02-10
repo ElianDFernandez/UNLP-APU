@@ -39,7 +39,19 @@ public class Circulo {
         this.contorno = contorno;
     }
     
-    public Doube calcularPerimetro() {
-        
+    public Double calcularPerimetro() {
+        if (radio  != null) {
+            return (Math.PI  *  radio  * 2);
+        } else {
+            return null;
+        }
+    }
+    
+    public Double calcularArea() {
+        if(radio != null) {
+            return (Math.PI*radio*radio);
+        } else {
+            return null;
+        }
     }
 }
