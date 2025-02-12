@@ -1,0 +1,145 @@
+programa final1
+procesos 
+  proceso juntarYDepositarCincoFlores(E avOrigen:numero; E caOrigen:numero)
+  variables
+    avDepo,caDepo:numero
+  comenzar
+    repetir 5 
+      BloquearEsquina(18,13)
+      Pos(18,13)
+      tomarFlor
+      Random(avDepo,11,15)
+      Random(caDepo,11,15)
+      Pos(avDepo,caDepo)
+      depositarFlor
+      LiberarEsquina(18,13)
+    Pos(avOrigen,caOrigen)
+  fin
+  proceso juntarYDepositarPapeles(E avOrigen:numero; E caOrigen:numero)
+  variables
+    avDepo,caDepo:numero
+  comenzar
+    repetir 5
+      BloquearEsquina(18,13)
+      Pos(18,13)
+      tomarPapel
+      Random(avDepo,21,25)
+      Random(caDepo,11,15)
+      Pos(avDepo,caDepo)
+      depositarPapel
+      LiberarEsquina(18,13)
+    Pos(avOrigen,caOrigen)
+  fin
+  proceso buscarFlor(E avOrigen:numero; E caOrigen:numero)
+  variables 
+    encontre:boolean
+    avRan,caRan:numero
+  comenzar
+    encontre := F
+    mientras(encontre = F)
+      Random(avRan,11,15)
+      Random(caRan,11,15)
+      Pos(avRan,caRan)
+      si(HayFlorEnLaEsquina)
+        encontre := V
+        tomarFlor
+    BloquearEsquina(18,13)
+    Pos(18,13)
+    depositarFlor
+    Pos(avOrigen,caOrigen)
+    LiberarEsquina(18,13)
+  fin
+  proceso buscarPapel(E avOrigen:numero; E caOrigen:numero)
+  variables
+    encontre:boolean
+    avRan,caRan:numero
+  comenzar
+    encontre := F
+    mientras (encontre = F)
+      Random(avRan,21,25)
+      Random(caRan,11,15)
+      Pos(avRan,caRan)
+      si (HayPapelEnLaEsquina)
+        encontre := V
+        tomarPapel
+    BloquearEsquina(18,13)
+    Pos(18,13)
+    depositarPapel
+    Pos(avOrigen,caOrigen)
+    LiberarEsquina(18,13)
+  fin
+areas 
+  cuadradoA: AreaPC(11,11,15,15)
+  cuadradoB: AreaPC(21,11,25,15)
+  areaJefe: AreaP(1,1,1,1)
+  areaInicioFlorero: AreaP(2,2,2,2)
+  areaInicioPapelero: AreaP(3,3,3,3)
+  fuente:AreaPC(18,13,18,13)
+robots 
+  robot florero
+  variables
+    avOrigen,caOrigen,id,aux:numero
+  comenzar
+    avOrigen:=PosAv
+    caOrigen:=PosCa
+    RecibirMensaje(id,jefe)
+    juntarYDepositarCincoFlores(avOrigen,caOrigen)
+    EnviarMensaje(id,jefe)
+    {Envio termine primer etapa - Espera segunda etapa}
+    RecibirMensaje(aux,jefe)
+    buscarPapel(avOrigen,caOrigen)
+    EnviarMensaje(id,jefe)
+  fin
+  robot papelero 
+  variables
+    avOrigen,caOrigen,id,aux:numero
+  comenzar
+    avOrigen:=PosAv
+    caOrigen:=PosCa
+    RecibirMensaje(id,jefe)
+    juntarYDepositarPapeles(avOrigen,caOrigen)
+    EnviarMensaje(id,jefe)
+    {Envio termine primer etapa - Espera segunda etapa}
+    RecibirMensaje(aux,jefe)
+    buscarFlor(avOrigen,caOrigen)
+    EnviarMensaje(id,jefe)
+  fin
+  robot fiscal
+  variables
+    quien,ganador:numero
+  comenzar 
+    EnviarMensaje(1,florero)
+    EnviarMensaje(2,papelero)
+    {Aviso primer etapa terminada}
+    repetir 2
+      RecibirMensaje(quien,*)
+    {Aviso comienzo segunda etapa}
+    EnviarMensaje(1,florero)
+    EnviarMensaje(1,papelero)
+    {Aviso Ganador}
+    RecibirMensaje(quien,*)
+    si quien = 1
+      ganador := 1
+    sino
+      ganador:= 2
+    RecibirMensaje(quien,*)
+    Informar(ganador)
+  fin
+variables
+  florero:florero
+  papelero:papelero
+  jefe:fiscal
+comenzar
+  AsignarArea(florero,fuente)
+  AsignarArea(papelero,fuente)
+  AsignarArea(florero,cuadradoA)
+  AsignarArea(florero,cuadradoB)
+  AsignarArea(florero,areaInicioFlorero)
+  AsignarArea(papelero,cuadradoA)
+  AsignarArea(papelero,cuadradoB)
+  AsignarArea(papelero,areaInicioPapelero)
+  AsignarArea(jefe,areaJefe)
+  Iniciar(florero,2,2)
+  Iniciar(papelero,3,3)
+  Iniciar(jefe,1,1)
+fin
