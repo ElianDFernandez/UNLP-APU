@@ -1,0 +1,105 @@
+programa ejercicio3
+procesos 
+  proceso limpiarEsquina(E av:numero; E ca:numero; ES f:numero)
+  variables
+    avOrigen:numero
+    caOrigen:numero
+  comenzar 
+    avOrigen:=PosAv
+    caOrigen:=PosCa
+    f:=0
+    BloquearEsquina(av,ca)
+    Pos(av,ca)
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      f:=f+1
+      Pos(avOrigen,caOrigen)
+      LiberarEsquina(av,ca)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+    Pos(avOrigen,caOrigen)
+    LiberarEsquina(av,ca)
+  fin
+areas
+  ciudad:AreaC(1,1,100,100)
+robots 
+  robot recogedor
+  variables
+    id:numero
+    f:numero
+    av:numero
+    ca:numero
+  comenzar
+    RecibirMensaje(id,jefe)
+    RecibirMensaje(av,jefe)
+    RecibirMensaje(ca,jefe)
+    limpiarEsquina(av,ca,f)
+    EnviarMensaje(id,jefe)
+    EnviarMensaje(f,jefe)
+  fin
+  robot fiscal 
+  variables
+    tot1:numero
+    tot2:numero
+    tot3:numero
+    tot4:numero
+    quien:numero
+    ganador:numero
+    av:numero
+    ca:numero
+  comenzar
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    EnviarMensaje(4,robot4)
+    Random(av,2,10)
+    Random(ca,2,10)
+    EnviarMensaje(av,robot1)
+    EnviarMensaje(ca,robot1)
+    EnviarMensaje(av,robot2)
+    EnviarMensaje(ca,robot2)
+    EnviarMensaje(av,robot3)
+    EnviarMensaje(ca,robot3)    
+    EnviarMensaje(av,robot4)
+    EnviarMensaje(ca,robot4)
+    repetir 4
+      RecibirMensaje(quien,*)
+      si quien = 1 
+        RecibirMensaje(tot1,robot1)
+      sino 
+        si quien = 2 
+          RecibirMensaje(tot2,robot2)
+        sino 
+          si quien = 3 
+            RecibirMensaje(tot3,robot3)
+          sino
+            RecibirMensaje(tot4,robot4)
+    si (tot1 > tot2) & (tot1 > tot3) & (tot1 > tot4)
+      Informar(1)
+    sino  
+      si (tot2 > tot1) & (tot2 > tot3) & (tot2 > tot4) 
+        Informar(2)
+      sino
+        si (tot3 > tot1) & (tot3 > tot2) & (tot3 > tot4)
+          Informar(3)
+        sino
+          Informar(4)
+  fin
+variables
+  robot1:recogedor
+  robot2:recogedor
+  robot3:recogedor
+  robot4:recogedor
+  jefe:fiscal
+comenzar
+  AsignarArea(robot1,ciudad)
+  AsignarArea(robot2,ciudad)
+  AsignarArea(robot3,ciudad)
+  AsignarArea(robot4,ciudad)
+  AsignarArea(jefe,ciudad)
+  Iniciar(robot1,2,1)
+  Iniciar(robot2,3,1)
+  Iniciar(robot3,4,1)
+  Iniciar(robot4,5,1)
+  Iniciar(jefe,1,1)
+fin

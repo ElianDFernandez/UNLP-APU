@@ -1,0 +1,107 @@
+programa p2eje1
+procesos 
+  proceso juntarFlores(ES f:numero)
+  comenzar   
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f:=f+1
+  fin
+  proceso realizarRecorrido(ES f:numero)
+  comenzar 
+    f:=0
+    repetir 10
+      juntarFlores(f)
+      mover
+  fin
+areas
+  ciudad: AreaC(1,1,100,100)
+robots
+  robot competidor
+  variables
+    f:numero
+    id:numero
+  comenzar
+    RecibirMensaje(id,jefe)
+    realizarRecorrido(f)
+    EnviarMensaje(id,jefe)
+    EnviarMensaje(f,jefe)
+  fin
+  robot fiscalizador
+  variables
+    quien:numero
+    fmax:numero
+    ganador:numero
+    aux:numero
+  comenzar
+    fmax:=0
+    quien:=0
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    EnviarMensaje(4,robot4)
+    EnviarMensaje(5,robot5)
+    EnviarMensaje(6,robot6)
+    repetir 6
+      RecibirMensaje(quien,*)
+      si quien = 1
+        RecibirMensaje(aux,robot1)
+        si aux > fmax 
+          fmax:=aux
+          ganador:=quien
+      sino 
+        si quien = 2
+          RecibirMensaje(aux,robot2)
+          si aux > fmax 
+            fmax:=aux
+            ganador:=quien
+        sino 
+          si quien = 3
+            RecibirMensaje(aux,robot3)
+            si aux > fmax 
+              fmax:=aux
+              ganador:=quien
+          sino
+            si quien = 4
+              RecibirMensaje(aux,robot4)
+              si aux > fmax
+                fmax:=aux
+                ganador:=quien
+            sino 
+              si quien = 5 
+                RecibirMensaje(aux,robot5)
+                si aux > fmax
+                  fmax:=aux
+                  ganador:=quien
+              sino 
+                si quien = 6 
+                  RecibirMensaje(aux,robot6)
+                  si aux > fmax
+                    fmax:=aux
+                    ganador:=quien
+    Informar(ganador)
+    Informar(fmax)
+  fin 
+variables
+  robot1:competidor
+  robot2:competidor
+  robot3:competidor
+  robot4:competidor
+  robot5:competidor
+  robot6:competidor
+  jefe:fiscalizador
+comenzar
+  AsignarArea(jefe,ciudad)
+  AsignarArea(robot1,ciudad)
+  AsignarArea(robot2,ciudad)
+  AsignarArea(robot3,ciudad)
+  AsignarArea(robot4,ciudad)
+  AsignarArea(robot5,ciudad)
+  AsignarArea(robot6,ciudad)
+  Iniciar(jefe,2,1)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,2,11)
+  Iniciar(robot3,3,21)
+  Iniciar(robot4,4,31)
+  Iniciar(robot5,5,41)
+  Iniciar(robot6,6,51)
+fin

@@ -1,0 +1,149 @@
+programa parcial
+procesos 
+  proceso juntarFlores(ES f:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f:=f+1
+  fin
+  proceso juntarPapeles(ES p:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      p:=p+1
+  fin
+areas
+  circuito1:AreaPC(6,1,6,100)
+  circuito2:AreaPC(11,1,11,100)
+  circuito3:AreaPC(1,2,100,20)
+  inicioP:AreaP(2,1,2,1)
+  inicioF:AreaP(1,1,1,1)
+robots 
+  robot florero 
+  variables
+    id:numero
+    f:numero
+    volver:boolean
+    avOrigen,caOrigen:numero
+    caPapelero:numero
+  comenzar
+    avOrigen:=PosAv
+    caOrigen:=PosCa
+    f:=0
+    RecibirMensaje(id,jefe)
+    RecibirMensaje(caPapelero,rp)
+    repetir 99
+      juntarFlores(f)
+      si PosCa = (caPapelero - 1)
+        BloquearEsquina(avOrigen,caPapelero)
+        mover
+      sino
+        si PosCa = caPapelero
+          mover
+          LiberarEsquina(avOrigen,caPapelero)
+        sino
+          mover
+    juntarFlores(f)
+    EnviarMensaje(id,jefe)
+    EnviarMensaje(f,jefe)
+    RecibirMensaje(volver,jefe)
+    si volver = V 
+      Pos(avOrigen,caOrigen)
+  fin
+  robot papelero
+  variables
+    id:numero
+    avOrigen,caOrigen,p:numero
+    volver:boolean
+  comenzar
+    avOrigen:=1
+    p:=0
+    RecibirMensaje(id,jefe)
+    Random(caOrigen,2,20)
+    Pos(avOrigen,caOrigen)
+    EnviarMensaje(caOrigen,rf1)
+    EnviarMensaje(caOrigen,rf2)
+    derecha
+    repetir 99
+      juntarPapeles(p)
+      si PosAv = 5
+        BloquearEsquina(6,caOrigen)
+        mover
+      sino
+        si PosAv = 6
+          mover
+          LiberarEsquina(6,caOrigen)
+        sino
+          si PosAv = 10
+            BloquearEsquina(11,caOrigen)
+            mover
+          sino
+            si PosAv = 11
+              mover
+              LiberarEsquina(11,caOrigen)
+            sino
+              mover
+    juntarPapeles(p)
+    EnviarMensaje(id,jefe)
+    EnviarMensaje(p,jefe)
+    RecibirMensaje(volver,jefe)
+    si volver = V
+      Pos(avOrigen,caOrigen)
+  fin
+  robot fiscal
+  variables
+    quien:numero
+    aux,elementosMax,ganador:numero
+  comenzar
+    EnviarMensaje(1,rf1)
+    EnviarMensaje(2,rf2)
+    EnviarMensaje(3,rp)
+    elementosMax:=0
+    repetir 3
+      RecibirMensaje(quien,*)
+      si quien = 1 
+        RecibirMensaje(aux,rf1)
+        si aux > elementosMax
+          elementosMax:=aux
+          ganador:=1
+      sino
+        si quien = 2
+          RecibirMensaje(aux,rf2)
+          si aux > elementosMax
+            elementosMax:=aux
+            ganador:=2
+        sino
+          RecibirMensaje(aux,rp)
+          si aux > elementosMax
+            elementosMax:=aux
+            ganador:=3
+    si ganador = 1 
+      EnviarMensaje(V,rf1)
+      EnviarMensaje(F,rf2)
+      EnviarMensaje(F,rp)
+    sino
+      si ganador = 2
+        EnviarMensaje(F,rf1)
+        EnviarMensaje(V,rf2)
+        EnviarMensaje(F,rp)
+      sino
+        EnviarMensaje(F,rf1)
+        EnviarMensaje(F,rf2)
+        EnviarMensaje(V,rp)
+  fin
+variables
+  rf1:florero
+  rf2:florero
+  rp:papelero
+  jefe:fiscal
+comenzar
+  AsignarArea(jefe,inicioF)
+  AsignarArea(rp,inicioP)
+  AsignarArea(rf1,circuito1)
+  AsignarArea(rf2,circuito2)
+  AsignarArea(rp,circuito3)
+  Iniciar(jefe,1,1)
+  Iniciar(rf1,6,1)
+  Iniciar(rf2,11,1)
+  Iniciar(rp,2,1)
+fin

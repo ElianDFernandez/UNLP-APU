@@ -1,0 +1,72 @@
+programa Ejercicio
+procesos
+  proceso juntarPapeles(ES papel: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papel:= papel +1
+  fin
+  proceso recorrer
+  variables
+    pap: numero
+  comenzar
+    pap:= 0
+    repetir 20
+      juntarPapeles(pap)
+      mover
+    Informar('Cant_Juntada', pap)
+  fin
+areas
+  part1: AreaPC(10,10,10,10)
+  ciudad1comp: AreaP(10,11,10,29)
+  part2: AreaPC(10,30,10,30)
+  ciudad2comp: AreaP(11,30,29,30) 
+  part3: AreaPC(30,30,30,30)
+  ciudad3comp: AreaP(30,11,30,29)
+  part4: AreaPC(30,10,30,10)
+  ciudad4comp: AreaP(11,10,29,10)
+robots
+  robot tipo1
+  comenzar
+    recorrer
+  fin
+  robot tipo2
+  comenzar
+    derecha
+    recorrer
+  fin
+  robot tipo3
+  comenzar
+    repetir 2
+      derecha
+    recorrer
+  fin
+  robot tipo4
+  comenzar
+    repetir 3
+      derecha
+    recorrer
+  fin
+variables
+  Alf: tipo1
+  Rob: tipo2
+  Pep: tipo3
+  Coco: tipo4
+comenzar
+  AsignarArea(Alf, part1)
+  AsignarArea(Rob, part2)
+  AsignarArea(Pep, part3)
+  AsignarArea(Coco, part4)
+  AsignarArea(Alf, part2)
+  AsignarArea(Rob,part3)
+  AsignarArea(Pep, part4)
+  AsignarArea(Coco, part1)
+  AsignarArea(Alf, ciudad1comp)
+  AsignarArea(Rob, ciudad2comp)
+  AsignarArea(Pep, ciudad3comp)
+  AsignarArea(Coco, ciudad4comp)
+  Iniciar(Alf,10,10)
+  Iniciar(Rob,10,30)
+  Iniciar(Pep,30,30)
+  Iniciar(Coco,30,10)
+fin
