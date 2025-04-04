@@ -16,7 +16,7 @@
     <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
   </a>
   <a href="https://en.wikipedia.org/wiki/Pascal_(programming_language)">
-    <img src="https://img.shields.io/badge/Pascal-00599C?style=for-the-badge&logo=delphi&logoColor=white" alt="Pascal">
+    <img src="https://img.shields.io/badge/Pascal-00599C?style=for-the-badge&logoColor=white" alt="Pascal">
   </a>
   <a href="https://www.java.com/">
     <img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white" alt="Java">
