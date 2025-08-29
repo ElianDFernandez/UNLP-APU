@@ -193,3 +193,32 @@ Como la shell se usa para interpretar las ordenes del usuario y ejecutarlas, si 
 Si es posible definir un interprete de comandos distinto para cada usuario ya que la shell es iniciada por un proceso denominado "login" en donde cada usuario tiene asignado una shell por defecto que se puede personalizar, la misma se inicia cada vez que un usuario comienza a trabajar en su estacion de trabajo(es decir se "loguea" en una terminal). Dentro del contenido del archivo /etc/passwd, se puede ver cual es la shell que cada usuario tiene asignada por defecto. Las shell son programables por cada usuario en su archivo de configuracion personal, que suele ser un archivo oculto en su directorio home (por ejemplo, ~/.bashrc para Bash).
 
 ## Sistema de archivos (File System)
+**A-Que es?**
+Es la forma en que dentro de un sistema de computo se organizan y se administran los archivos. Esta administracion comprende:
+- Metodo de accesso: como se acceden los datos contenidos en los archivos.
+- Manejo de archivos: como se crean, modifican y eliminan los archivos.
+- Manejo de la memoria secundaria: como se administra el espacio para los archivos en memoria secundaria.
+- Mecanismo de integridad: Con que metodos se garantiza la incorruptibilidad del archivo.
+
+**B-Cual es la estrcutura basica de los File System en GNU/Linux? Mencione los directorios mas importantes e indique que tipo de informacion se encuentra en ellos. A que hace referencia la siga FHS?**
+La estructura básica del sistema de archivos en GNU/Linux se organiza en un árbol jerárquico de directorios. Algunos de los directorios más importantes son:
+
+- `/`: El directorio raíz, que contiene todos los demás directorios.
+- `/bin`: Contiene los comandos esenciales del sistema que son necesarios para el funcionamiento básico.
+- `/etc`: Contiene archivos de configuración del sistema.
+- `/home`: Contiene los directorios personales de los usuarios.
+- `/lib`: Contiene bibliotecas compartidas necesarias para los programas en `/bin` y `/sbin`.
+- `/usr`: Contiene aplicaciones y archivos de usuario, incluyendo subdirectorios como `/usr/bin` para programas y `/usr/lib` para bibliotecas.
+- `/var`: Contiene archivos de datos variables, como registros del sistema y bases de datos.
+
+La sigla FHS hace referencia a "Filesystem Hierarchy Standard", que es un estándar que define la estructura y organización de los sistemas de archivos en sistemas operativos tipo Unix, incluyendo GNU/Linux.
+
+**C-Menciones sistemas de archivos soportados por GNU/Linux**
+- ext4
+- Btrfs
+- XFS
+- JFS
+- ReiserFS
+
+**D-Es posible visualizar particiones del tipo FAT y NTFS(que son de windows) en GNU/Linux?**
+Si, es posible visualizar particiones FAT y NTFS en GNU/Linux. Para ello, se utilizan controladores y herramientas específicas que permiten montar y acceder a estos sistemas de archivos. Por ejemplo, el paquete `ntfs-3g` permite el acceso completo a particiones NTFS, mientras que el soporte para FAT está integrado en el kernel de Linux.
