@@ -222,3 +222,113 @@ La sigla FHS hace referencia a "Filesystem Hierarchy Standard", que es un están
 
 **D-Es posible visualizar particiones del tipo FAT y NTFS(que son de windows) en GNU/Linux?**
 Si, es posible visualizar particiones FAT y NTFS en GNU/Linux. Para ello, se utilizan controladores y herramientas específicas que permiten montar y acceder a estos sistemas de archivos. Por ejemplo, el paquete `ntfs-3g` permite el acceso completo a particiones NTFS, mientras que el soporte para FAT está integrado en el kernel de Linux.
+
+## Particiones
+
+**A-Definicion, Tipos de particiones. Ventajas y desventajas de cada una**
+Una partición es una división lógica de un disco duro que permite organizar y gestionar el espacio de almacenamiento de manera eficiente. Existen varios tipos de particiones, entre los más comunes se encuentran:
+- **Particiones primarias**: Son las particiones principales del disco y pueden contener sistemas operativos. Un disco puede tener hasta cuatro particiones primarias o tres primarias y una extendida. Ventajas: Son necesarias para arrancar sistemas operativos. Desventajas: Limitación en el número de particiones.
+- **Particiones extendidas**: Son una solución para superar la limitación de las particiones primarias. Una partición extendida puede contener múltiples particiones lógicas. Ventajas: Permiten crear más de cuatro particiones en un disco. Desventajas: No pueden contener sistemas operativos directamente.
+- **Particiones lógicas**: Son las particiones que se encuentran dentro de una partición extendida. Ventajas: Flexibilidad para crear múltiples particiones. Desventajas: Requieren una partición extendida para existir.
+- **Particiones swap**: Son utilizadas por el sistema operativo para gestionar la memoria virtual. Ventajas: Mejoran el rendimiento del sistema cuando la memoria RAM es insuficiente. Desventajas: No son utilizadas para almacenar datos permanentes.
+- **Particiones EFI**: Utilizadas en sistemas con UEFI para almacenar archivos de arranque. Ventajas: Necesarias para sistemas modernos. Desventajas: Requieren un formato específico (FAT32).
+
+**B-Como se identifican las particiones en GNU/Linux? (Considere discos IDE, SCSI y SATA)**
+En GNU/Linux, las particiones se identifican mediante nombres de dispositivos que siguen un esquema específico según el tipo de disco:
+- **Discos IDE**: Se identifican como `/dev/hda`, `/dev/hdb`, etc., y las particiones se numeran como `/dev/hda1`, `/dev/hda2`, etc.
+- **Discos SCSI y SATA**: Se identifican como `/dev/sda`, `/dev/sdb`, etc., y las particiones se numeran como `/dev/sda1`, `/dev/sda2`, etc.
+- **Discos NVMe**: Se identifican como `/dev/nvme0n1`, `/dev/nvme0n2`, etc., y las particiones se numeran como `/dev/nvme0n1p1`, `/dev/nvme0n1p2`, etc.
+
+**C-Cuantas particiones son necesarias como minimo para instalar GNU/Linux? Nombrelas indicando el tipo de particion, idencificador, sistema de archivos y putno de arranque**
+Para instalar GNU/Linux, se necesitan al menos dos particiones:
+1. **Partición raíz (/)**
+   - Tipo de partición: Primaria o lógica
+   - Identificador: `/dev/sda1` (ejemplo)
+   - Sistema de archivos: ext4 (comúnmente utilizado)
+   - Punto de montaje: `/`
+   - Función: Contiene el sistema operativo y todos los archivos necesarios para su funcionamiento.
+2. **Partición swap**
+    - Tipo de partición: Primaria o lógica
+    - Identificador: `/dev/sda2` (ejemplo)
+    - Sistema de archivos: swap
+    - Punto de montaje: No tiene punto de montaje, se utiliza como espacio de intercambio de memoria.
+    - Función: Proporciona memoria virtual adicional cuando la RAM física es insuficiente.
+Adicionalmente, se puede crear una partición `/home` para almacenar los archivos personales de los usuarios, pero no es estrictamente necesaria para la instalación básica del sistema operativo.
+
+**D-Dar ejemplos de diversos casoso de paticionamiento dependiendo del tipo de tarea que se debe realizar en su sistema operativo**
+1. **Servidor web**:
+   - Partición raíz (`/`): 20 GB, ext4
+   - Partición `/var`: 50 GB, ext4 (para almacenar archivos de registro y datos del servidor web)
+   - Partición swap: 4 GB, swap
+   - Partición `/home`: 10 GB, ext4 (opcional, para archivos de usuario)
+2. **Estación de trabajo para desarrollo de software**:
+   - Partición raíz (`/`): 30 GB, ext4
+   - Partición `/home`: 100 GB, ext4 (para almacenar proyectos y archivos personales)
+   - Partición swap: 8 GB, swap
+   - Partición `/opt`: 20 GB, ext4 (para instalar software adicional)
+3. **Sistema de escritorio general**:
+   - Partición raíz (`/`): 25 GB, ext4
+   - Partición `/home`: 75 GB, ext4 (para archivos personales y configuraciones)
+   - Partición swap: 4 GB, swap
+   - Partición `/boot`: 1 GB, ext4 (para almacenar archivos de arranque)
+4. **Servidor de base de datos**:
+   - Partición raíz (`/`): 20 GB, ext4
+   - Partición `/var/lib/mysql`: 100 GB, ext4 (para almacenar datos de la base de datos)
+   - Partición swap: 8 GB, swap
+   - Partición `/home`: 10 GB, ext4 (opcional, para archivos de usuario)
+
+**E-Que tipo deo software para paticionar existe? Mencionelos y compare**
+Existen varios tipos de software para particionar discos en GNU/Linux, entre los más populares se encuentran:
+- **fdisk**: Es una herramienta de línea de comandos que permite crear, eliminar y modificar particiones en discos MBR. Es simple y eficiente, pero no soporta discos GPT.
+- **parted**: Es una herramienta de línea de comandos que soporta tanto discos MBR como GPT. Permite crear, eliminar y redimensionar particiones, y es más flexible que fdisk.
+- **gparted**: Es una interfaz gráfica basada en parted que facilita la gestión de particiones para usuarios menos experimentados. Ofrece una visualización clara del disco y permite realizar operaciones de particionado de manera intuitiva.
+- **cfdisk**: Es una herramienta de línea de comandos con una interfaz semi-gráfica que facilita la creación y gestión de particiones en discos MBR. Es más amigable que fdisk, pero no soporta GPT.
+- **KDE Partition Manager**: Es una herramienta gráfica para entornos de escritorio KDE que permite gestionar particiones de manera similar a gparted, pero con integración en el entorno KDE.
+
+Cada una de estas herramientas tiene sus propias ventajas y desventajas. Las herramientas de línea de comandos como fdisk y parted son más adecuadas para usuarios avanzados que prefieren trabajar en la terminal, mientras que las herramientas gráficas como gparted y KDE Partition Manager son más accesibles para usuarios menos experimentados. La elección de la herramienta dependerá de las necesidades y preferencias del usuario.
+
+## Arranque(Bootstrap) de un sistema operativo
+**A-Que es el BIOS? Que tarea realiza?**
+El BIOS (Basic Input/Output System) es un firmware que se encuentra en la placa base de una computadora y es responsable de iniciar el hardware durante el proceso de arranque. Su tarea principal es realizar una serie de pruebas de diagnóstico (POST - Power-On Self Test) para asegurarse de que todos los componentes del hardware estén funcionando correctamente. Una vez que se completan estas pruebas, el BIOS busca un dispositivo de arranque (como un disco duro, unidad USB o CD/DVD) y carga el gestor de arranque del sistema operativo desde ese dispositivo para iniciar el sistema operativo.
+
+**B-Que es UEFI? Cual es su fucnion?**
+UEFI (Unified Extensible Firmware Interface) es un estándar moderno para el firmware de la placa base que reemplaza al BIOS tradicional. Su función principal es proporcionar una interfaz entre el sistema operativo y el firmware del hardware, facilitando el proceso de arranque y la gestión del hardware. UEFI ofrece varias ventajas sobre el BIOS, como soporte para discos duros más grandes (más de 2 TB), tiempos de arranque más rápidos, una interfaz gráfica más avanzada y la capacidad de utilizar funciones de seguridad como Secure Boot, que ayuda a proteger el sistema contra software malicioso durante el arranque.
+
+**C-Que es el MBR? Que el MBC?**
+El MBR (Master Boot Record) es un pequeño programa que se encuentra en el primer sector de un disco duro y es responsable de iniciar el proceso de arranque del sistema operativo. Contiene información sobre las particiones del disco y el código necesario para cargar el gestor de arranque del sistema operativo. El MBR es utilizado principalmente en sistemas con particiones MBR y tiene una limitación de 2 TB para el tamaño del disco.
+El MBC (Master Boot Code) es el código de arranque que se encuentra en el MBR. Su función es localizar y cargar el gestor de arranque del sistema operativo desde la partición activa del disco. El MBC es esencial para iniciar el proceso de arranque y transferir el control al sistema operativo.
+
+**D-A que hacen referencia las siglas GPT? Que sustituye? Inidique cual es su formato?**
+GPT (GUID Partition Table) es un estándar para la tabla de particiones en discos duros que reemplaza al MBR (Master Boot Record). GPT es parte del estándar UEFI y ofrece varias ventajas sobre MBR, como soporte para discos más grandes (más de 2 TB), un número casi ilimitado de particiones y mayor robustez contra la corrupción de datos.
+El formato de GPT incluye una tabla de particiones que utiliza identificadores únicos globales (GUID) para cada partición, lo que facilita la gestión y el reconocimiento de las particiones. Además, GPT almacena múltiples copias de la tabla de particiones en diferentes ubicaciones del disco para mejorar la recuperación en caso de corrupción.
+
+**E-Cual es la funcionalidad de un Gestor de arranque? Que tipos existen? Donde se instalan? CIte gestores de arranque conocidos**
+Un gestor de arranque es un programa que se encarga de cargar y transferir el control al sistema operativo durante el proceso de arranque. Su funcionalidad principal es permitir al usuario seleccionar entre múltiples sistemas operativos instalados en la computadora, así como configurar opciones de arranque específicas.
+Existen varios tipos de gestores de arranque, entre los más comunes se encuentran:
+- **GRUB (GRand Unified Bootloader)**: Es uno de los gestores de arranque más populares y versátiles, utilizado en muchas distribuciones de GNU/Linux. Soporta múltiples sistemas operativos y ofrece una interfaz gráfica para la selección del sistema operativo.
+- **LILO (LInux LOader)**: Es un gestor de arranque más antiguo que fue ampliamente utilizado en el pasado, pero ha sido reemplazado en gran medida por GRUB debido a su mayor flexibilidad y características.
+- **Syslinux/Isolinux**: Es un gestor de arranque ligero utilizado principalmente para sistemas de arranque desde medios extraíbles, como CD/DVD y unidades USB.
+Los gestores de arranque se instalan generalmente en el MBR (Master Boot Record) o en la partición EFI en sistemas UEFI. Algunos gestores de arranque conocidos incluyen GRUB, LILO, Syslinux, y rEFInd.
+
+**G-Analice el proceso de arranque de GNU/Linux y describa sus principales pasos**
+El proceso de arranque de GNU/Linux consta de varios pasos principales:
+1. **POST (Power-On Self Test)**: Cuando se enciende la computadora, el BIOS o UEFI realiza una serie de pruebas para verificar que el hardware esté funcionando correctamente.
+2. **Carga del gestor de arranque**: El BIOS/UEFI busca el dispositivo de arranque configurado (disco duro, USB, CD/DVD) y carga el gestor de arranque (como GRUB) desde el MBR o la partición EFI.
+3. **Selección del sistema operativo**: El gestor de arranque presenta un menú al usuario para seleccionar el sistema operativo que desea iniciar. Si no se realiza ninguna selección, se inicia el sistema operativo predeterminado.
+4. **Carga del kernel**: Una vez seleccionado el sistema operativo, el gestor de arranque carga el kernel de GNU/Linux en la memoria y transfiere el control al mismo.
+5. **Inicialización del kernel**: El kernel inicializa el hardware, monta el sistema de archivos raíz (`/`), y configura los controladores necesarios para los dispositivos.
+6. **Inicio del proceso init/systemd**: El kernel inicia el proceso `init` (o `systemd` en sistemas más modernos), que es responsable de iniciar los servicios y procesos del sistema.
+7. **Inicio de servicios y procesos**: El proceso `init/systemd` inicia los servicios del sistema, como la red, el servidor gráfico, y otros servicios necesarios para el funcionamiento del sistema operativo.
+8. **Inicio de sesión del usuario**: Finalmente, se presenta la pantalla de inicio de sesión, donde el usuario puede ingresar sus credenciales para acceder al sistema.
+
+**H-Cuales son los pasos que se suceden en el proceso de parada (shutdown) de un sistema GNU/Linux?**
+El proceso de parada (shutdown) de un sistema GNU/Linux consta de varios pasos principales:
+1. **Notificación a los usuarios**: El sistema notifica a los usuarios conectados que el sistema se va a apagar, permitiéndoles guardar su trabajo y cerrar sus sesiones.
+2. **Detención de servicios**: El proceso `init/systemd` detiene todos los servicios y procesos en ejecución de manera ordenada, asegurándose de que no haya operaciones pendientes.
+3. **Desmontaje de sistemas de archivos**: El sistema desmonta todos los sistemas de archivos montados, asegurándose de que todos los datos se escriban correctamente en el disco.
+4. **Sincronización de discos**: El sistema sincroniza los discos para garantizar que todos los datos en memoria se escriban en el almacenamiento permanente.
+5. **Apagado del hardware**: Finalmente, el sistema envía una señal al hardware para apagar la computadora de manera segura.
+
+**I-Es posible tener en una PC GNU/Linux y otros sistema operativo instalado? Justifique su respuesta**
+Si, es posible tener en una PC GNU/Linux y otros sistemas operativos instalados simultáneamente, en una configuración conocida como "arranque dual" o "dual boot". Esto se logra mediante la creación de particiones separadas en el disco duro para cada sistema operativo. Durante el proceso de arranque, el gestor de arranque (como GRUB) permite al usuario seleccionar cuál sistema operativo desea iniciar. Esta configuración es útil para usuarios que necesitan utilizar diferentes sistemas operativos para distintas tareas o aplicaciones.
+
