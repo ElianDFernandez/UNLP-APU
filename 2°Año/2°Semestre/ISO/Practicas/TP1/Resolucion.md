@@ -499,4 +499,4 @@ K- tail : Muestra las últimas líneas de un archivo.
    - Ejemplo: `tail -n 10 archivo.txt` muestra las últimas 10 líneas de `archivo.txt`.
    - Ubicación: `/usr/bin/tail`
 
-
+# Procesos
