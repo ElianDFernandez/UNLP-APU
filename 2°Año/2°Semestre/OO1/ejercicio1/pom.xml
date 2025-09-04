@@ -7,7 +7,7 @@
 	<groupId>ar.edu.unlp.oo1</groupId>
 	<artifactId>ejercicio1-wallpost</artifactId>
 	<version>1.0.0</version>
-	<name>ejercicio-wallpost</name>
+	<name>Wallpost</name>
 	<packaging>jar</packaging>
 	<description>Ejercicio 1 Wallpost</description>
 	<properties>
