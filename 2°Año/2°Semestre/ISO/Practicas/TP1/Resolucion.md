@@ -349,3 +349,154 @@ En GNU/Linux, los archivos se identifican mediante un nombre único dentro de un
 
 6. **Less**: Es similar a More, pero ofrece más funcionalidades, como la posibilidad de desplazarse hacia adelante y hacia atrás en el archivo. También permite buscar texto dentro del archivo y tiene una interfaz más interactiva.
 
+**C- Crear un archivo llamado "prueba.exe" en su directorio personal usando vim. El mismo debe contener su numero de alumno y su nombre**
+Para crear un archivo llamado "prueba.exe" en su directorio personal usando Vim, siga estos pasos:
+1. Abra la terminal.
+2. Navegue a su directorio personal (si no está ya allí) con el comando:
+   ```bash
+   cd ~
+   ```
+3. Abra Vim para crear el archivo "prueba.exe" con el comando:
+   ```bash
+   vim prueba.exe
+   ```
+4. Una vez dentro de Vim, presione la tecla `i` para entrar en el modo de inserción.
+5. Escriba su número de alumno y su nombre, por ejemplo:
+   ```
+   12345678
+   Juan Pérez
+   ```
+6. Para guardar el archivo y salir de Vim, presione la tecla `Esc` para salir del modo de inserción, luego escriba `:wq` y presione `Enter`.
+
+Para verificar que el archivo se ha creado correctamente, puede usar el comando `cat` para mostrar su contenido:
+```bash
+cat prueba.exe
+```
+
+**D-Investigue el funcionamiento del comando file. Pruebelo con diferenctes  archivos. Que diferencia nota?**
+El comando `file` en GNU/Linux se utiliza para determinar el tipo de un archivo. Analiza el contenido del archivo y proporciona una descripción del mismo, en lugar de basarse únicamente en la extensión del archivo. Esto es útil porque las extensiones de archivo no siempre reflejan con precisión el contenido real del archivo.
+
+Para probar el comando `file`, puede crear varios archivos de diferentes tipos y luego ejecutar el comando `file` en cada uno de ellos. Por ejemplo:
+
+1. Cree un archivo de texto:
+   ```bash
+   echo "Hola, mundo!" > archivo.txt
+   ```
+
+2. Cree un archivo binario vacío:
+   ```bash
+   touch archivo.bin
+   ```
+
+3. Ejecute el comando `file` en cada archivo:
+   ```bash
+   file archivo.txt
+   file archivo.bin
+   ```
+
+Las salidas del comando `file` mostrarán el tipo de cada archivo, lo que le permitirá notar las diferencias entre ellos.
+iso@Iso:~$ file archivo.txt
+archivo.txt: ASCII text
+iso@Iso:~$ file archivo.bin
+archivo.bin: empty
+iso@Iso:~$ 
+En este ejemplo, el comando `file` identifica `archivo.txt` como un archivo de texto ASCII, mientras que `archivo.bin` se identifica como un archivo vacío. La diferencia principal es que `file` analiza el contenido real del archivo para determinar su tipo, lo que proporciona una descripción más precisa que simplemente mirar la extensión del archivo.
+
+**E-Investigue el funcionamiento y parametros de los siguientes comandos: cd, mkdir, rmdir, ln, tail, locate, ls, pwd, cp, mv, find, rm**
+1. **cd (change directory)**: Cambia el directorio actual en la terminal.
+    - Uso: `cd [directorio]`
+    - Ejemplo: `cd /home/usuario` cambia al directorio `/home/usuario`.
+2. **mkdir (make directory)**: Crea un nuevo directorio.
+    - Uso: `mkdir [opciones] directorio`
+    - Ejemplo: `mkdir nuevo_directorio` crea un directorio llamado `nuevo_directorio`.
+3. **rmdir (remove directory)**: Elimina un directorio vacío.
+    - Uso: `rmdir [opciones] directorio`
+    - Ejemplo: `rmdir viejo_directorio` elimina el directorio `viejo_directorio` si está vacío.
+4. **ln (link)**: Crea enlaces entre archivos.
+    - Uso: `ln [opciones] archivo enlace`
+    - Ejemplo: `ln -s archivo.txt enlace.txt` crea un enlace simbólico llamado `enlace.txt` que apunta a `archivo.txt`.
+5. **tail**: Muestra las últimas líneas de un archivo.
+    - Uso: `tail [opciones] archivo`
+    - Ejemplo: `tail -n 10 archivo.log` muestra las últimas 10 líneas de `archivo.log`.
+6. **locate**: Busca archivos en el sistema utilizando una
+    base de datos preconstruida.
+    - Uso: `locate [opciones] patrón`
+    - Ejemplo: `locate archivo.txt` busca todos los archivos llamados `archivo.txt`.
+7. **ls (list)**: Lista los archivos y directorios en el directorio actual.
+    - Uso: `ls [opciones] [directorio]`
+    - Ejemplo: `ls -l` muestra una lista detallada de archivos y directorios.
+8. **pwd (print working directory)**: Muestra la ruta del directorio actual.
+    - Uso: `pwd`
+    - Ejemplo: `pwd` muestra la ruta completa del directorio actual.
+9. **cp (copy)**: Copia archivos y directorios.
+    - Uso: `cp [opciones] origen destino`
+    - Ejemplo: `cp archivo.txt copia.txt` copia `archivo.txt` a `copia.txt`.
+10. **mv (move)**: Mueve o renombra archivos y directorios.
+    - Uso: `mv [opciones] origen destino`
+    - Ejemplo: `mv archivo.txt nuevo_nombre.txt` renombra `archivo.txt` a `nuevo_nombre.txt`.
+11. **find**: Busca archivos y directorios en una jerarquía de directorios.
+    - Uso: `find [ruta] [opciones] [expresión]`
+    - Ejemplo: `find /home -name archivo.txt` busca `archivo.txt` en el directorio `/home`.
+12. **rm (remove)**: Elimina archivos y directorios.
+    - Uso: `rm [opciones] archivo`
+    - Ejemplo: `rm archivo.txt` elimina `archivo.txt`. Use `rm -r` para eliminar directorios y su contenido de forma recursiva.
+
+**10-Realice las siguientes tareas en su directorio personal:**
+A-Crear un directorio llamado ISOCSO
+B-Accede a la carpeta 
+C-Cree dos archivos con los nombres isocso.txt e isocso.csv
+D-Liste el contenido del directorio actual
+E-Visualizar la ruta donde estoy situado 
+F-Busqueda todos los archivos en los que su nombre contiene la cadena "iso*"
+G-Informar la cantidad de espacio libre en disco basado en el uso de `df`
+H- Verifique los usuarios conectados al sistema 'W'
+I- Editar el archivo isocso.txt con vim y agregar su nombre y numero de alumno
+J- Mostrar en pantalla las ultimas lineas de un archivo
+
+**11-Investigue el funcionamiento, parametros y ubicacion(direcorio) de los siguientes comandos: **
+A- man : Muestra el manual de un comando.
+   - Uso: `man [comando]`
+    - Ejemplo: `man ls` muestra el manual del comando `ls`.
+    - Ubicación: `/usr/bin/man`
+B- shutdown : Apaga o reinicia el sistema.
+   - Uso: `shutdown [opciones] [tiempo] [mensaje]`
+   - Ejemplo: `shutdown -h now` apaga el sistema inmediatamente.
+   - Ubicación: `/sbin/shutdown`
+C- reboot : Reinicia el sistema.
+   - Uso: `reboot [opciones]`
+   - Ejemplo: `reboot` reinicia el sistema.
+   - Ubicación: `/sbin/reboot`
+D- halt : Detiene el sistema.
+   - Uso: `halt [opciones]`
+   - Ejemplo: `halt` detiene el sistema.
+   - Ubicación: `/sbin/halt`
+E- uname : Muestra información del sistema.
+   - Uso: `uname [opciones]`
+   - Ejemplo: `uname -a` muestra toda la información del sistema.
+   - Ubicación: `/bin/uname`
+F- dmesg : Muestra mensajes del kernel.
+   - Uso: `dmesg [opciones]`
+   - Ejemplo: `dmesg | less` muestra los mensajes del kernel paginados.
+   - Ubicación: `/bin/dmesg`
+G- lspci : Lista dispositivos PCI.
+   - Uso: `lspci [opciones]`
+   - Ejemplo: `lspci` muestra todos los dispositivos PCI.
+   - Ubicación: `/usr/sbin/lspci`
+H- at : Programa la ejecución de comandos en un momento específico.
+   - Uso: `at [hora]`
+   - Ejemplo: `echo "ls -l" | at 10:00` programa el comando `ls -l` para las 10:00.
+   - Ubicación: `/usr/bin/at`
+I- netstat : Muestra conexiones de red y estadísticas.
+   - Uso: `netstat [opciones]`
+   - Ejemplo: `netstat -tuln` muestra todas las conexiones TCP y UDP en escucha.
+   - Ubicación: `/bin/netstat`
+J- head : Muestra las primeras líneas de un archivo.
+   - Uso: `head [opciones] archivo`
+   - Ejemplo: `head -n 10 archivo.txt` muestra las primeras 10 líneas de `archivo.txt`.
+   - Ubicación: `/usr/bin/head`
+K- tail : Muestra las últimas líneas de un archivo.
+   - Uso: `tail [opciones] archivo`
+   - Ejemplo: `tail -n 10 archivo.txt` muestra las últimas 10 líneas de `archivo.txt`.
+   - Ubicación: `/usr/bin/tail`
+
+
