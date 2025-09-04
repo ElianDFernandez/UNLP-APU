@@ -332,3 +332,20 @@ El proceso de parada (shutdown) de un sistema GNU/Linux consta de varios pasos p
 **I-Es posible tener en una PC GNU/Linux y otros sistema operativo instalado? Justifique su respuesta**
 Si, es posible tener en una PC GNU/Linux y otros sistemas operativos instalados simultáneamente, en una configuración conocida como "arranque dual" o "dual boot". Esto se logra mediante la creación de particiones separadas en el disco duro para cada sistema operativo. Durante el proceso de arranque, el gestor de arranque (como GRUB) permite al usuario seleccionar cuál sistema operativo desea iniciar. Esta configuración es útil para usuarios que necesitan utilizar diferentes sistemas operativos para distintas tareas o aplicaciones.
 
+# Archivos y editores
+**A-Como se identifican los archivos en GNU/Linux?**
+En GNU/Linux, los archivos se identifican mediante un nombre único dentro de un directorio específico. Cada archivo tiene una ruta que indica su ubicación en el sistema de archivos, comenzando desde el directorio raíz (`/`). La ruta completa incluye todos los directorios intermedios hasta llegar al archivo. Además, los archivos en GNU/Linux pueden tener permisos y atributos que determinan quién puede leer, escribir o ejecutar el archivo.
+
+**B-Investigue el funcionamiento de los editores vim, nano, y mcedit, y los comandos cat, more y less**
+1. **Vim**: Es un editor de texto modal que permite la edición de archivos de texto. Tiene dos modos principales: el modo de comando y el modo de inserción. En el modo de comando, se pueden ejecutar comandos para manipular el texto, mientras que en el modo de inserción, se puede escribir texto directamente. Vim es conocido por su eficiencia y su curva de aprendizaje empinada.
+
+2. **Nano**: Es un editor de texto simple y fácil de usar que se ejecuta en la terminal. A diferencia de Vim, Nano no tiene modos, lo que significa que los usuarios pueden comenzar a escribir texto inmediatamente. Ofrece una interfaz más amigable y accesible, con atajos de teclado visibles en la parte inferior de la pantalla.
+
+3. **Mcedit**: Es el editor de texto del administrador de archivos Midnight Commander. Proporciona una interfaz de usuario similar a la de otros editores de texto, pero se integra en el entorno de Midnight Commander. Mcedit es fácil de usar y ofrece características como la edición de múltiples archivos y la navegación por directorios.
+
+4. **Cat**: Es un comando que se utiliza para mostrar el contenido de un archivo en la salida estándar (generalmente la terminal). También se puede utilizar para concatenar archivos y redirigir la salida a un nuevo archivo.
+
+5. **More**: Es un comando que permite visualizar el contenido de un archivo de texto página por página. Es útil para archivos grandes, ya que permite al usuario desplazarse por el contenido de manera controlada.
+
+6. **Less**: Es similar a More, pero ofrece más funcionalidades, como la posibilidad de desplazarse hacia adelante y hacia atrás en el archivo. También permite buscar texto dentro del archivo y tiene una interfaz más interactiva.
+
