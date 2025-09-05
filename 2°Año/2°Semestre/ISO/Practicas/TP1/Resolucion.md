@@ -500,3 +500,76 @@ K- tail : Muestra las últimas líneas de un archivo.
    - Ubicación: `/usr/bin/tail`
 
 # Procesos
+**A-Que es un proceso? A que hacen referencia las siglas PID y PPID? Todos los procesos tienen estos atributos en GNU/Linux? Justifique. Indique que otros atributos tiene un proceso**
+Un proceso es una instancia de un programa en ejecucion. Es una entidad que representa la ejecucion de un programa y contiene su estado, recursos y contexto de ejecucion.
+- PID (Process ID): Es un identificador unico asignado a cada proceso en ejecucion. Permite al sistema operativo y a los usuarios identificar y gestionar los procesos.
+- PPID (Parent Process ID): Es el identificador del proceso padre, es decir, el proceso que creo o inicio el proceso actual. Permite rastrear la jerarquia de procesos.
+Todos los procesos en GNU/Linux tienen estos atributos (PID y PPID) ya que son fundamentales para la gestion y control de los procesos por parte del sistema operativo. Sin estos identificadores, seria imposible rastrear y gestionar los procesos de manera efectiva.
+Otros atributos que tiene un proceso incluyen:
+- Estado del proceso (ejecutando, suspendido, detenido, etc.)
+- Prioridad del proceso (nivel de importancia para la planificacion)
+- Recursos asignados (memoria, CPU, I/O, etc.)
+
+**B-Investigue el funcionamiento, paremtros y ubicacion(directorio) de los siguiente comando relacionados a procesos. En caso de que algun comando no venga por defecto en la distribucion que tiliza debera proceder a instalarlo.**
+
+1. top : Muestra los procesos en ejecucion en tiempo real.
+   - Uso: `top [opciones]`
+   - Ejemplo: `top` muestra una lista de procesos ordenados por uso de CPU.
+   - Ubicación: `/usr/bin/top`
+2. htop : Es una version mejorada de top con una interfaz mas amigable.
+   - Uso: `htop`
+   - Ejemplo: `htop` muestra una lista interactiva de procesos.
+   - Ubicación: `/usr/bin/htop` (puede requerir instalacion)
+3. ps : Muestra una instantanea de los procesos en ejecucion.
+   - Uso: `ps [opciones]`
+   - Ejemplo: `ps aux` muestra todos los procesos en ejecucion con detalles.
+   - Ubicación: `/bin/ps`
+4. pstree : Muestra los procesos en forma de arbol, mostrando la jerarquia entre ellos.
+   - Uso: `pstree [opciones]`
+   - Ejemplo: `pstree` muestra la estructura de procesos en forma de arbol.
+   - Ubicación: `/usr/bin/pstree`
+5. kill : Envia señales a los procesos para terminarlos o controlarlos.
+   - Uso: `kill [opciones] PID`
+   - Ejemplo: `kill -9 123 ` envia la señal SIGKILL al proceso con PID 123.
+   - Ubicación: `/bin/kill`
+6. pgrep : Busca procesos por nombre o atributos.
+   - Uso: `pgrep [opciones] patrón`
+   - Ejemplo: `pgrep bash` busca todos los procesos con el nombre "bash".
+   - Ubicación: `/usr/bin/pgrep`
+7. pkill : Envia señales a procesos basados en su nombre o atributos.
+   - Uso: `pkill [opciones] patrón`
+   - Ejemplo: `pkill -9 bash` envia la señal SIGKILL a todos los procesos con el nombre "bash".
+   - Ubicación: `/usr/bin/pkill`
+8. killall : Envia señales a todos los procesos que coinciden con un nombre especifico.
+   - Uso: `killall [opciones] nombre`
+   - Ejemplo: `killall -9 bash` envia la señal SIGKILL a todos los procesos con el nombre "bash".
+   - Ubicación: `/usr/bin/killall`
+9. renice : Cambia la prioridad de un proceso en ejecucion.
+   - Uso: `renice [opciones] prioridad PID`
+   - Ejemplo: `renice -n 10 -p 123` cambia la prioridad del proceso con PID 123 a 10.
+   - Ubicación: `/usr/bin/renice`
+10. xkill : Es una herramienta grafica para enviar señales a procesos.
+    - Uso: `xkill`
+    - Ejemplo: `xkill` permite al usuario hacer clic en una ventana para cerrarla.
+    - Ubicación: `/usr/bin/xkill` (puede requerir instalacion)
+11. atop : Monitorea el rendimiento del sistema y los procesos en detalle.
+    - Uso: `atop [opciones]`
+    - Ejemplo: `atop` muestra una vista detallada del uso de recursos por parte de los procesos.
+    - Ubicación: `/usr/bin/atop` (puede requerir instalacion)
+12. nice : Inicia un proceso con una prioridad especifica.
+      - Uso: `nice [opciones] comando`
+      - Ejemplo: `nice -n 10 comando` inicia `comando` con una prioridad de 10.
+      - Ubicación: `/usr/bin/nice`
+
+# SystemV
+**A-Enumere los pasos del proceso de inicio de un sistema de GNU/Linux, desde que se pende la pC hasta que se logra obtener el login en el sistema**
+1. Encendido de la computadora: Al presionar el botón de encendido, la computadora comienza a recibir energía y se inicia el proceso de arranque.
+2. POST (Power-On Self Test): El BIOS/UEFI realiza una serie de pruebas para verificar que el hardware esté funcionando correctamente.
+3. Carga del gestor de arranque: El BIOS/UEFI busca el dispositivo de arranque configurado y carga el gestor de arranque (como GRUB) desde el MBR o la partición EFI.
+4. Selección del sistema operativo: El gestor de arranque presenta un menú para seleccionar el sistema operativo a iniciar.
+5. Carga del kernel: El gestor de arranque carga el kernel de GNU/Linux en la memoria y transfiere el control al mismo.
+6. Inicialización del kernel: El kernel inicializa el hardware, monta el sistema de archivos raíz (`/`), y configura los controladores necesarios.
+7. Inicio del proceso init/systemd: El kernel inicia el proceso `init` (o `systemd` en sistemas más modernos), que es responsable de iniciar los servicios y procesos del sistema.
+8. Ejecución de scripts de inicio: El proceso `init/systemd` ejecuta los scripts de inicio ubicados en `/etc/init.d/` o las unidades de systemd para iniciar los servicios del sistema.
+9. Inicio de servicios y procesos: Se inician los servicios del sistema, como la red, el servidor gráfico, y otros servicios necesarios.
+10. Presentación de la pantalla de inicio de sesión: Finalmente, se presenta la pantalla de inicio de sesión, donde el usuario puede ingresar sus credenciales para acceder al sistema.
