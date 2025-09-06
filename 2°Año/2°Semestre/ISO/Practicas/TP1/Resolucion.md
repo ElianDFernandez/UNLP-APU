@@ -573,3 +573,191 @@ Otros atributos que tiene un proceso incluyen:
 8. Ejecución de scripts de inicio: El proceso `init/systemd` ejecuta los scripts de inicio ubicados en `/etc/init.d/` o las unidades de systemd para iniciar los servicios del sistema.
 9. Inicio de servicios y procesos: Se inician los servicios del sistema, como la red, el servidor gráfico, y otros servicios necesarios.
 10. Presentación de la pantalla de inicio de sesión: Finalmente, se presenta la pantalla de inicio de sesión, donde el usuario puede ingresar sus credenciales para acceder al sistema.
+
+**B-Proceso INIT: Quien lo ejeuta? Cual es su objetivo?**
+El proceso `init` es ejecutado por el kernel de GNU/Linux durante el proceso de arranque del sistema. Su objetivo principal es iniciar y gestionar los servicios y procesos del sistema una vez que el kernel ha sido cargado y el sistema de archivos raíz ha sido montado. `init` es el primer proceso que se ejecuta en el espacio de usuario y tiene el PID 1. Se encarga de ejecutar los scripts de inicio, configurar el entorno del sistema, y mantener el estado del sistema operativo durante su funcionamiento.
+
+**C-RunLvels: Que son? Cual es su objetivo?**
+Los runlevels son estados predefinidos del sistema que determinan qué servicios y procesos deben estar en ejecución. Cada runlevel tiene un conjunto específico de servicios asociados, y el sistema puede cambiar entre runlevels para adaptarse a diferentes necesidades operativas. El objetivo de los runlevels es proporcionar una forma estructurada de gestionar el estado del sistema, permitiendo iniciar, detener o reiniciar servicios según sea necesario.
+
+**D-A que hace referencia cada nivel de ejecucion segun el estandar? Donde se define que runlevel ejecutar al iniciar el sistema operativo? Todas las distribuciones respetan estos estandares?**
+Los runlevels según el estándar SysV init son los siguientes:
+- Runlevel 0: Apagado del sistema (halt).
+- Runlevel 1: Modo monousuario (single-user mode), utilizado para mantenimiento y recuperación.
+- Runlevel 2: Modo multiusuario sin servicios de red.
+- Runlevel 3: Modo multiusuario con servicios de red (modo texto).
+- Runlevel 4: No utilizado, reservado para uso personalizado.
+- Runlevel 5: Modo multiusuario con servicios de red y entorno gráfico (X11).
+- Runlevel 6: Reinicio del sistema (reboot).
+El runlevel que se ejecuta al iniciar el sistema operativo se define en el archivo `/etc/inittab` en sistemas que utilizan SysV init. En este archivo, se especifica el runlevel predeterminado mediante la línea que comienza con `id:` seguida del número del runlevel.
+No todas las distribuciones respetan estos estándares, ya que muchas han adoptado systemd como sistema de inicio, que utiliza un enfoque diferente basado en unidades (units) en lugar de runlevels. Sin embargo, algunas distribuciones aún mantienen compatibilidad con SysV init y sus runlevels.
+
+**E-Archive /etc/inittab: Cual es su finalidad? Que tipo de informacion se alamcena en el? Cual es la estructura de la informacion que en el se alamcenaa?**
+El archivo `/etc/inittab` es utilizado por el sistema de inicio SysV init para definir el comportamiento del sistema durante el proceso de arranque y la gestión de runlevels. Su finalidad es especificar qué procesos deben iniciarse, detenerse o reiniciarse en función del runlevel actual del sistema.
+El archivo almacena información sobre los runlevels, los procesos que deben ejecutarse en cada runlevel, y las acciones que deben tomarse en respuesta a ciertos eventos (como la finalización de un proceso).
+La estructura de la información en `/etc/inittab` generalmente sigue el formato:
+```
+   id:runlevels:action:process
+```
+Donde:
+- `id`: Un identificador único para la entrada.
+- `runlevels`: Los runlevels en los que se aplica esta entrada (por ejemplo, `2345`).
+- `action`: La acción a tomar (por ejemplo, `respawn`, `wait`, `once`).
+- `process`: El comando o script que se debe ejecutar.
+Cada línea en el archivo representa una entrada que define cómo se debe gestionar un proceso específico en función del runlevel del sistema.
+
+**F-Suponga que se encuentra en el runlevel <x>. Indique que comandos debera ejecutar para cambiar el runlevel a <y>. Este cambio es permanente? Porque?**
+Para cambiar el runlevel de <x> a <y>, puede utilizar el comando `init` o `telinit`. Por ejemplo, si desea cambiar al runlevel 3, puede ejecutar:
+```bash
+   init 3
+```
+o
+```bash
+   telinit 3
+```
+Este cambio no es permanente, ya que el runlevel predeterminado se define en el archivo `/etc/inittab`. Si desea que el cambio sea permanente, debe editar el archivo `/etc/inittab` y modificar la línea que especifica el runlevel predeterminado. Por ejemplo, si desea que el sistema inicie siempre en el runlevel 3, debe cambiar la línea:
+```
+   id:5:initdefault:
+```
+a
+```
+   id:3:initdefault:
+```
+Después de realizar este cambio, el sistema iniciará en el runlevel 3 de manera permanente en futuros arranques.
+
+**G-Scripts RC. Cual es su finalidad? Donde se almacenan? Cuando un sistema GNU/Linux arranca o se detiene se ejecutan scripts, indique como determina que script ejectuar ante cada accion. Existe un orden para llamarlos? Justifique**
+Los scripts RC (Run Commands) son scripts de inicio y detención que se utilizan para gestionar los servicios y procesos del sistema durante el arranque y apagado. Su finalidad es iniciar, detener o reiniciar servicios específicos según el runlevel del sistema.
+Los scripts RC se almacenan en el directorio `/etc/init.d/` y en los subdirectorios `/etc/rc.d/` o `/etc/rcX.d/`, donde `X` representa el runlevel específico (por ejemplo, `/etc/rc3.d/` para el runlevel 3).
+Cuando un sistema GNU/Linux arranca o se detiene, se ejecutan los scripts RC correspondientes al runlevel actual. El sistema determina qué scripts ejecutar basándose en el runlevel configurado en `/etc/inittab` y en los enlaces simbólicos presentes en los directorios `/etc/rcX.d/`. Cada script tiene un prefijo que indica si debe iniciarse (S) o detenerse (K) y un número que determina el orden de ejecución.
+Existe un orden para llamarlos, ya que los scripts se ejecutan en orden numérico según el prefijo. Por ejemplo, un script con el nombre `S10network` se ejecutará antes que uno llamado `S20apache`. Este orden es importante para garantizar que los servicios dependientes se inicien en la secuencia correcta.
+
+# SystemD
+**A-Que es SystemD?**
+SystemD es un sistema de inicio y gestor de servicios para sistemas operativos GNU/Linux. Fue diseñado para reemplazar al sistema de inicio tradicional SysV init, proporcionando una forma más eficiente y flexible de gestionar el arranque del sistema, los servicios y los procesos. SystemD utiliza unidades (units) para definir y controlar los servicios, lo que permite una gestión más granular y una mejor integración con otros componentes del sistema. Además, SystemD ofrece características avanzadas como el paralelismo en el arranque, la gestión de dependencias entre servicios, y la capacidad de supervisar y reiniciar servicios automáticamente en caso de fallos.
+
+**B-A que hace referencia el concepto de UNIT en SystemD?**
+En SystemD, una "unit" (unidad) es un archivo de configuración que define un servicio, un socket, un dispositivo, un punto de montaje, un objetivo (target), o cualquier otro recurso que SystemD pueda gestionar. Cada unidad tiene un tipo específico que determina su función y comportamiento. Los tipos de unidades más comunes incluyen:
+- **Service**: Define un servicio que puede ser iniciado, detenido, reiniciado, etc.
+- **Socket**: Define un socket de red o de interproceso que puede activar un servicio.
+- **Target**: Agrupa varias unidades y define un estado del sistema, similar a los runlevels en SysV init.
+- **Mount**: Define un punto de montaje para sistemas de archivos.
+- **Timer**: Define un temporizador que puede activar servicios en momentos específicos.
+Las unidades se almacenan en archivos con la extensión `.service`, `.socket`, `.target`, etc., y se encuentran en directorios como `/etc/systemd/system/` (para unidades personalizadas) y `/lib/systemd/system/` (para unidades proporcionadas por el sistema o paquetes). Las unidades permiten a SystemD gestionar de manera eficiente los recursos del sistema y sus dependencias.
+
+**C-Para que sirve el comando systemctl?**
+El comando `systemctl` es la herramienta principal para interactuar con SystemD. Se utiliza para gestionar y controlar las unidades (units) del sistema, así como para supervisar el estado del sistema y realizar diversas tareas administrativas. Algunas de las funciones principales de `systemctl` incluyen:
+- Iniciar, detener, reiniciar y recargar servicios.
+- Habilitar o deshabilitar servicios para que se inicien automáticamente al arrancar el sistema.
+- Ver el estado de los servicios y otras unidades.
+- Listar todas las unidades disponibles y sus estados.
+- Cambiar el runlevel (target) del sistema.
+- Gestionar el sistema en general, como apagar, reiniciar o suspender el sistema.
+Ejemplos de uso de `systemctl`:
+```bash
+   systemctl start nombre_servicio.service   # Inicia un servicio
+   systemctl stop nombre_servicio.service    # Detiene un servicio
+   systemctl restart nombre_servicio.service # Reinicia un servicio
+   systemctl status nombre_servicio.service  # Muestra el estado de un servicio
+   systemctl enable nombre_servicio.service  # Habilita un servicio para que inicie al arrancar
+   systemctl disable nombre_servicio.service # Deshabilita un servicio para que no inicie al arrancar
+   systemctl list-units                      # Lista todas las unidades activas
+   systemctl isolate multi-user.target       # Cambia al runlevel multiusuario (similar a runlevel 3)
+```
+
+**D-A que hace referencia el concepto de target en SystemD?**
+En SystemD, un "target" (objetivo) es una unidad especial que agrupa varias unidades (services, sockets, etc.) y define un estado del sistema. Los targets son similares a los runlevels en el sistema de inicio SysV init, pero ofrecen una mayor flexibilidad y capacidad de personalización. Cada target representa un conjunto específico de servicios y configuraciones que deben estar activos para alcanzar un determinado estado del sistema.
+Algunos targets comunes incluyen:
+- **multi-user.target**: Equivalente al runlevel 3, proporciona un entorno multiusuario sin interfaz gráfica.
+- **graphical.target**: Equivalente al runlevel 5, proporciona un entorno multiusuario con interfaz gráfica.
+- **rescue.target**: Equivalente al runlevel 1, proporciona un entorno de usuario único para mantenimiento y recuperación.
+- **emergency.target**: Proporciona un entorno mínimo para la recuperación del sistema en caso de fallos graves.
+Los targets permiten a los administradores del sistema definir y gestionar el estado del sistema de manera más estructurada, facilitando la administración de servicios y dependencias.
+
+**E-Ejecutar el comando pstree ¿Que es lo que se puede observar a partir de la ejecucion de este comando?**
+El comando `pstree` muestra una representación en forma de árbol de los procesos en ejecución en el sistema. A partir de la ejecución de este comando, se puede observar la jerarquía de los procesos, es decir, cómo los procesos están relacionados entre sí en términos de padres e hijos. Cada proceso se muestra con su nombre y PID (Process ID), y las líneas conectan los procesos para indicar qué procesos fueron iniciados por otros. Esto permite visualizar fácilmente la estructura de los procesos y entender cómo se organizan y gestionan en el sistema operativo.
+Por ejemplo, al ejecutar `pstree`, se puede ver que el proceso `init` (o `systemd` en sistemas modernos) es el proceso padre de muchos otros procesos, y cómo estos procesos a su vez pueden tener sus propios procesos hijos. Esto es útil para diagnosticar problemas, entender el comportamiento del sistema y gestionar los procesos de manera efectiva.
+iso@Iso:~$ pstree
+systemd(1)─┬─NetworkManager(859)─┬─{gmain}(866)
+           │                     ├─{gdbus}(867)
+           │                     └─{nm-dispatc}(868)
+           ├─accounts-daemon(861)─┬─{gmain}(865)
+           │                     └─{gdbus}(864)
+           ├─agetty(912)
+           ├─atd(880)
+           ├─cron(878)
+           ├─dbus-daemon(862)───{dbus-daemon}(863)
+           ├─dhclient(890)───{dhclient}(891)
+           ├─irqbalance(877)───{irqbalance}(879)
+           ├─lightdm(915)─┬─Xorg(929)───6*[{Xorg}]
+           │              └─lightdm(933)───/usr/bin/gnome-session
+           ├─login(913)───bash(914)───pstree(934)
+           ├─polkitd(870)───{gmain}(873)
+           │               └─{gdbus}(874)
+           ├─rsyslogd(876)───{rs:main Q:Reg}(881)
+           ├─sshd(895)───sshd(911)───bash(913)───sudo(930)───su(931)───bash(932)
+           ├─systemd-journald(856)
+           ├─systemd-logind(869)
+           ├─systemd-timesyn(871)───{gmain}(872)
+           └─wpa_supplicant(889)
+
+# Usuarios
+**A-Que archivos son utilizados en un sistema GNU/Linux para almacenar informacion de los usuarios?**
+En un sistema GNU/Linux, los archivos principales utilizados para almacenar información de los usuarios son: 
+1. **/etc/passwd**: Este archivo contiene información básica sobre cada usuario, como el nombre de usuario, el UID (User ID), el GID (Group ID), el directorio home, y la shell predeterminada. Cada línea en este archivo representa un usuario.
+2. **/etc/shadow**: Este archivo almacena las contraseñas cifradas de los usuarios y otra información relacionada con la seguridad, como la fecha del último cambio de contraseña y las políticas de expiración de la contraseña. Este archivo es accesible solo por el usuario root para proteger la seguridad de las contraseñas.
+3. **/etc/group**: Este archivo contiene información sobre los grupos del sistema, incluyendo el nombre del grupo, el GID, y los miembros del grupo. Cada línea en este archivo representa un grupo.
+4. **/etc/gshadow**: Similar a `/etc/shadow`, este archivo almacena información de seguridad relacionada con los grupos, como las contraseñas de los grupos y los administradores de los grupos.
+Estos archivos son esenciales para la gestión de usuarios y grupos en un sistema GNU/Linux y son utilizados por diversas herramientas y comandos del sistema para autenticar y autorizar a los usuarios.
+
+**B-A que hace referencia las siglas UID y GID? pueden coexistir UIDs iguales en un sistema GNU/Linux? Justifique su respuesta**
+- **UID (User ID)**: Es un identificador numérico único asignado a cada usuario en el sistema. El UID se utiliza para identificar al usuario en el sistema operativo y gestionar sus permisos y acceso a recursos.
+- **GID (Group ID)**: Es un identificador numérico único asignado a cada grupo en el sistema. El GID se utiliza para identificar al grupo y gestionar los permisos y acceso a recursos compartidos entre los miembros del grupo.
+No, no pueden coexistir UIDs iguales en un sistema GNU/Linux. Cada usuario debe tener un UID único para garantizar que el sistema pueda distinguir entre diferentes usuarios. Si dos usuarios tuvieran el mismo UID, el sistema no podría diferenciar entre ellos, lo que podría causar problemas de seguridad y gestión de permisos. Por ejemplo, si dos usuarios compartieran el mismo UID, ambos tendrían acceso a los mismos archivos y recursos, lo que podría llevar a conflictos y violaciones de seguridad. Por lo tanto, es fundamental que cada usuario tenga un UID único en el sistema.
+
+**C-Que es el usuario root? Puede exisite mas de un usuario con este perfil en GNU/Linux? Cual es la UID de root?**
+El usuario root es el superusuario o administrador del sistema en GNU/Linux. Tiene privilegios completos y sin restricciones para realizar cualquier acción en el sistema, incluyendo la gestión de usuarios, la configuración del sistema, la instalación de software, y el acceso a todos los archivos y recursos del sistema. El usuario root es esencial para la administración y mantenimiento del sistema operativo.
+No, no puede existir más de un usuario con el perfil de root en GNU/Linux. El usuario root es único y tiene un UID específico que lo identifica como el superusuario del sistema. Sin embargo, otros usuarios pueden obtener privilegios de root temporalmente utilizando comandos como `sudo`, pero no pueden tener el mismo perfil o UID que el usuario root.
+La UID del usuario root es `0`. Este valor es reservado exclusivamente para el usuario root, lo que garantiza que el sistema pueda identificarlo correctamente y otorgarle los privilegios necesarios.
+
+**D-Agregue un nuevo usuario llamado isocso a su instalacion de GNU/Linux, especifique que su home sea creada en /home/isocso, y hagalo miembo del grupo informatica(Si no existe crealo). Luego, sin iniciar sesion como este usuario cree un archivo en su home personal que le pertenezca. Luego de todo esto, borre el usuario y verifique que no queden registros de el en los archivos de informacion de los usuario y grupos.**
+Para agregar un nuevo usuario llamado `isocso`, crear su directorio home en `/home/isocso`, y hacerlo miembro del grupo `informatica`, siga estos pasos:
+1. Abra la terminal y ejecute el siguiente comando para crear el grupo `informatica` (si no existe):
+   ```bash
+   sudo groupadd informatica
+   ```
+2. Cree el usuario `isocso` con su directorio home en `/home/isocso` y agréguelo al grupo `informatica`:
+   ```bash
+   sudo useradd -m -d /home/isocso -g informatica isocso
+   ```
+3. Establezca una contraseña para el usuario `isocso`:
+   ```bash
+   sudo passwd isocso
+   ```
+4. Sin iniciar sesión como el usuario `isocso`, cree un archivo en su directorio home que le pertenezca:
+   ```bash
+   sudo touch /home/isocso/archivo_isocso.txt
+   sudo chown isocso:informatica /home/isocso/archivo_isocso.txt
+   ```
+5. Verifique que el archivo fue creado y pertenece al usuario `isocso`:
+   ```bash
+   ls -l /home/isocso/archivo_isocso.txt
+   ```
+6. Para borrar el usuario `isocso` y su directorio home, ejecute el siguiente comando:
+   ```bash
+   sudo userdel -r isocso
+   ```
+7. Verifique que no queden registros del usuario `isocso` en los archivos de información de usuarios y grupos:
+   - Verifique en `/etc/passwd`:
+   ```bash
+   grep isocso /etc/passwd
+   ```
+   - Verifique en `/etc/shadow`:
+   ```bash
+   grep isocso /etc/shadow
+   ```
+   - Verifique en `/etc/group`:
+   ```bash
+   grep isocso /etc/group
+   ```
+   Si no hay salida en estos comandos, significa que el usuario `isocso` ha sido eliminado correctamente y no quedan registros de él en los archivos de información de usuarios y grupos.
+
