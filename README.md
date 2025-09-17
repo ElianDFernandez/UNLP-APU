@@ -33,20 +33,4 @@
 </p>
 
 ---
-## 📂 Organización
-
-- 📂 [README.md](./README.md)
-- 📂 [1° Año](./1°Año)
-  - 📂 [1° Semestre](./1°Año/1°Semestre)
-    - 📂 [CADP](./1°Año/1°Semestre/CADP)
-  - 📂 [2° Semestre](./1°Año/2°Semestre)
-    - 📂 [Taller de Programación](./1°Año/2°Semestre/Taller_de_Programacion)
-- 📂 [2° Año](./2°Año)
-  - 📂 [1° Semestre](./2°Año/1°Semestre)
-    - 📂 [AYED](./2°Año/1°Semestre/AYED)
-    - 📂 [FOD](./2°Año/1°Semestre/FOD)
-  - 📂 [2° Semestre](./2°Año/2°Semestre)
-    - 📂 [DBD](./2°Año/2°Semestre/DBD)
-    - 📂 [IS1](./2°Año/2°Semestre/IS1)
-
 ---
