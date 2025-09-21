@@ -761,3 +761,432 @@ Para agregar un nuevo usuario llamado `isocso`, crear su directorio home en `/ho
    ```
    Si no hay salida en estos comandos, significa que el usuario `isocso` ha sido eliminado correctamente y no quedan registros de él en los archivos de información de usuarios y grupos.
 
+# FileSystem y permisos 
+**A-Como son definidos los permisos sobre archivos en un sistema GNU/Linux?**
+En un sistema GNU/Linux, los permisos sobre archivos se definen utilizando un sistema de tres niveles que controla el acceso a los archivos y directorios. Estos niveles son:
+1. **Usuario (Owner)**: El propietario del archivo o directorio. Los permisos para el usuario determinan lo que el propietario puede hacer con el archivo.
+2. **Grupo (Group)**: Un conjunto de usuarios que comparten ciertos permisos. Los permisos para el grupo determinan lo que los miembros del grupo pueden hacer con el archivo.
+3. **Otros (Others)**: Todos los demás usuarios que no son el propietario ni miembros del grupo. Los permisos para otros determinan lo que cualquier usuario del sistema puede hacer con el archivo.
+Cada uno de estos niveles puede tener tres tipos de permisos:
+- **Lectura (Read - r)**: Permite ver el contenido del archivo o listar los archivos en un directorio.
+- **Escritura (Write - w)**: Permite modificar el contenido del archivo o crear/eliminar archivos en un directorio.
+- **Ejecución (Execute - x)**: Permite ejecutar un archivo como un programa o acceder a un directorio.
+Los permisos se representan en forma simbólica (rwx) o numérica (0-7) y se pueden modificar utilizando comandos como `chmod`, `chown`, y `chgrp`.
+
+Ejemplo en codigo :
+```bash
+   ls -l archivo.txt
+   -rwxr-xr-- 1 usuario grupo 0 fecha archivo.txt
+```
+En este ejemplo, los permisos del archivo `archivo.txt` son:
+- Usuario (usuario): rwx (lectura, escritura, ejecución)
+- Grupo (grupo): r-x (lectura, ejecución)
+- Otros: r-- (lectura)
+
+**B-Investigue la funcionalidad y parametros de los siguientes comandos relacionados con los permisos en GNU/Linux**
+1. **chmod (change mode)**: Cambia los permisos de archivos y directorios.
+   - Uso: `chmod [opciones] modo archivo`
+   - Ejemplo: `chmod 755 archivo.txt` establece los permisos a rwxr-xr-x.
+   - Parámetros comunes:
+     - `u`: usuario (owner)
+     - `g`: grupo (group)
+     - `o`: otros (others)
+     - `a`: todos (all)
+     - `+`: agregar permiso
+     - `-`: quitar permiso
+     - `=`: establecer permiso exacto
+2. **chown (change owner)**: Cambia el propietario y/o grupo de archivos y directorios.
+   - Uso: `chown [opciones] propietario[:grupo] archivo`
+   - Ejemplo: `chown usuario:grupo archivo.txt` cambia el propietario a `usuario` y el grupo a `grupo`.
+   - Parámetros comunes:
+     - `-R`: recursivo, aplica el cambio a todos los archivos y subdirectorios.
+
+3. **chgrp (change group)**: Cambia el grupo asociado a un archivo o directorio.
+   - Uso: `chgrp [opciones] grupo archivo`
+   - Ejemplo: `chgrp grupo archivo.txt` cambia el grupo asociado a `archivo.txt` a `grupo`.
+   - Parámetros comunes:
+     - `-R`: recursivo, aplica el cambio a todos los archivos y subdirectorios.
+
+**C-Al utilizar el comando chmod generlamente se utiliza una notacion octal asociada para definir permisos, Que significa eso?**
+La notación octal utilizada con el comando `chmod` es una forma compacta de representar los permisos de archivos y directorios en un sistema GNU/Linux. En esta notación, cada conjunto de permisos (usuario, grupo y otros) se representa mediante un número octal (base 8) que va del 0 al 7. Cada número octal corresponde a una combinación específica de permisos de lectura, escritura y ejecución.
+Los valores de los permisos se asignan de la siguiente manera:
+- Lectura (r) = 4
+- Escritura (w) = 2
+- Ejecución (x) = 1
+Para calcular el valor octal de un conjunto de permisos, se suman los valores correspondientes a los permisos que se desean otorgar. Por ejemplo:
+- `rwx` (lectura, escritura, ejecución) = 4 + 2 + 1 = 7
+- `rw-` (lectura, escritura) = 4 + 2 + 0 = 6
+- `r--` (lectura) = 4 + 0 + 0 = 4
+- `---` (sin permisos) = 0 + 0 + 0 = 0
+Cuando se utiliza `chmod` con notación octal, se especifican tres dígitos, uno para cada nivel de permisos:
+- El primer dígito representa los permisos del usuario (owner).
+- El segundo dígito representa los permisos del grupo (group).
+- El tercer dígito representa los permisos de otros (others).
+Por ejemplo, el comando `chmod 755 archivo.txt` establece los siguientes permisos:
+- Usuario (owner): 7 (rwx)
+- Grupo (group): 5 (r-x)
+- Otros (others): 5 (r-x)
+
+**D-Existe la posibilidad de que algun usuario del sistema pueda acceder a determinado archivo para el cual no posee permisos? indiquelo y realice las pruebas correspondientes**
+Sí, existen situaciones en las que un usuario puede acceder a un archivo para el cual no posee permisos directos. Algunas de estas situaciones incluyen:
+1. **Permisos de directorio**: Si un usuario tiene permisos de ejecución en un directorio, puede acceder a los archivos dentro de ese directorio, incluso si no tiene permisos directos sobre esos archivos. Por ejemplo, si un usuario tiene permisos `r-x` en un directorio, puede listar y acceder a los archivos dentro de ese directorio.
+2. **Permisos de grupo**: Si un usuario es miembro de un grupo que tiene permisos sobre un archivo, puede acceder a ese archivo a través de los permisos del grupo, incluso si no tiene permisos directos como usuario individual.
+3. **Permisos especiales**: Algunos archivos pueden tener permisos especiales como el bit SUID o SGID, que permiten a los usuarios ejecutar un archivo con los permisos del propietario o del grupo del archivo, respectivamente.
+4. **Acceso a través de enlaces simbólicos**: Un usuario puede acceder a un archivo a través de un enlace simbólico que apunta a ese archivo, siempre y cuando tenga permisos para acceder al enlace y al directorio que contiene el archivo original.
+
+**E-Explique los conecptos de "Full path name" y "relative path name".**
+- **Full Path Name (Ruta Absoluta)**: Es la ruta completa desde el directorio raíz (`/`) hasta el archivo o directorio específico. Incluye todos los directorios intermedios y comienza con una barra diagonal (`/`). Por ejemplo, `/home/usuario/documentos/archivo.txt` es una ruta absoluta que indica la ubicación exacta del archivo `archivo.txt` en el sistema de archivos.
+- **Relative Path Name (Ruta Relativa)**: Es la ruta que se especifica en relación al directorio actual en el que se encuentra el usuario. No comienza con una barra diagonal y puede incluir referencias a directorios padres (`..`) o al directorio actual (`.`). Por ejemplo, si el usuario está en el directorio `/home/usuario`, la ruta relativa `documentos/archivo.txt` se refiere al archivo `archivo.txt` dentro del subdirectorio `documentos` del directorio actual.
+
+**F-con que comando puede determinar en que directorio se encuentra actualmente? Existe alguna forma de ingresar a su directorio personal sin necesidad de escribir el path completo? podria utilizar la misma idea para acceder a otros directorios? Como? Explique con un jemplo**
+Para determinar en qué directorio se encuentra actualmente, puede utilizar el comando `pwd` (print working directory). Este comando muestra la ruta absoluta del directorio actual.
+```bash
+   pwd
+   /home/usuario
+```
+Sí, existe una forma de ingresar a su directorio personal sin necesidad de escribir el path completo utilizando el comando `cd` (change directory) sin ningún argumento o utilizando el símbolo `~` (tilde), que representa el directorio home del usuario actual.
+```bash
+   cd
+   # o
+   cd ~
+```
+Ambos comandos lo llevarán directamente a su directorio personal, por ejemplo, `/home/usuario`.
+También puede utilizar la misma idea para acceder a otros directorios utilizando rutas relativas o absolutas. Por ejemplo, si desea acceder al directorio `documentos` dentro de su directorio personal, puede hacerlo de las siguientes maneras:
+```bash
+   cd documentos
+   # o
+   cd ~/documentos
+   # o
+   cd /home/usuario/documentos
+```
+Cada uno de estos comandos lo llevará al directorio `documentos` dentro de su directorio personal.
+Se puede acceder a otro que no sea personal usando este "atajo" de la siguiente manera:
+```bash
+   cd /var/log
+   # o
+   cd ~/../var/log
+   # o
+   cd ../../var/log
+```
+Cada uno de estos comandos lo llevará al directorio `/var/log`, utilizando diferentes formas de especificar la ruta.
+
+**G-Investigue la funcionalidad y parametros de los siguientes comandos relacionados con el uso del FileSystem en GNU/Linux**
+1. **umount**: Desmonta un sistema de archivos montado.
+   - Uso: `umount [opciones] punto_de_montaje`
+   - Ejemplo: `umount /mnt/usb` desmonta el sistema de archivos montado en `/mnt/usb`.
+   - Parámetros comunes:
+     - `-l`: desmontaje perezoso, espera a que el sistema de archivos no esté en uso.
+     - `-f`: fuerza el desmontaje, útil para sistemas de archivos remotos.
+2. **du (disk usage)**: Muestra el uso del espacio en disco de archivos y directorios.
+   - Uso: `du [opciones] [archivo/directorio]`
+   - Ejemplo: `du -h /home/usuario` muestra el uso del espacio en disco del directorio `/home/usuario` en un formato legible.
+   - Parámetros comunes:
+     - `-h`: muestra los tamaños en un formato legible (KB, MB, GB).
+     - `-s`: muestra solo el total para cada argumento.
+3. **df (disk free)**: Muestra el espacio libre y usado en los sistemas de archivos montados.
+   - Uso: `df [opciones] [sistema_de_archivos]`
+   - Ejemplo: `df -h` muestra el espacio libre y usado en todos los sistemas de archivos en un formato legible.
+   - Parámetros comunes:
+     - `-h`: muestra los tamaños en un formato legible (KB, MB, GB).
+     - `-T`: muestra el tipo de sistema de archivos.
+4. **mount**: Monta un sistema de archivos en un punto de montaje.
+   - Uso: `mount [opciones] dispositivo punto_de_montaje`
+   - Ejemplo: `mount /dev/sdb1 /mnt/usb` monta el dispositivo `/dev/sdb1` en el punto de montaje `/mnt/usb`.
+   - Parámetros comunes:
+     - `-t`: especifica el tipo de sistema de archivos (por ejemplo, ext4, ntfs).
+     - `-o`: especifica opciones de montaje (por ejemplo, ro para solo lectura).
+5. **mkfs (make filesystem)**: Crea un sistema de archivos en un dispositivo o partición.
+   - Uso: `mkfs [opciones] dispositivo`
+   - Ejemplo: `mkfs.ext4 /dev/sdb1` crea un sistema de archivos ext4 en el dispositivo `/dev/sdb1`.
+   - Parámetros comunes:
+     - `-t`: especifica el tipo de sistema de archivos (por ejemplo, ext4, ntfs).
+     - `-c`: verifica el dispositivo en busca de bloques defectuosos antes de crear el sistema de archivos.
+6. **fsck (file system check)**: Verifica y repara sistemas de archivos.
+   - Uso: `fsck [opciones] dispositivo`
+   - Ejemplo: `fsck /dev/sdb1` verifica y repara el sistema de archivos en el dispositivo `/dev/sdb1`.
+   - Parámetros comunes:
+     - `-y`: responde "sí" a todas las preguntas durante la reparación.
+     - `-n`: realiza una verificación sin hacer cambios (modo solo lectura).
+7. **writer**: Permite escribir datos directamente en un dispositivo de bloque.
+   - Uso: `dd if=origen of=destino [opciones]`
+   - Ejemplo: `dd if=/dev/zero of=/dev/sdb bs=1M count=100` escribe 100 MB de ceros en el dispositivo `/dev/sdb`.
+   - Parámetros comunes:
+     - `if=`: especifica el archivo de entrada (input file).
+     - `of=`: especifica el archivo de salida (output file).
+     - `bs=`: especifica el tamaño del bloque.
+     - `count=`: especifica el número de bloques a copiar.
+8.**losetup**: Asocia un archivo de imagen de disco con un dispositivo de bucle (loop device).
+   - Uso: `losetup [opciones] dispositivo archivo_imagen`
+   - Ejemplo: `losetup /dev/loop0 imagen.iso` asocia el archivo `imagen.iso` con el dispositivo `/dev/loop0`.
+   - Parámetros comunes:
+     - `-f`: encuentra el primer dispositivo de bucle libre.
+     - `-d`: desasocia un dispositivo de bucle.
+9.**stat**: Muestra información detallada sobre un archivo o sistema de archivos.
+   - Uso: `stat [opciones] archivo`
+   - Ejemplo: `stat archivo.txt` muestra información detallada sobre `archivo.txt`, incluyendo permisos, propietario, tamaño, y fechas de acceso/modificación.
+   - Parámetros comunes:
+     - `-c`: especifica un formato personalizado para la salida.
+     - `-f`: muestra información sobre el sistema de archivos en lugar del archivo.
+
+# Procesos 
+**A-Que significa que un proceso se esta ejecutando en background? y en foreground?**
+- **Foreground (Primer Plano)**: Un proceso que se está ejecutando en primer plano es aquel que está activo y en el que el usuario puede interactuar directamente a través de la terminal. Mientras un proceso está en primer plano, la terminal está ocupada por ese proceso y no puede aceptar otros comandos hasta que el proceso termine o se detenga.
+- **Background (Segundo Plano)**: Un proceso que se está ejecutando en segundo plano es aquel que se ejecuta de manera independiente y no requiere interacción directa del usuario. Los procesos en segundo plano permiten al usuario continuar utilizando la terminal para otros comandos mientras el proceso sigue ejecutándose. Estos procesos no bloquean la terminal y pueden ser gestionados mediante comandos específicos.
+
+**B-como se puede hacer para ejecutar un proceso en background? como puedo hacer para pasar un proceso de background a foreground?**
+Para ejecutar un proceso en background, puede agregar el símbolo `&` al final del comando al iniciarlo. Por ejemplo:
+```bash
+   comando &
+```
+Esto iniciará el `comando` en segundo plano, permitiendo que la terminal esté disponible para otros comandos.
+Para pasar un proceso de background a foreground, puede utilizar el comando `fg` seguido del número de trabajo (job number) del proceso en segundo plano. Puede ver la lista de trabajos en segundo plano utilizando el comando `jobs`.
+```bash
+   jobs
+   fg %1
+```
+En este ejemplo, `fg %1` traerá el primer trabajo en segundo plano (job number 1) al primer plano.
+
+**C- Pipe (|): cual es su funcionalidad? como se utiliza?**
+El pipe (`|`) es un operador en la línea de comandos de Unix y GNU/Linux que permite conectar la salida estándar (stdout) de un comando a la entrada estándar (stdin) de otro comando. Esto permite encadenar múltiples comandos para procesar datos de manera secuencial, donde la salida de un comando se convierte en la entrada del siguiente.
+
+**D-Redireccion, Que tipo de redirecciones existen? cual es su funcionalidad?**
+La redirección en la línea de comandos de Unix y GNU/Linux permite cambiar la fuente o el destino de la entrada y salida de los comandos. Existen varios tipos de redirecciones, cada una con su funcionalidad específica:
+1. **Redirección de salida estándar (`>` y `>>`)**:
+   - `>`: Redirige la salida estándar de un comando a un archivo, sobrescribiendo el contenido del archivo si ya existe.
+     - Ejemplo: `comando > archivo.txt` (sobrescribe `archivo.txt` con la salida de `comando`).
+   - `>>`: Redirige la salida estándar de un comando a un archivo, agregando la salida al final del archivo si ya existe.
+     - Ejemplo: `comando >> archivo.txt` (agrega la salida de `comando` al final de `archivo.txt`).
+2. **Redirección de entrada estándar (`<`)**:
+   - `<`: Redirige la entrada estándar de un comando desde un archivo en lugar del teclado.
+     - Ejemplo: `comando < archivo.txt` (lee la entrada de `archivo.txt` en lugar del teclado).
+3. **Redirección de error estándar (`2>` y `2>>`)**:
+   - `2>`: Redirige la salida de error estándar (stderr) de un comando a un archivo, sobrescribiendo el contenido del archivo si ya existe.
+     - Ejemplo: `comando 2> error.txt` (sobrescribe `error.txt` con los mensajes de error de `comando`).
+   - `2>>`: Redirige la salida de error estándar (stderr) de un comando a un archivo, agregando los mensajes de error al final del archivo si ya existe.
+     - Ejemplo: `comando 2>> error.txt` (agrega los mensajes de error de `comando` al final de `error.txt`).
+4. **Redirección combinada (`&>`, `&>>`)**:
+   - `&>`: Redirige tanto la salida estándar como la salida de error estándar a un archivo, sobrescribiendo el contenido del archivo si ya existe.
+     - Ejemplo: `comando &> salida.txt` (sobrescribe `salida.txt` con la salida y los errores de `comando`).
+   - `&>>`: Redirige tanto la salida estándar como la salida de error estándar a un archivo, agregando al final del archivo si ya existe.
+     - Ejemplo: `comando &>> salida.txt` (agrega la salida y los errores de `comando` al final de `salida.txt`).
+5. **Redirección de múltiples descriptores de archivo**:
+   - `n>`: Redirige un descriptor de archivo específico (donde `n` es un número) a un archivo.
+     - Ejemplo: `comando 3> archivo.txt` (redirige el descriptor de archivo 3 a `archivo.txt`).
+
+# Otros comandos de Linux
+**A-A que hace referencia el concepto de empaquetar archivos en GNU/Linux?**
+El concepto de empaquetar archivos en GNU/Linux se refiere al proceso de agrupar múltiples archivos y directorios en un solo archivo comprimido o archivado. Esto facilita la gestión, almacenamiento y transferencia de datos, ya que en lugar de manejar varios archivos individuales, se puede trabajar con un solo archivo que contiene todos los elementos necesarios. Los archivos empaquetados suelen tener extensiones específicas que indican el formato de compresión utilizado, como `.tar`, `.zip`, `.gz`, entre otros.
+
+**C-Que acciones debe llevar a cabo para comprimir 4 archivos en uno solo? indique la secuencia de comandos ejecutadso**
+Para comprimir 4 archivos en uno solo en GNU/Linux, puede utilizar el comando `tar` para crear un archivo tar y luego comprimirlo con `gzip` o `bzip2`. Aquí está la secuencia de comandos que debe ejecutar:
+1. Primero, cree un archivo tar que contenga los 4 archivos:
+   ```bash
+   tar -cvf archivos.tar archivo1.txt archivo2.txt archivo3.txt archivo4.txt
+   ```
+   - `-c`: crea un nuevo archivo tar.
+   - `-v`: muestra el progreso en la terminal (opcional).
+   - `-f`: especifica el nombre del archivo tar.
+2. Luego, comprima el archivo tar utilizando `gzip`:
+   ```bash
+   gzip archivos.tar
+   ```
+   Esto creará un archivo comprimido llamado `archivos.tar.gz`.
+Alternativamente, puede combinar ambos pasos en un solo comando utilizando `tar` con la opción de compresión:
+```bash
+   tar -czvf archivos.tar.gz archivo1.txt archivo2.txt archivo3.txt archivo4.txt
+```
+   - `-z`: comprime el archivo tar utilizando gzip.
+   - El resultado será un archivo comprimido llamado `archivos.tar.gz` que contiene los 4 archivos originales.
+
+**D-Pueden comprimirse un conjunto de archivos utilizando un unico comando?**
+Sí, pueden comprimirse un conjunto de archivos utilizando un único comando. Por ejemplo, utilizando el comando `tar` con la opción de compresión `-z` para gzip o `-j` para bzip2, puede crear y comprimir un archivo en un solo paso. Aquí hay un ejemplo utilizando gzip:
+```bash
+   tar -czvf archivos_comprimidos.tar.gz archivo1.txt archivo2.txt archivo3.txt archivo4.txt
+```
+   - `-c`: crea un nuevo archivo tar.
+   - `-z`: comprime el archivo tar utilizando gzip.
+   - `-v`: muestra el progreso en la terminal (opcional).
+   - `-f`: especifica el nombre del archivo tar.
+
+**E-Investigue la funcionalidad de los siguiente comando**
+1.**tar** : El comando `tar` (tape archive) se utiliza para crear, mantener y extraer archivos de archivo (tarballs) en sistemas Unix y GNU/Linux. Permite agrupar múltiples archivos y directorios en un solo archivo, facilitando su almacenamiento y transferencia. Además, `tar` puede combinarse con herramientas de compresión como `gzip` o `bzip2` para crear archivos comprimidos.
+   - Uso: `tar [opciones] archivo.tar [archivos/directorios]`
+   - Ejemplo: `tar -czvf archivo.tar.gz directorio/` crea un archivo comprimido `archivo.tar.gz` que contiene el directorio especificado.
+   - Parámetros comunes:
+     - `-c`: crea un nuevo archivo tar.
+     - `-x`: extrae archivos de un archivo tar.
+     - `-v`: muestra el progreso en la terminal (opcional).
+     - `-f`: especifica el nombre del archivo tar.
+     - `-z`: comprime o descomprime utilizando gzip.
+     - `-j`: comprime o descomprime utilizando bzip2.
+2.**grep** : El comando `grep` (global regular expression print) se utiliza para buscar texto dentro de archivos o la salida de otros comandos en sistemas Unix y GNU/Linux. Permite filtrar líneas que coinciden con un patrón específico, utilizando expresiones regulares para definir el patrón de búsqueda.
+   - Uso: `grep [opciones] patrón [archivo(s)]`
+   - Ejemplo: `grep "texto" archivo.txt` busca y muestra todas las líneas en `archivo.txt` que contienen la palabra "texto".
+   - Parámetros comunes:
+     - `-i`: ignora mayúsculas y minúsculas en la búsqueda.
+     - `-r`: busca recursivamente en directorios.
+     - `-v`: invierte la coincidencia, mostrando líneas que no coinciden con el patrón.
+     - `-n`: muestra el número de línea junto con las líneas coincidentes.
+     - `-c`: cuenta el número de líneas que coinciden con el patrón.
+3.**gzip** : El comando `gzip` (GNU zip) se utiliza para comprimir archivos en sistemas Unix y GNU/Linux. Utiliza el algoritmo de compresión DEFLATE para reducir el tamaño de los archivos, lo que facilita su almacenamiento y transferencia. Los archivos comprimidos con `gzip` suelen tener la extensión `.gz`.
+   - Uso: `gzip [opciones] archivo`
+   - Ejemplo: `gzip archivo.txt` comprime `archivo.txt`, creando un archivo llamado `archivo.txt.gz`.
+   - Parámetros comunes:
+     - `-d`: descomprime un archivo comprimido (equivalente a `gunzip`).
+     - `-k`: conserva el archivo original después de la compresión.
+     - `-r`: comprime archivos en directorios de forma recursiva.
+     - `-l`: muestra información sobre los archivos comprimidos.
+4.**zgrep** : El comando `zgrep` es una variante del comando `grep` que permite buscar texto dentro de archivos comprimidos con `gzip` (archivos con extensión `.gz`). Funciona de manera similar a `grep`, pero descomprime los archivos sobre la marcha para realizar la búsqueda, lo que facilita la búsqueda en archivos comprimidos sin necesidad de descomprimirlos manualmente.
+   - Uso: `zgrep [opciones] patrón archivo.gz`
+   - Ejemplo: `zgrep "texto" archivo.txt.gz` busca y muestra todas las líneas en `archivo.txt.gz` que contienen la palabra "texto".
+   - Parámetros comunes:
+     - `-i`: ignora mayúsculas y minúsculas en la búsqueda.
+     - `-r`: busca recursivamente en directorios (si se usa con archivos `.gz` dentro de un directorio).
+     - `-v`: invierte la coincidencia, mostrando líneas que no coinciden con el patrón.
+     - `-n`: muestra el número de línea junto con las líneas coincidentes.
+     - `-c`: cuenta el número de líneas que coinciden con el patrón.
+5.**wc** : El comando `wc` (word count) se utiliza para contar líneas, palabras y caracteres en archivos de texto o en la entrada estándar en sistemas Unix y GNU/Linux. Es útil para obtener estadísticas rápidas sobre el contenido de archivos o la salida de otros comandos.
+   - Uso: `wc [opciones] [archivo(s)]`
+   - Ejemplo: `wc archivo.txt` muestra el número de líneas, palabras y caracteres en `archivo.txt`.
+   - Parámetros comunes:
+     - `-l`: cuenta solo las líneas.
+     - `-w`: cuenta solo las palabras.
+     - `-c`: cuenta solo los caracteres.
+     - `-m`: cuenta los caracteres, incluyendo los multibyte (UTF-8).
+     - `-L`: muestra la longitud de la línea más larga.
+
+# Comandos (19)
+Indique qué acción realiza cada uno de los comandos indicados a continuación
+considerando su orden. Suponga que se ejecutan desde un usuario que no es root ni
+pertenece al grupo de root. (Asuma que se encuentra posicionado en el directorio de
+trabajo del usuario con el que se logueó). En caso de no poder ejecutarse el comando
+indique la razón:
+l s −l > prueba
+ps > PRUEBA
+chmod 710 prueba
+chown root:root PRUEBA
+chmod 777 PRUEBA
+chmod 700 /etc/passwd
+passwd root
+rm PRUEBA
+man /etc/shadow
+find / −name ∗ .conf
+usermod root −d /home/ newroot −L
+cd / root
+rm ∗
+cd / etc
+cp ∗ /home 
+
+1. `ls -l > prueba`: Lista los archivos en el directorio actual con detalles y redirige la salida a un archivo llamado `prueba`. Si el archivo ya existe, se sobrescribirá.
+2. `ps > PRUEBA`: Muestra los procesos en ejecución y redirige la salida a un archivo llamado `PRUEBA`. Si el archivo ya existe, se sobrescribirá.
+3. `chmod 710 prueba`: Cambia los permisos del archivo `prueba` para que el propietario tenga permisos de lectura, escritura y ejecución (7), el grupo tenga permisos de ejecución (1), y otros no tengan permisos (0).
+4. `chown root:root PRUEBA`: Intenta cambiar el propietario y el grupo del archivo `PRUEBA` a `root`. Este comando fallará porque el usuario actual no tiene privilegios de root.
+5. `chmod 777 PRUEBA`: Cambia los permisos del archivo `PRUEBA` para que el propietario, el grupo y otros tengan permisos de lectura, escritura y ejecución (7).
+6. `chmod 700 /etc/passwd`: Intenta cambiar los permisos del archivo `/etc/passwd` para que solo el propietario (root) tenga permisos de lectura, escritura y ejecución (7), y el grupo y otros no tengan permisos (0). Este comando fallará porque el usuario actual no tiene privilegios de root.
+7. `passwd root`: Intenta cambiar la contraseña del usuario `root`. Este comando fallará porque el usuario actual no tiene privilegios de root.
+8. `rm PRUEBA`: Elimina el archivo `PRUEBA`.
+9. `man /etc/shadow`: Muestra el manual del archivo `/etc/shadow`. Este comando fallará porque el usuario actual no tiene permisos para leer el archivo `/etc/shadow`.
+10. `find / -name *.conf`: Busca archivos con la extensión `.conf` en todo el sistema de archivos. Este comando puede tardar mucho tiempo y puede generar muchos errores de permisos al intentar acceder a ciertos directorios.
+11. `usermod root -d /home/newroot -L`: Intenta modificar el usuario `root` para cambiar su directorio home a `/home/newroot` y bloquear la cuenta. Este comando fallará porque el usuario actual no tiene privilegios de root.
+12. `cd /root`: Intenta cambiar al directorio `/root`. Este comando fallará porque el usuario actual no tiene permisos para acceder al directorio `/root`.
+13. `rm *`: Elimina todos los archivos en el directorio actual del usuario.
+14. `cd /etc`: Cambia al directorio `/etc`. Este comando tendrá éxito si el usuario tiene permisos de lectura y ejecución en el directorio `/etc`.
+15. `cp * /home`: Copia todos los archivos del directorio actual del usuario al directorio `/home`. Este comando fallará si el usuario no tiene permisos de escritura en el directorio `/home`.
+
+# Comandos (20)
+Indique qué comando realiza la accion
+1. Terminar el proceso con PID 23: `kill 23`
+2. Terminar el proceso llamado init o systemd. Que resultado se obtiene? `sudo killall init` o `sudo killall systemd` (esto puede causar que el sistema se vuelva inestable o se reinicie).
+3. Buscar todos los archivos de usuarios en los que su nombre contiene la cadena ".conf": `find /home -name "*.conf"`
+4. Guardar una lista de procesos en ejecucion el archivo /home/<su nombre de usuario>/procesos: `ps aux > /home/<su nombre de usuario>/procesos`
+5. cambiar los permisos del archivo /hombe/<su nombre de usuario>/xxxx a 
+   - usuario: lectura, escritura y ejecucion
+   - grupo: lectura y ejecucion
+   - otros: ejecucion
+   `chmod 751 /home/<su nombre de usuario>/xxxx`
+6. Cambiar los permisos del archivo /hombre/<su nombre de usuario>/yyyy a
+   - usuario: lectura, escritura
+   - grupo: lectura, ejecucion
+   - otros: sin permisos
+   `chmod 640 /home/<su nombre de usuario>/yyyy`
+7. Borrar todos los archivos del directorio /tmp: `rm /tmp/*`
+8. Cambiar el propietario del archivo /opt/isodata el usuario isocso: `sudo chown isocso /opt/isodata`
+9. Guardar en el archivo /home/<su nombre de usuario>/donde el directorio donde me encuentro en este momento, en caso de que el archivo existe no se debe eliminar su contenido anterior: `pwd >> /home/<su nombre de usuario>/donde`
+
+# Comandos (21)
+Indique que comando seria necesario ejecutar para realizar cada una de las siguientes acciones:
+1. Ingrese el sistema como usuario "root": `su -` o `sudo -i`
+2. Cree un usuario. Elija como nombre, por convecion, la primera letra de su nombre seguida de su apellido. Asignele una contraseña de acceso: `sudo useradd -m -s /bin/bash <inicial><apellido> && sudo passwd <inicial><apellido>`
+3. Que archivos fueron modificados luego de crear el usuario y que direcciones se crearon?
+   - Archivos modificados: `/etc/passwd`, `/etc/shadow`, `/etc/group`, `/etc/gshadow`
+   - Directorio creado: `/home/<inicial><apellido>`
+4. Crear un directorio en /tmp llamado miCursada: `mkdir /tmp/miCursada`
+5. Copiar todos los archivos de /var/config al directorio /tmp/miCursada: `cp /var/config/* /tmp/miCursada/`
+6. Para el directorio antes creado cambiar el propietario y grupo al usuario creado y grupo users: `sudo chown -R <inicial><apellido>:users /tmp/miCursada`
+7. Agregue permiso total al dueño de escritura al grupo y escritura y ejecucion a todos los demas usuarios para todos los archivos dentro de un directorio en forma recursiva: `chmod -R 775 /tmp/miCursada`
+8. Accede a otra terminal para logearse con el usuario antes creado: `Ctrl + Alt + F2` (o cualquier otra tecla de función de F1 a F6): `su - <inicial><apellido>`
+9. Una vez logeado con el usuario antes creado, averigue cual es el nombre de su terminal: `tty`
+10. Verifique la cantidad de procesos activos que hay  en el sistema: `ps aux | wc -l`
+11. Verifique la cantidad de usuario conectados al sistema: `who | wc -l`
+12. Vuelva a la terminal del usuario root y enviele un mensaje al usuario anteriormente creado enviandole que el sistema va aser apagado: `sudo wall "El sistema se va a apagar en 5 minutos"`
+13. Apague el sistema: `sudo shutdown -h now` o `sudo poweroff`
+
+# Comandos (22)
+Indique que comando seria necesario ejectuar para realizar cada una de las siguientes acciones:
+1. Cree un directorio cuyo nombre sea su numero de legajo e ingrese a el: `mkdir <legajo> && cd <legajo>`
+2. Cree un archivo utilizando el editor de textos vi, e introduza su informacion personal: Nombre, Apellido, Numero de aluno y direccion de correo electronico. El archivo debe llamarse "LEAME": `vi README` (luego ingrese la informacion y guarde el archivo)
+3. Cambie los permisos del archivo "LEAME" de manera que se puedan ver reflejados los siguientes permisos: 
+   - Dueño: ningun permiso
+   - Grupo: ejecucion
+   - Otro: todos los permisos
+   `chmod 017 README`
+4. Vaya al directorio /etc y verifique su contenido. Cree un archivo dentro de su directorio personal cuyo nombrre sea "LEAME" donde el contenido del mismo sea el listado de todos los archivos y directorios contenidos en /etc. Cual es la razon por la cual puede crear este archivo si ya existe un archivo llama "LEAME" en este directorio? `cd /etc && ls -l > /home/<su nombre de usuario>/LEAME` (puede crear el archivo porque está en un directorio diferente)
+5. Que comando utilizario y de que manera si tuviera que localizar un archivo dentro del fileSystem? y si tuviera que locarizar varios archivos con caracteristicas similires? `find / -name "nombre_del_archivo"` para un archivo específico, y `find / -name "*.extensión"` para varios archivos con características similares.
+
+
+# Comandos (23)
+Indique qué acción realiza cada uno de los comandos indicados a continuación
+considerando su orden. Suponga que se ejecutan desde un usuario que no es root ni
+pertenece al grupo de root. (Asuma que se encuentra posicionado en el directorio de
+trabajo del usuario con el que se logueó). En caso de no poder ejecutarse el comando
+indique la razón:
+01. mkdir iso
+02. cd . / iso; ps > f0
+03. ls > f1
+04. cd /
+05. echo $HOME
+06. ls −l $> $HOME/ iso/ls
+07. cd $HOME; mkdir f2
+08. ls −ld f2
+09. chmod 341 f2
+10. touch dir
+11. cd f2
+12. cd ~/iso
+13. pwd > f3
+14. ps | grep 'ps' | wc −l >> ../f2/f3
+15. chmod 700 ../f2 ; cd ..
+16. find . −name etc/passwd
+17. find / −name etc/passwd
+18. mkdir ejercicio5
+19. . . . . . . . . . . . . . . . . . . .
+20. . . . . . . . . . . . . . . . . . . .
+
+1. `mkdir iso`: Crea un directorio llamado `iso` en el directorio actual.
+2. `cd ./iso; ps > f0`: Cambia al directorio `iso` y guarda la lista de procesos en ejecución en un archivo llamado `f0`.
+3. `ls > f1`: Lista los archivos en el directorio actual (`iso`) y redirige la salida a un archivo llamado `f1`.
+4. `cd /`: Cambia al directorio raíz (`/`).
+5. `echo $HOME`: Muestra la ruta del directorio home del usuario actual.
+6. `ls -l $> $HOME/iso/ls`: Este comando es incorrecto debido al uso de `$>`; probablemente se quiso usar `ls -l > $HOME/iso/ls`, que listaría los archivos en el directorio raíz y redirigiría la salida a un archivo llamado `ls` dentro del directorio `iso` en el home del usuario.
+7. `cd $HOME; mkdir f2`: Cambia al directorio home del usuario y crea un directorio llamado `f2`.
+8. `ls -ld f2`: Muestra los detalles del directorio `f2`.
+9. `chmod 341 f2`: Cambia los permisos del directorio `f2` para que el propietario tenga permisos de escritura (3), el grupo tenga permisos de lectura (4), y otros tengan permisos de ejecución (1).
+10. `touch dir`: Crea un archivo vacío llamado `dir` en el directorio actual (`f2`).
+11. `cd f2`: Cambia al directorio `f2`.
+12. `cd ~/iso`: Cambia al directorio `iso` dentro del directorio home del usuario.
+13. `pwd > f3`: Guarda la ruta del directorio actual (`iso`) en un archivo llamado `f3`.
+14. `ps | grep 'ps' | wc -l >> ../f2/f3`: Cuenta el número de procesos que contienen la cadena 'ps' y agrega el resultado al final del archivo `f3` en el directorio `f2`.
+15. `chmod 700 ../f2 ; cd ..`: Cambia los permisos del directorio `f2` para que solo el propietario tenga todos los permisos (7) y luego cambia al directorio padre.
+16. `find . -name etc/passwd`: Busca un archivo llamado `passwd` dentro del directorio `etc` en el directorio actual y sus subdirectorios. Probablemente no encontrará nada porque `etc/passwd` no está en el directorio actual.
+17. `find / -name etc/passwd`: Busca un archivo llamado `passwd` dentro del directorio `etc` en todo el sistema de archivos. Este comando puede tardar mucho tiempo y puede generar muchos errores de permisos al intentar acceder a ciertos directorios.
+18. `mkdir ejercicio5`: Crea un directorio llamado `ejercicio5` en el directorio actual.
+
