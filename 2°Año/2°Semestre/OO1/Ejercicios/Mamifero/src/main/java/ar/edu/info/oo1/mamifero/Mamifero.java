@@ -111,10 +111,10 @@ public class Mamifero {
         if (this.getPadre() != null && this.getPadre().equals(mamifero) ) {
             return true;
         }
-        if (this.getMadre() != null && tieneComoAncestroA(this.getMadre())) {
+        if (this.getMadre() != null && this.getMadre().tieneComoAncestroA(mamifero)) {
             return true;
         }
-        if (this.getPadre() != null && tieneComoAncestroA(this.getPadre())) {
+        if (this.getPadre() != null && this.getPadre().tieneComoAncestroA(mamifero)){
             return true;
         }
         return false;

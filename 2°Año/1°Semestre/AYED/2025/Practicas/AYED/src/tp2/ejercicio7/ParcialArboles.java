@@ -35,7 +35,7 @@ public class ParcialArboles {
         return buscarNodo(nodo.getRightChild(), num);
     }
     
-    public int contarUnicoHijo(BinaryTree<Integer> nodo) {
+    private int contarUnicoHijo(BinaryTree<Integer> nodo) {
         if (nodo == null) return 0;
         int cuenta = 0;
         if ((nodo.hasLeftChild() && !nodo.hasRightChild()) || (!nodo.hasLeftChild() && nodo.hasRightChild())) {

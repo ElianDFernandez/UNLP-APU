@@ -155,12 +155,22 @@ TR = Tiempo de inicio de ejecución - Tiempo de solicitud
 
 **FCFS (First Come First Served)**
 El algoritmo FCFS asigna la CPU al proceso que llega primero a la cola de listos. Es un algoritmo no apropiativo, lo que significa que una vez que un proceso comienza a ejecutarse, no puede ser interrumpido hasta que termine su ejecución. Este enfoque es simple de implementar y entender, pero puede llevar a tiempos de espera largos para procesos que llegan después de procesos largos (efecto convoy).
-Ejemplo:
-| PID | CPU | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |TR|TE|
-|--1--|--3--|>1-|-2-|-3-|---|---|---|---|---| 3| 0|
-|--2--|--3--|---|>--|---|-1-|-2-|-3-|---|---| 5| 2|
-
 
 **SJF (Shortest Job First)**
+El algoritmo SJF asigna la CPU al proceso con el tiempo de CPU más corto entre los procesos en la cola de listos. Puede ser apropiativo o no apropiativo. En su versión no apropiativa, una vez que un proceso comienza a ejecutarse, no puede ser interrumpido. En su versión apropiativa (también conocido como SRTF - Shortest Remaining Time First), un proceso en ejecución puede ser interrumpido si llega un nuevo proceso con un tiempo de CPU más corto. Este algoritmo minimiza el tiempo promedio de espera, pero puede llevar a la inanición de procesos largos si llegan continuamente procesos cortos.
 
+**Round Robin (RR)**
+El algoritmo Round Robin asigna la CPU a cada proceso en la cola de listos por un período de tiempo fijo, conocido como quantum. Es un algoritmo apropiativo, ya que un proceso puede ser interrumpido cuando su quantum expira, y la CPU se asigna al siguiente proceso en la cola. Este enfoque es justo y equitativo, ya que todos los procesos reciben una cantidad igual de tiempo de CPU, pero puede llevar a un mayor tiempo de espera si el quantum es demasiado pequeño o demasiado grande.
+
+**Priority Scheduling (Prioridades)**
+El algoritmo de planificación por prioridades asigna la CPU al proceso con la prioridad más alta en la cola de listos. Puede ser apropiativo o no apropiativo. En su versión no apropiativa, una vez que un proceso comienza a ejecutarse, no puede ser interrumpido. En su versión apropiativa, un proceso en ejecución puede ser interrumpido si llega un nuevo proceso con una prioridad más alta. Este algoritmo permite la diferenciación entre procesos importantes y menos importantes, pero puede llevar a la inanición de procesos de baja prioridad si llegan continuamente procesos de alta prioridad.
+
+**Cual es el mas adecuado segun los tipos de procesos y/o SO?**
+- **FCFS** es adecuado para sistemas donde la carga de trabajo es ligera y los procesos tienen tiempos de ejecución similares. Es simple y fácil de implementar, pero no es ideal para sistemas con alta variabilidad en los tiempos de ejecución de los procesos.
+
+- **SJF** es ideal para sistemas donde los tiempos de ejecución de los procesos son conocidos de antemano y varían significativamente. Es eficiente en términos de tiempo promedio de espera, pero puede no ser práctico en sistemas donde los tiempos de ejecución son impredecibles.
+
+- **RR** es adecuado para sistemas interactivos donde se requiere una respuesta rápida a las solicitudes del usuario. Proporciona un buen equilibrio entre equidad y eficiencia, pero puede no ser ideal para procesos de larga duración que necesitan más tiempo de CPU.
+
+- **Prioridades** es útil en sistemas donde algunos procesos son más importantes que otros. Permite que los procesos críticos obtengan más recursos, pero puede llevar a la inanición de procesos de baja prioridad si no se gestionan adecuadamente.
 
