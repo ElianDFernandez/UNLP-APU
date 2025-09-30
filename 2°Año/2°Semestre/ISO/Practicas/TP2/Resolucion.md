@@ -174,3 +174,10 @@ El algoritmo de planificación por prioridades asigna la CPU al proceso con la p
 
 - **Prioridades** es útil en sistemas donde algunos procesos son más importantes que otros. Permite que los procesos críticos obtengan más recursos, pero puede llevar a la inanición de procesos de baja prioridad si no se gestionan adecuadamente.
 
+# Resolver algoritmos de planificacion
+
+**A- FCFS**
+En FCFS, los procesos se atienden en el orden en que llegan. Dado que todos los procesos llegan al mismo tiempo (t=0), se ejecutan en el orden P1, P2, P3, P4, P5.
+
+
+
