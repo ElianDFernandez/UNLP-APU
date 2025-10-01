@@ -45,7 +45,7 @@ public class ProfundidadDeArbolBinario {
             }
             
             if (nivelActual == p) {
-                return sumaNivel; // Solo queremos sumar el nivel p
+                return sumaNivel; 
             }
                 nivelActual++;
             }
