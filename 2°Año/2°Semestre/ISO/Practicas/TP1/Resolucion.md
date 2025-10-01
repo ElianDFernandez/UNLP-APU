@@ -1,13 +1,4 @@
-# TP N°1
-Temas 
-* GNU/LINUX
-* Instalacion y conceptos basicos
-* Permisos 
-* Arranque 
-* Usuarios 
-* Organizacion Internga
-
-## Caracteristicas de GNU/Linux: 
+# Caracteristicas de GNU/Linux: 
 **A-Mencione y explique las caracteristicas mas relevantes de GNU/Linux**
 - **Software Libre:** El código fuente está disponible para todos, permitiendo modificar y distribuir el sistema.
 - **Multitarea y Multiusuario:** Permite que varios usuarios trabajen simultáneamente y ejecutar múltiples procesos a la vez.
