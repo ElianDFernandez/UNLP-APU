@@ -210,3 +210,92 @@ La inanición (starvation) es una situación en la que un proceso no puede obten
 - **Desventajas con procesos I/O Bound:** Los procesos I/O Bound generalmente se benefician del SRTF, ya que tienden a tener tiempos de ejecución más cortos. Sin embargo, si hay muchos procesos I/O Bound llegando al sistema, los procesos CPU Bound pueden quedar en espera indefinidamente, lo que puede afectar la equidad y la eficiencia del sistema en general.
 Para mitigar estas desventajas, se pueden implementar mecanismos como el envejecimiento (aging) para evitar la inanición y ajustar el quantum en Round Robin para equilibrar la respuesta entre procesos CPU Bound e I/O Bound.
 
+# 10 
+#./Ejercicio10.xlsx
+
+# 11 
+Sí, bajo el esquema de VRR (Virtual Round Robin), es posible que el quantum de un proceso nunca llegue a 0. Esto puede suceder si el proceso en cuestión es un proceso I/O Bound que realiza operaciones de entrada/salida con frecuencia. En este caso, el proceso puede ser interrumpido y reprogramado antes de que su quantum expire, lo que significa que el contador nunca llega a 0.
+
+# 12 **Importante** 
+
+Algoritmos SJF y SRTF, requieren conocer la duracion de la proxima rafaga de CPU. En la practica esto no es posible, por lo que se utilizan estimaciones basadas en el historial de ejecucion del proceso.
+La formula para la estimacion es:
+```plaintext
+    S(n+1) = 1/n * T(n) + (n-1)/n * S(n)
+```
+Donde:
+- S(n+1) es la proxima estimacion de la duracion de la rafaga de CPU
+- T(n) es la duracion real de la ultima rafaga de CPU
+- S(n) es la estimacion anterior de la duracion de la rafaga de CPU
+- n es el numero de rafagas de CPU que el proceso ha ejecutado hasta ahora 
+
+Otra tecnica comun es el promedio ponderado exponencial, donde la proxima estimacion se calcula como:
+```plaintext
+    S(n+1) = α*T(n) + (1-α)*S(n)
+```
+Donde:
+- S(n+1) es la proxima estimacion de la duracion de la rafaga de CPU
+- T(n) es la duracion real de la ultima rafaga de CPU
+- S(n) es la estimacion anterior de la duracion de la rafaga de CPU
+- α es un factor de ponderacion entre 0 y 1 que determina la importancia de la ultima rafaga en la nueva estimacion. 
+
+cuando α es cercano a 1, la nueva estimacion depende mas de la ultima rafaga, mientras que cuando α es cercano a 0, la nueva estimacion depende mas del historial de ejecucion del proceso.
+
+a. Suponga un proceso cuyas ráfagas de CPU reales tienen como duración: 6,
+4, 6, 4, 13, 13, 13. Calcule qué valores se obtendrían como estimación para
+las ráfagas de CPU del proceso si se utiliza la fórmula 1, con un valor inicial
+S(1) = 10.
+```plaintext
+Rafaga | T(n) | S(n) | S(n+1)
+------------------------------  
+    1    |  6   | 10   | 1/1*6 + 0/1*10 = 6
+    2    |  4   |  6   | 1/2*4 + 1/2*6 = 5
+    3    |  6   |  5   | 1/3*6 + 2/3*5 = 5.33
+    4    |  4   |5.33  | 1/4*4 + 3/4*5.33 = 5
+    5    | 13   | 5    | 1/5*13 + 4/5*5 = 6.6
+    6    | 13   |6.6   | 1/6*13 + 5/6*6.6 =7.16
+    7    | 13   |7.16  |1/7*13 +6/7*7.16=7.59
+    
+```
+
+c. Para la situación planteada en a) calcule qué valores se obtendrían si se
+utiliza la fórmula 2 con α = 0, 2; α = 0, 5 y α = 0,8
+```plaintext
+Rafaga | T(n) | S(n) | S(n+1) α=0.2 | S(n+1) α=0.5 | S(n+1) α=0.8
+--------------------------------------------------------------------------------
+    1  |  6   | 10   | 0.2*6 + 0.8*10 = 9.2 | 0.5*6 + 0.5*10 = 8 | 0.8*6 + 0.2*10 = 7.2
+    2  |  4   | 9.2  | 0.2*4 + 0.8*9.2 = 8.16 | 0.5*4 + 0.5*9.2 = 6.6 | 0.8*4 + 0.2*7.2 = 4.64
+    3  |  6   | 8.16 | 0.2*6 + 0.8*8.16 = 7.73 | 0.5*6 + 0.5*8.16 = 7.08 | 0.8*6 + 0.2*4.64 = 5.33
+    4  |  4   | 7.73 | 0.2*4 + 0.8*7.73 = 6.98 | 0.5*4 + 0.5*7.73 = 5.87 | 0.8*4 + 0.2*5.33 = 4.27
+    5  | 13   | 6.98 | 0.2*13 + 0.8*6.98 = 8.58 | 0.5*13 + 0.5*6.98 = 9.99 | 0.8*13 + 0.2*4.27 = 11.05
+    6  | 13   | 8.58 | 0.2*13 + 0.8*8.58 = 9.66 | 0.5*13 + 0.5*9.99 = 11.495 | 0.8*13 + 0.2*11.05 = 12.39
+    7  | 13   | 9.66 | 0.2*13 + 0.8*9.66 = 10.33 | 0.5*13 + 0.5*11.495 = 12.2475 | 0.8*13 + 0.2*12.39 = 12.78
+```
+
+d. Para todas las estimaciones realizadas en a y c ¿Cuál es la que más se
+asemeja a las ráfagas de CPU reales del proceso?
+
+La estimación que más se asemeja a las ráfagas de CPU reales del proceso es la obtenida utilizando la fórmula 2 con α = 0.5. Esta configuración proporciona un equilibrio adecuado entre la influencia de la última ráfaga y el historial de ejecuciones, lo que resulta en estimaciones que reflejan mejor las duraciones reales de las ráfagas de CPU del proceso. Las estimaciones con α = 0.2 tienden a ser demasiado conservadoras, mientras que las con α = 0.8 reaccionan demasiado rápidamente a los cambios recientes, lo que puede no ser representativo del comportamiento general del proceso.
+
+
+# 13 Colas Multinivel
+
+Actualmente los algoritmos de planificación vistos se han ido combinando para
+formar algoritmos más eficientes. Así surge el algoritmo de Colas Multinivel, donde la
+cola de procesos listos es dividida en varias colas, teniendo cada una su propio
+algoritmo de planificación.
+a. Suponga que se tiene dos tipos de procesos: Interactivos y Batch. Cada uno
+de estos procesos se coloca en una cola según su tipo. ¿Qué algoritmo de
+los vistos utilizará para administrar cada una de estas colas?.
+A su vez, se utiliza un algoritmo para administrar cada cola que se crea. Así, por
+ejemplo, el algoritmo podría determinar mediante prioridades sobre qué cola
+elegir un proceso.
+b. Para el caso de las dos colas vistas en a: ¿Qué algoritmo utilizaría para
+planificarlas?
+
+a. Para administrar la cola de procesos interactivos, se podría utilizar el algoritmo Round Robin (RR). Este algoritmo es adecuado para procesos interactivos porque proporciona tiempos de respuesta rápidos y equitativos, permitiendo que los usuarios reciban atención inmediata a sus solicitudes. El quantum puede ser ajustado para equilibrar la respuesta rápida con la eficiencia del sistema.
+Para la cola de procesos batch, se podría utilizar el algoritmo Shortest Job First (SJF) o First Come First Served (FCFS). SJF es eficiente para procesos batch porque minimiza el tiempo promedio de espera al priorizar los trabajos más cortos. FCFS también es una opción viable si los tiempos de ejecución son similares y se busca simplicidad en la implementación.
+
+b. Para planificar las dos colas, se podría utilizar un algoritmo de prioridades. En este caso, la cola de procesos interactivos tendría una prioridad más alta que la cola de procesos batch. Esto aseguraría que los procesos interactivos reciban atención inmediata y no se vean retrasados por los procesos batch, que pueden tolerar tiempos de espera más largos. El planificador de prioridades seleccionaría primero los procesos de la cola interactiva y, una vez que esta esté vacía, comenzaría a ejecutar los procesos de la cola batch. Este enfoque garantiza una experiencia de usuario óptima mientras se mantiene la eficiencia en la ejecución de procesos batch.
+
+# 14
