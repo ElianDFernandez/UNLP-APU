@@ -174,10 +174,39 @@ El algoritmo de planificación por prioridades asigna la CPU al proceso con la p
 
 - **Prioridades** es útil en sistemas donde algunos procesos son más importantes que otros. Permite que los procesos críticos obtengan más recursos, pero puede llevar a la inanición de procesos de baja prioridad si no se gestionan adecuadamente.
 
-# Resolver algoritmos de planificacion
 
-**A- FCFS**
-En FCFS, los procesos se atienden en el orden en que llegan. Dado que todos los procesos llegan al mismo tiempo (t=0), se ejecutan en el orden P1, P2, P3, P4, P5.
+# 3 
+#./Ejercicio3.xlsx
 
+# 4 y 5 
+#./Ejercicio4y5.xlsx
 
+# 6
+#./Ejercicio6.xlsx
+
+# 7
+## Inanicion
+La inanición (starvation) es una situación en la que un proceso no puede obtener los recursos necesarios para continuar su ejecución debido a la asignación de recursos a otros procesos. Esto puede ocurrir en sistemas de planificación de procesos donde algunos procesos tienen prioridades más altas y, por lo tanto, obtienen más recursos, dejando a los procesos de baja prioridad sin la atención necesaria.
+
+**Algoritmos que pueden provocar inanición:**
+1. **SJF (Shortest Job First)**: En su versión apropiativa, los procesos con tiempos de ejecución más largos pueden ser continuamente desplazados por procesos más cortos que llegan, lo que puede llevar a que los procesos largos nunca obtengan tiempo de CPU.
+2. **Priority Scheduling**: Si los procesos de alta prioridad llegan constantemente, los procesos de baja prioridad pueden quedar en espera indefinidamente, ya que siempre se les da preferencia a los procesos con mayor prioridad.
+
+**Mecanismos para evitar la inanición:**
+1. **Aging (Envejecimiento)**: Este mecanismo incrementa la prioridad de los procesos que han estado esperando en la cola de listos durante un período prolongado. De esta manera, con el tiempo, incluso los procesos de baja prioridad pueden obtener una prioridad suficientemente alta para ser ejecutados.
+2. **Asignación de tiempo máximo**: Limitar el tiempo que un proceso puede estar en espera antes de ser promovido a una prioridad más alta o ser ejecutado.
+3. **Equidad en la planificación**: Implementar algoritmos de planificación que aseguren que todos los procesos reciban una cantidad justa de tiempo de CPU, como el Round Robin, que asigna tiempo de CPU a cada proceso en turnos iguales.
+
+# 8 
+#./Ejercicio8.xlsx
+
+# 9
+**Algunos algoritmos pueden presentar ciertas desventajas cuando en el sistema se cuenta con procesos CPU Bound y I/O Bound. Analice las mismas para Round Robin y SRTF.**
+**Round Robin (RR):**
+- **Desventajas con procesos CPU Bound:** Los procesos CPU Bound pueden experimentar un mayor tiempo de espera y un menor rendimiento debido a la naturaleza del quantum fijo. Si el quantum es demasiado pequeño, los procesos CPU Bound pueden ser interrumpidos frecuentemente, lo que lleva a una sobrecarga de cambio de contexto y reduce la eficiencia del uso de la CPU.
+- **Desventajas con procesos I/O Bound:** Los procesos I/O Bound pueden beneficiarse del Round Robin, ya que tienden a liberar la CPU rápidamente para realizar operaciones de I/O. Sin embargo, si el quantum es demasiado grande, los procesos I/O Bound pueden experimentar tiempos de respuesta más largos, ya que deben esperar a que los procesos CPU Bound terminen su quantum antes de obtener tiempo de CPU.
+**SRTF (Shortest Remaining Time First):**
+- **Desventajas con procesos CPU Bound:** Los procesos CPU Bound pueden sufrir de inanición si hay una llegada constante de procesos I/O Bound con tiempos de ejecución más cortos. Esto puede llevar a que los procesos CPU Bound nunca obtengan tiempo de CPU, ya que siempre son desplazados por los procesos más cortos.
+- **Desventajas con procesos I/O Bound:** Los procesos I/O Bound generalmente se benefician del SRTF, ya que tienden a tener tiempos de ejecución más cortos. Sin embargo, si hay muchos procesos I/O Bound llegando al sistema, los procesos CPU Bound pueden quedar en espera indefinidamente, lo que puede afectar la equidad y la eficiencia del sistema en general.
+Para mitigar estas desventajas, se pueden implementar mecanismos como el envejecimiento (aging) para evitar la inanición y ajustar el quantum en Round Robin para equilibrar la respuesta entre procesos CPU Bound e I/O Bound.
 
