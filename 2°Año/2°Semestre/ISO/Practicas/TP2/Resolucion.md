@@ -299,3 +299,750 @@ Para la cola de procesos batch, se podría utilizar el algoritmo Shortest Job Fi
 b. Para planificar las dos colas, se podría utilizar un algoritmo de prioridades. En este caso, la cola de procesos interactivos tendría una prioridad más alta que la cola de procesos batch. Esto aseguraría que los procesos interactivos reciban atención inmediata y no se vean retrasados por los procesos batch, que pueden tolerar tiempos de espera más largos. El planificador de prioridades seleccionaría primero los procesos de la cola interactiva y, una vez que esta esté vacía, comenzaría a ejecutar los procesos de la cola batch. Este enfoque garantiza una experiencia de usuario óptima mientras se mantiene la eficiencia en la ejecución de procesos batch.
 
 # 14
+#./Ejercicio14.xlsx
+
+# 15
+#./Ejercicio15.xlsx
+
+# 16 
+. La situación planteada en el ejercicio 16, donde un proceso puede cambiar de
+una cola a otra, se la conoce como Colas Multinivel con Realimentación.
+Suponga que se quiere implementar un algoritmo de planificación que tenga en
+cuenta el tiempo de ejecución consumido por el proceso, penalizando a los que más
+tiempo de ejecución tienen. (Similar a la tarea del algoritmo SJF que tiene en cuenta
+el tiempo de ejecución que resta).
+Utilizando los conceptos vistos de Colas Multinivel con Realimentación indique
+qué colas implementaría, qué algoritmo usaría para cada una de ellas así como para
+la administración de las colas entre sí.
+Tenga en cuenta que los procesos no deben sufrir inanición.
+
+Para implementar un algoritmo de planificación basado en Colas Multinivel con Realimentación que penalice a los procesos con mayor tiempo de ejecución, se podrían seguir los siguientes pasos:
+1. **Definir las colas**: Se podrían definir varias colas, cada una con un nivel de prioridad diferente. Por ejemplo, se podrían tener tres colas:
+   - Cola 1: Alta prioridad (para procesos con bajo tiempo de ejecución)
+   - Cola 2: Media prioridad (para procesos con tiempo de ejecución moderado)
+   - Cola 3: Baja prioridad (para procesos con alto tiempo de ejecución)
+2. **Asignar algoritmos a cada cola**:
+    - Cola 1: Utilizar el algoritmo Round Robin (RR) con un quantum corto
+    - Cola 2: Utilizar el algoritmo Shortest Job First (SJF) para minimizar el tiempo promedio de espera
+    - Cola 3: Utilizar el algoritmo First Come First Served (FCFS) para asegurar que los procesos de larga duración sean atendidos eventualmente
+
+# 17
+A cuáles de los siguientes tipos de trabajos:
+● cortos acotados por CPU
+● cortos acotados por E/S
+● largos acotados por CPU
+● largos acotados por E/S
+benefician las siguientes estrategias de administración:
+a. prioridad determinada estáticamente con el método del más corto
+primero (SJF).
+b. prioridad dinámica inversamente proporcional al tiempo transcurrido
+desde la última operación de E/S
+
+a. La estrategia de prioridad determinada estáticamente con el método del más corto primero (SJF) beneficia principalmente a los trabajos cortos acotados por CPU. Estos trabajos tienen tiempos de ejecución breves y, al ser priorizados, pueden completarse rápidamente, lo que reduce el tiempo promedio de espera en el sistema. Sin embargo, esta estrategia puede no ser tan beneficiosa para trabajos largos acotados por CPU, ya que pueden sufrir de inanición si hay una llegada constante de trabajos cortos.
+b. La estrategia de prioridad dinámica inversamente proporcional al tiempo transcurrido desde la última operación de E/S beneficia a los trabajos cortos acotados por E/S y a los trabajos largos acotados por E/S. Esta estrategia permite que los procesos que han estado esperando por un tiempo prolongado (especialmente aquellos que realizan operaciones de E/S) aumenten su prioridad con el tiempo, lo que ayuda a evitar la inanición. Los trabajos cortos acotados por E/S pueden beneficiarse al recibir atención rápida después de completar sus operaciones de E/S, mientras que los trabajos largos acotados por E/S también pueden obtener prioridad a medida que esperan, asegurando que eventualmente sean atendidos.
+
+# 18
+. Analizar y explicar por qué si el quantum en Round-Robin se incrementa sin límite, el algoritmo de planificación se aproxima a FIFO.
+
+En el algoritmo Round-Robin, cada proceso en la cola de listos recibe una cantidad fija de tiempo de CPU, conocida como quantum, antes de ser interrumpido y colocado al final de la cola. Si el quantum se incrementa sin límite, eventualmente llegará a un punto en el que es tan grande que cada proceso puede completar su ejecución en un solo turno sin ser interrumpido. En este escenario, el comportamiento del algoritmo Round-Robin se asemeja al de FIFO (First In First Out), donde los procesos se ejecutan en el orden en que llegaron y no son interrumpidos hasta que terminan su ejecución.
+
+# 19
+
+. Dado los siguientes programas en un pseudo-código que simula la utilización de
+llamadas al sistema para crear procesos en Unix/Linux, indicar qué mensajes se
+imprimirán en pantalla (sin importar el orden en que saldrían):
+a. Caso 1
+printf(“hola”)
+x = fork()
+if x < 1 {
+execv(“ls”)
+printf(“mundo”)
+exit(0)
+}
+exit(0)
+b. Caso 2
+printf(“hola”)
+x = fork()
+if x < 1 {
+execv(“ps”)
+printf(“mundo”)
+exit(0)
+}
+execv(“ls”)
+printf(“fin”)
+exit(0)
+c. Caso 3
+printf(“Anda a rendir el Primer Parcial de
+Promo!”)
+newpid = fork()
+if newpid == 0 {
+printf(“Estoy comenzando el Examen”)
+execv(“ps”)
+printf(“Termine el Examen”)
+}
+printf(“¿Como te fue?”)
+exit(0)
+printf(“Ahora anda a descansar”)
+
+**Caso 1:**
+Los mensajes que se imprimirán en pantalla son:
+- "hola"
+- "mundo"
+- La salida del comando "ls" (lista de archivos en el directorio actual)
+El mensaje "mundo" no se imprimirá porque después de la llamada a execv("ls"), el proceso hijo reemplaza su imagen con la del comando "ls", y cualquier código después de execv no se ejecuta.
+
+**Caso 2:**
+Los mensajes que se imprimirán en pantalla son:
+- "hola"
+- "fin"
+- La salida del comando "ps" (lista de procesos en ejecución)
+- La salida del comando "ls" (lista de archivos en el directorio actual)
+El mensaje "mundo" no se imprimirá porque después de la llamada a execv("ps"), el proceso hijo reemplaza su imagen con la del comando "ps", y cualquier código después de execv no se ejecuta. El mensaje "fin" se imprimirá en el proceso padre después de que el proceso hijo haya sido creado. El execv("ls") en el proceso padre reemplazará su imagen con la del comando "ls", y cualquier código después de execv no se ejecuta.
+
+**Caso 3:**
+Los mensajes que se imprimirán en pantalla son:
+- "Anda a rendir el Primer Parcial de Promo!"
+- "¿Como te fue?"
+- La salida del comando "ps" (lista de procesos en ejecución)
+El mensaje "Estoy comenzando el Examen" se imprimirá en el proceso hijo antes de la llamada a execv("ps"). El mensaje "Termine el Examen" no se imprimirá porque después de la llamada a execv("ps"), el proceso hijo reemplaza su imagen con la del comando "ps", y cualquier código después de execv no se ejecuta. El mensaje "Ahora anda a descansar" no se imprimirá porque está después de la llamada a exit(0) en el proceso padre, lo que termina la ejecución del proceso padre antes de llegar a ese punto.
+
+# 20
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
+int main ( void ) {
+    int c ;
+    pid_t pid ;
+    printf( " Comienzo . : \ n " ) ;
+    for ( c = 0 ; c < 3 ; c++ ) {
+     pid = fork ( ) ;
+    }
+    printf ( " Proceso \n " ) ;
+    return 0 ;
+}
+
+A.¿Cuántas líneas con la palabra “Proceso” aparecen al final de la ejecución de este programa?
+Al final de la ejecución de este programa, aparecerán 8 líneas con la palabra "Proceso". Porque el bucle for se ejecuta 3 veces, y en cada iteración se crea un nuevo proceso con fork(). El proceso hijo se crea con el código después de la llamada a fork(), lo que significa que cada proceso (padre e hijo) continuará ejecutando el bucle y creando más procesos. El número total de procesos creados será 2^n, donde n es el número de veces que se ejecuta el bucle for. En este caso, n es 3, por lo que el número total de procesos será 2^3 = 8.
+
+B. ¿El número de líneas es el número de procesos que han estado en ejecución?.
+Ejecute el programa y compruebe si su respuesta es correcta. Modifique el
+valor del bucle for y compruebe los nuevos resultados.
+
+Sí, el número de líneas con la palabra "Proceso" es igual al número de procesos que han estado en ejecución. Cada vez que se llama a fork(), se crea un nuevo proceso, y cada proceso (tanto el padre como los hijos) ejecuta el código después de la llamada a fork(), lo que incluye la impresión de "Proceso". Por lo tanto, el número total de líneas impresas corresponde al número total de procesos creados durante la ejecución del programa. 
+
+# 21 
+
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
+int main ( void ) {
+    int c ;
+    pid_t pid ;
+    int p = 0;
+    printf( " Comienzo . : \ n " ) ;
+    for ( c = 0 ; c < 3 ; c++ ) {
+        pid = fork ( ) ;
+    }
+    p++;
+    printf ( " Proceso %d\n ",p ) ;
+    return 0 ;
+}
+
+A. ¿Que valores se imprimen en pantalla?
+La salida mostrara 
+Comienzo.
+Proceso 1
+Proceso 1
+Proceso 1
+Proceso 1
+Proceso 1
+Proceso 1
+Proceso 1
+Proceso 1
+
+# 22 
+**Que es la MMU y que funciones cumple?**
+La MMU (Memory Management Unit) es un componente de hardware en un sistema informático que se encarga de gestionar la memoria del sistema. Sus funciones principales incluyen:
+1. Traducción de direcciones: La MMU traduce las direcciones virtuales utilizadas por los programas en direcciones físicas correspondientes en la memoria RAM. Esto permite que los programas utilicen un espacio de direcciones virtuales independiente del espacio de direcciones físicas.
+2. Protección de memoria: La MMU implementa mecanismos de protección para evitar que los procesos accedan a áreas de memoria que no les están asignadas. Esto ayuda a prevenir errores y mejorar la seguridad del sistema.
+3. Gestión de memoria virtual: La MMU facilita la implementación de memoria virtual, permitiendo que los procesos utilicen más memoria de la que físicamente está disponible en el sistema. Esto se logra mediante el uso de técnicas como el paginamiento y la segmentación.
+4. Control de acceso: La MMU puede controlar los permisos de acceso a diferentes áreas de memoria, como lectura, escritura y ejecución, asegurando que los procesos solo puedan realizar operaciones permitidas en las áreas de memoria asignadas.
+5. Soporte para swapping: La MMU puede ayudar en la gestión del intercambio de páginas entre la memoria principal y el almacenamiento secundario (swap), facilitando la liberación de memoria para procesos activos.
+
+# 23
+**Que representa el espacio de direcciones de un proceso?**
+El espacio de direcciones de un proceso representa el rango completo de direcciones de memoria que un proceso puede utilizar durante su ejecución. Este espacio incluye tanto las direcciones virtuales como las físicas, y está dividido en varias secciones que contienen diferentes tipos de datos y código necesarios para el funcionamiento del proceso.
+El espacio de direcciones típicamente incluye:
+1. Código del programa: La sección que contiene las instrucciones ejecutables del proceso.
+2. Datos estáticos: La sección que contiene variables globales y estáticas que son accesibles durante toda la vida del proceso.
+3. Pila (stack): La sección que se utiliza para almacenar variables locales, parámetros de funciones y direcciones de retorno durante la ejecución de funciones.
+4. Heap: La sección que se utiliza para la asignación dinámica de memoria durante la ejecución del proceso.
+5. Área de memoria compartida: Si el proceso utiliza memoria compartida con otros procesos, esta área también formará parte del espacio de direcciones.
+
+# 24 
+**Explique y relacione los siguientes conceptos:**
+- **Direccion logica o virtual**: Es la dirección que un proceso utiliza para acceder a la memoria. Estas direcciones son generadas por el programa y son independientes de la ubicación física en la memoria.
+- **Direccion fisica**: Es la dirección real en la memoria RAM donde se almacenan los datos. La MMU traduce las direcciones lógicas o virtuales a direcciones físicas para acceder a la memoria.
+
+# 25 
+En la tecnica de particiones multiples, la memoria es dividia en varias particiones y los espacios de direcciones de los procesos son ubicados en estas, siempre que el tamaño del mismo sea menor o igual que el tamaño de la particion.
+Al trabajar con particiones se pueden considerar 2 metodos de asignacion:
+- **Particiones fijas**: La memoria se divide en particiones de tamaño fijo.
+- **Particiones dinamicas**: La memoria se divide en particiones de tamaño variable, ajustandose al tamaño del proceso que se va a cargar.
+
+a. Explique como trabajan estos 2 metodos. Cite diferencias, ventajas y desventajas.
+
+**Particiones fijas:**
+- **Funcionamiento**: La memoria se divide en un número fijo de particiones de tamaño predefinido. Cada partición puede alojar un solo proceso, y si un proceso es más pequeño que la partición, el espacio restante se desperdicia (fragmentación interna).
+- **Ventajas**: 
+  - Simplicidad en la implementación y gestión de la memoria.
+  - Menor sobrecarga en la administración de memoria.
+- **Desventajas**:
+  - Fragmentación interna, ya que el espacio no utilizado dentro de una partición no puede ser utilizado por otros procesos.
+  - Limitación en la cantidad de procesos que pueden ser alojados, ya que el número de particiones es fijo.
+
+**Particiones dinámicas:**
+- **Funcionamiento**: La memoria se divide en particiones de tamaño variable, ajustándose al tamaño del proceso que se va a cargar. Esto significa que cada partición puede crecer o reducirse según las necesidades del proceso.
+- **Ventajas**:
+  - Mejor utilización de la memoria, ya que no hay fragmentación interna.
+  - Mayor flexibilidad para alojar procesos de diferentes tamaños.
+- **Desventajas**:
+  - Mayor complejidad en la implementación y gestión de la memoria.
+  - Posible fragmentación externa, ya que los procesos pueden dejar huecos de memoria no utilizados entre ellos.
+
+b. ¿Que informacion debe disponer el kernel para poder administrar la memoria principal con estos metodos?
+
+Para administrar la memoria principal con los métodos de particiones fijas y dinámicas, el kernel debe disponer de la siguiente información:
+1. **Mapa de memoria**: Una estructura de datos que indique qué particiones están ocupadas y cuáles están libres, así como el tamaño de cada partición.
+2. **Tamaño de las particiones**: En el caso de particiones fijas, el tamaño de cada partición debe ser conocido y almacenado.
+3. **Lista de procesos**: Información sobre los procesos que están actualmente en ejecución, incluyendo su tamaño y estado (activo, esperando, etc.).
+4. **Algoritmo de asignación**: El método utilizado para asignar particiones a los procesos, como First Fit, Best Fit o Worst Fit.
+5. **Información de fragmentación**: Datos sobre la fragmentación interna y externa para optimizar la asignación de memoria y reducir el desperdicio.
+
+c.Realice un grafico indicando como se realiza la tranformcacion de direcciones logicas a direcciones fisicas en ambos metodos.
+
+- Se usa un registro base y un registro límite en el hardware (MMU).
+- La conversión de direcciones se hace en tiempo de ejecución.
+- La MMU suma automáticamente la dirección base a la dirección lógica cuando el proceso accede a memoria.
+
+Fórmula (idéntica en concepto): 𝐷𝐹=𝐷𝐿+𝑅𝑒𝑔𝑖𝑠𝑡𝑟𝑜𝐵𝑎𝑠𝑒
+```plaintext
+──────────────────────────────────────────────
+1️⃣ Particiones Fijas (Relocación Estática)
+──────────────────────────────────────────────
+        Programa (dirección lógica)
+                │
+                ▼
+        +-------------------+
+        |   Dirección Base  |  ← asignada al cargar
+        +-------------------+
+                │  (suma)
+                ▼
+        +-------------------+
+        | Dirección Física  |
+        +-------------------+
+
+Transformación: DF = DL + DB
+──────────────────────────────────────────────
+
+
+2️⃣ Particiones Variables (Relocación Dinámica)
+──────────────────────────────────────────────
+        CPU genera DL
+                │
+                ▼
+        +-------------------+
+        | Registro Base     | ← cargado por el SO
+        +-------------------+
+                │  (suma en tiempo real)
+                ▼
+        +-------------------+
+        | MMU (traducción)  |
+        +-------------------+
+                │
+                ▼
+        Memoria física (DF)
+
+Transformación: DF = DL + RegistroBase
+──────────────────────────────────────────────
+```
+
+# 26 
+Al trabajar con particiones fijas, los tamaños de las mismas se pueden considerar:
+- **Particiones de igual tamaño**: Todas las particiones tienen el mismo tamaño.
+- **Particiones de distinto tamaño**: Las particiones tienen tamaños diferentes, adaptándose a las necesidades de los procesos.
+a. Ventajas y desventajas de cada una de estas opciones.
+**Particiones de igual tamaño:**
+- **Ventajas**:
+    - Simplicidad en la gestión de memoria, ya que todas las particiones son iguales.
+    - Fácil implementación y administración.
+- **Desventajas**:
+    - Fragmentación interna, ya que los procesos más pequeños desperdician espacio dentro de la partición.
+    - Limitación en la cantidad de procesos que pueden ser alojados, ya que el tamaño fijo puede no adaptarse a todos los procesos.
+
+**Particiones de distinto tamaño:**
+- **Ventajas**:
+    - Mejor utilización de la memoria, ya que las particiones pueden adaptarse al tamaño de los procesos.
+    - Menor fragmentación interna, ya que los procesos pueden ajustarse mejor a las particiones disponibles.
+- **Desventajas**:
+    - Mayor complejidad en la gestión de memoria, ya que se deben manejar particiones de diferentes tamaños.
+    - Posible fragmentación externa, ya que los procesos pueden dejar huecos de memoria no utilizados entre ellos.
+
+# 27 
+**Fragmentacion** 
+Ambos metoso de particiones presentan el problema de la fragmentacion: 
+a. Explique que es la fragmentacion y que tipos existen.
+- **Fragmentacion interna**: Ocurre cuando un proceso no utiliza todo el espacio asignado en una partición, dejando espacio desperdiciado dentro de la partición. Esto es común en particiones fijas, especialmente cuando los procesos son más pequeños que las particiones.
+- **Fragmentacion externa**: Ocurre cuando hay suficiente memoria total disponible para un proceso, pero no hay un bloque contiguo de memoria lo suficientemente grande para alojarlo. Esto es común en particiones dinámicas, donde los procesos pueden dejar huecos de memoria no utilizados entre ellos.
+
+b.El problema de la fragmentacion externa es posible de subsanar. Explique una posible tecnica que permita al kernel mitigar este problema.
+
+Una técnica común para mitigar el problema de la fragmentación externa es la **compactación de memoria**. La compactación implica mover los procesos en la memoria para consolidar los bloques libres en un solo bloque contiguo. Esto se realiza periódicamente por el kernel para reorganizar la memoria y reducir los huecos de memoria no utilizados entre los procesos.
+
+# 28 
+Analice y describa como funcionan las siguientes tecnicas de asignacion de particiones,
+Tenga en cuenta la informacion que debe tener el kernel. Indique, para los metodos de partciones fijas y dinamicas, con cual tecnica se obtienen mejores resultados.
+
+- **First Fit**: Esta técnica asigna la primera partición libre que es lo suficientemente grande para alojar el proceso. El kernel debe mantener un mapa de memoria que indique qué particiones están ocupadas y cuáles están libres. Esta técnica es rápida y simple, pero puede llevar a la fragmentación externa si las particiones libres son pequeñas y dispersas.
+- **Best Fit**: Esta técnica busca la partición libre más pequeña que sea lo suficientemente grande para alojar el proceso. El kernel debe mantener un mapa de memoria y buscar a través de todas las particiones libres para encontrar la mejor opción. Esta técnica puede reducir la fragmentación externa al utilizar el espacio de manera más eficiente, pero puede ser más lenta debido a la búsqueda exhaustiva.
+- **Worst Fit**: Esta técnica asigna la partición libre más grande disponible para alojar el proceso. El kernel debe mantener un mapa de memoria y buscar a través de todas las particiones libres para encontrar la opción más grande. Esta técnica puede dejar grandes bloques de memoria libres, pero puede no ser eficiente en términos de utilización de memoria, ya que puede dejar pequeños bloques de memoria inutilizables.
+- **Next Fit**: Esta técnica es similar a First Fit, pero en lugar de comenzar la búsqueda desde el principio de la memoria cada vez, comienza desde la última posición donde se encontró una partición libre. El kernel debe mantener un puntero que indique la última posición de búsqueda. Esta técnica puede ser más eficiente que First Fit en términos de tiempo de búsqueda, pero puede llevar a una distribución desigual de los procesos en la memoria.
+
+Para particiones fijas, First Fit suele ser la técnica más eficiente debido a su simplicidad y rapidez. Para particiones dinámicas, Best Fit puede ofrecer mejores resultados en términos de utilización de memoria y reducción de fragmentación externa, aunque a costa de un mayor tiempo de búsqueda.
+
+# 29 
+**Segmentacion**
+La segmentación es una técnica de gestión de memoria que divide el espacio de direcciones de un proceso en segmentos lógicos, cada uno con un propósito específico, como código, datos y pila. A diferencia de la paginación, que divide la memoria en bloques de tamaño fijo, la segmentación permite que los segmentos tengan tamaños variables según las necesidades del proceso.
+A. Explique como trabaja este metodo de asignacion de memoria.
+
+La segmentación trabaja asignando segmentos de memoria a un proceso en función de sus necesidades lógicas. Cada segmento tiene una dirección base y un límite que define su tamaño. Cuando un proceso intenta acceder a una dirección de memoria, la MMU utiliza la dirección base del segmento correspondiente y suma el desplazamiento (offset) proporcionado por el proceso para calcular la dirección física real en la memoria.
+
+B. ¿Que estructuras son necesarias en el kernel para poder ejectuarse sobre un harware que utiliza segmentacion?
+
+Para que el kernel pueda gestionar la memoria utilizando segmentación, se requieren las siguientes estructuras:
+1. **Tabla de segmentos (Por proceso)**: Una estructura que almacena información sobre cada segmento, incluyendo la dirección base, el límite (tamaño) y los permisos de acceso (lectura, escritura, ejecución) para cada segmento.
+2. **Segment-table base register (STBR)**: Un registro que apunta a la tabla de segmentos del proceso actual en ejecución.
+3. **Segment-table limit register (STLR)**: Un registro que indica el tamaño de la tabla de segmentos, ayudando a prevenir accesos fuera de los límites definidos.
+
+C. Explique, utilizando graficos, como son resueltas las direcciones logicas a fisicas en este metodo.
+
+![alt text](image.png)
+
+**Direcciones**
+![alt text](image-1.png)
+
+# 30 
+Dado un esquema de segmentacion donde cada direccion hace referencia a 1 byte y la siguiente tabla de segmentos de un proceso, traduzca, de corresponder, las direcciones logicas indicadas a direcciones fisicas. La direccion logica esta representada por: segmento:desplazamiento
+| Segmento | Direccion Base | Limite |
+|----------|----------------|--------|
+|    0     |       102      | 12500  |
+|    1     |      28699     | 24300  |
+|    2     |      68010     | 15855  |
+|    3     |      80001     | 400    |
+
+a. 0000:9001
+b. 0001:24301
+c. 0002:5678
+d. 0001:18976
+e. 0003:0
+
+a. 0000:9001
+- Segmento 0, Desplazamiento 9001
+- Dirección Base: 102
+- Límite: 12500
+- 9001 < 12500 (dentro del límite)
+- Dirección Física = 102 + 9001 = 9103
+- Resultado: 9103
+
+b. 0001:24301
+- Segmento 1, Desplazamiento 24301
+- Dirección Base: 28699
+- Límite: 24300
+- 24301 >= 24300 (fuera del límite)
+- Dirección Física = No válida
+- Resultado: Error de segmentación
+
+c. 0002:5678
+- Segmento 2, Desplazamiento 5678
+- Dirección Base: 68010
+- Límite: 15855
+- 5678 < 15855 (dentro del límite)
+- Dirección Física = 68010 + 5678 = 73688
+- Resultado: 73688
+
+d. 0001:18976
+- Segmento 1, Desplazamiento 18976
+- Dirección Base: 28699
+- Límite: 24300
+- 18976 < 24300 (dentro del límite)
+- Dirección Física = 28699 + 18976 = 47675
+- Resultado: 47675
+
+e. 0003:0
+- Segmento 3, Desplazamiento 0
+- Dirección Base: 80001
+- Límite: 400
+- 0 < 400 (dentro del límite)
+- Dirección Física = 80001 + 0 = 80001
+- Resultado: 80001
+
+# 31
+**Paginacion**
+A. Explique como trabaja este metodo de asignacion de memoria.
+La paginación es una técnica de gestión de memoria que divide la memoria física en bloques de tamaño fijo llamados marcos (frames) y la memoria lógica de un proceso en bloques del mismo tamaño llamados páginas (pages). Cuando un proceso necesita memoria, se le asignan marcos libres en la memoria física para alojar sus páginas. La paginación permite que los procesos utilicen memoria de manera más eficiente, ya que no requieren bloques contiguos de memoria y pueden aprovechar mejor el espacio disponible.
+
+B. ¿Que estructuras son necesarias en el kernel para poder ejectuarse sobre un harware que utiliza paginacion?
+Para que el kernel pueda gestionar la memoria utilizando paginación, se requieren las siguientes estructuras:
+1. **Tabla de páginas (Por proceso)**: Una estructura que almacena la correspondencia entre las páginas lógicas del proceso y los marcos físicos en la memoria. Cada entrada en la tabla de páginas contiene información como el número de marco, los permisos de acceso (lectura, escritura, ejecución) y un bit de presencia que indica si la página está actualmente en memoria.
+2. **Page Table Base Register (PTBR)**: Un registro que apunta a la tabla de páginas del proceso actual en ejecución.
+3. **Page Table Limit Register (PTLR)**: Un registro que indica el tamaño de la tabla de páginas, ayudando a prevenir accesos fuera de los límites definidos.
+
+C. Explique, utilizando graficos, como son resueltas las direcciones logicas a fisicas en este metodo.
+
+![alt text](image-2.png)
+
+**Direcciones**
+![alt text](image-3.png)
+
+D. En este esquema ¿se puede productir fragmentacion? ¿Que tipo de fragmentacion y por que?
+En el esquema de paginación, no se produce fragmentación interna ni externa en el sentido tradicional. Sin embargo, puede ocurrir una forma de fragmentación conocida como **fragmentación de memoria** o **fragmentación de espacio libre**. Esto sucede cuando hay suficientes marcos libres en la memoria física para alojar un proceso, pero no hay un bloque contiguo de marcos libres lo suficientemente grande para satisfacer la solicitud del proceso. Aunque la paginación permite que las páginas se alojen en marcos no contiguos, la gestión ineficiente del espacio libre puede llevar a situaciones donde la memoria está fragmentada en pequeños bloques que no pueden ser utilizados eficazmente.
+
+# 32
+Suponga un sistema donde la memoria es administrada mediante la tecnica de paginacion y donde: 
+- El tamaño de la pagina es de 512 bytes
+- Cada direccion de memoria referencia a 1 byte
+- Se tiene una memoria principal de 10240 bytes(10 KB) y los marcos se enumeran desde 0 y comienzan en la direccion fisica 0.
+Suponga ademas que un proceso P1 con un tamaño logico de 2000 bytes y cona la siguiente tabla de paginas:
+| Pagina | Marco |
+|--------|-------|
+|   0    |   3   |
+|   1    |   5   |
+|   2    |   2   |
+|   3    |   6   |
+
+
+A. Realice los graficos necesarios (de la memoria principal, del espacio de direcciones del proceso, de tabla de paginas y de la tabla de marcos) en el que refleje es estado descripto.
+
+Tamaño página = 512 B.
+Memoria principal = 10240 B → 20 marcos numerados 0..19.
+Proceso P1: tamaño lógico 2000 B → 4 páginas (0..3).
+- Página 0: direcciones lógicas 0 — 511
+- Página 1: 512 — 1023
+- Página 2: 1024 — 1535
+- Página 3: 1536 — 1999 (la página 3 usa solo 464 bytes de los 512 posibles)
+
+Tabla de páginas (dada):
+- p0 → marco 3 (dirección física inicio = 3×512 = 1536; fin = 1536+511 = 2047)
+- p1 → marco 5 (inicio = 2560; fin = 3071)
+- p2 → marco 2 (inicio = 1024; fin = 1535)
+- p3 → marco 6 (inicio = 3072; fin = 3583)
+
+Marcos en memoria principal:
+| Marco | Dirección Física | Estado       |
+|-------|------------------|--------------|
+|   0   |      0 - 511     | Libre        |
+|   1   |    512 - 1023    | Libre        |
+|   2   |   1024 - 1535    | Ocupado (p2) |
+|   3   |   1536 - 2047    | Ocupado (p0) |
+|   4   |   2048 - 2559    | Libre        |
+|   5   |   2560 - 3071    | Ocupado (p1) |
+|   6   |   3072 - 3583    | Ocupado (p3) |
+|   7   |   3584 - 4095    | Libre        |
+|  ...  |       ...        |     ...      |
+
+B. Inidicar si las siguientes direcciones logicas son validas o invalidas. En caso de ser validas, indicar a que direccion fisica hacen referencia.
+
+1. 35
+- Página: 0 (0 ≤ 35 < 512)
+- Dirección física: 1536 + 35 = 1571
+- Resultado: Válida, Dirección física 1571
+
+2. 512
+- Página: 1 (512 ≤ 512 < 1024)
+- Dirección física: 2560 + (512 - 512) = 2560
+- Resultado: Válida, Dirección física 2560
+
+3. 2051
+- Página: 4 (2051 ≥ 2000, fuera del rango del proceso)
+- Resultado: Inválida
+
+4. 0 
+- Página: 0 (0 ≤ 0 < 512)
+- Dirección física: 1536 + 0 = 1536
+- Resultado: Válida, Dirección física 1536
+
+5. 1325
+- Página: 2 (1024 ≤ 1325 < 1536)
+- Dirección física: 1024 + (1325 - 1024) = 1325
+- Resultado: Válida, Dirección física 1325
+
+6. 1025
+- Página: 2 (1024 ≤ 1025 < 1536)
+- Dirección física: 1024 + (1025 - 1024) = 1025
+- Resultado: Válida, Dirección física 1025
+
+7. 2000
+- Página: 4 (2000 ≥ 2000, fuera del rango del proceso)
+- Resultado: Inválida
+
+# 33 
+Dado un esquema donde cada direccion hace referencia a 1 byte, con paginas de 2KiB(Kibibytes), donde el frame 0 se encuentra en la direccion fisica 0. Con las siguientes primeras entradas de la tabla de paginas de un proceso: 
+2Kib = 2048 bytes
+
+| Pagina | Marco |
+|--------|-------|
+|   0    |   16  |
+|   1    |   13  |
+|   2    |   9   |
+|   3    |   2   |
+|   4    |   0   |
+
+Como calculo las direcciones logicas?
+Para calcular las direcciones lógicas en un esquema de paginación, se utiliza la siguiente fórmula:
+Dirección Lógica = (Número de Página × Tamaño de la Página) + Desplazamiento
+Con un tamaño de página de 2048 bytes, las direcciones lógicas para cada página serían:
+- Página 0: 0 × 2048 + Desplazamiento (0 a 2047)
+- Página 1: 1 × 2048 + Desplazamiento (2048 a 4095)
+- Página 2: 2 × 2048 + Desplazamiento (4096 a 6143)
+- Página 3: 3 × 2048 + Desplazamiento (6144 a 8191)
+- Página 4: 4 × 2048 + Desplazamiento (8192 a 10239)
+
+marcos en memoria principal:
+| Marco | Dirección Física | Estado       |
+|-------|------------------|--------------|
+|   0   |      0 - 2047    | Ocupado (p4) |
+|   1   |   2048 - 4095    | Libre        |
+|   2   |   4096 - 6143    | Ocupado (p3) |
+|   3   |   6144 - 8191    | Libre        |
+|   4   |   8192 - 10239   | Libre        |
+|   5   |  10240 - 12287   | Libre        |
+|   6   |  12288 - 14335   | Libre        |
+|  ...  |       ...        |     ...      |
+|  9    |  18432 - 20479   | Ocupado (p2) |
+|  ...  |       ...        |     ...      |
+|  13   |  26624 - 28671   | Ocupado (p1) |
+|  ...  |       ...        |     ...      |
+|  16   |  32768 - 34815   | Ocupado (p0) |
+
+Traduzca las siguientes direcciones logicas a direcciones fisicas:
+a. 5120
+5120 es la dirección lógica. 
+- Página: 2 (4096 ≤ 5120 < 6144)
+- Desplazamiento: 5120 - 4096 = 1024
+- Dirección física: (inicio marco 9) + (desplazamiento) = 18432 + 1024 = 19456
+- Resultado: Dirección física 19456
+
+b. 3242
+3242 es la dirección lógica.
+- Página: 1 (2048 ≤ 3242 < 4096)
+- Desplazamiento: 3242 - 2048 = 1194
+- Dirección física: (inicio marco 13) + (desplazamiento) = 26624 + 1194 = 27818
+- Resultado: Dirección física 27818
+
+c. 1578
+1578 es la dirección lógica.
+- Página: 0 (0 ≤ 1578 < 2048)
+- Desplazamiento: 1578 - 0 = 1578
+- Dirección física: (inicio marco 16) + (desplazamiento) = 32768 + 1578 = 34346
+- Resultado: Dirección física 34346
+
+d. 2048
+2048 es la dirección lógica.
+- Página: 1 (2048 ≤ 2048 < 4096)
+- Desplazamiento: 2048 - 2048 = 0
+- Dirección física: (inicio marco 13) + (desplazamiento) = 26624 + 0 = 26624
+- Resultado: Dirección física 26624
+
+e. 8192
+8192 es la dirección lógica.
+- Página: 4 (8192 ≤ 8192 < 10240)
+- Desplazamiento: 8192 - 8192 = 0
+- Dirección física: (inicio marco 0) + (desplazamiento) = 0 + 0 = 0
+- Resultado: Dirección física 0
+
+# 34 
+Tamaño de la pagina. Compare las siguientes situaciones con respecto al tamaño de la pagina y su impacto, indicando ventajas y desventajas de cada una de ellas.
+a. un tamaño de pagina pequeño (ej. 512 bytes)
+**Ventajas:**
+- Menor fragmentación interna, ya que los procesos pueden ajustarse mejor a las páginas disponibles.
+- Mayor flexibilidad para alojar procesos de diferentes tamaños.
+**Desventajas:**
+- Mayor sobrecarga en la gestión de memoria, ya que se necesitan más entradas en la tabla de páginas.
+- Mayor tiempo de búsqueda en la tabla de páginas, lo que puede afectar el rendimiento.
+
+b. un tamaño de pagina grande (ej. 16 KB)
+**Ventajas:**
+- Menor sobrecarga en la gestión de memoria, ya que se necesitan menos entradas en la tabla de páginas.
+- Menor tiempo de búsqueda en la tabla de páginas, lo que puede mejorar el rendimiento.
+**Desventajas:**
+- Mayor fragmentación interna, ya que los procesos más pequeños pueden desperdiciar espacio dentro de una página.
+- Menor flexibilidad para alojar procesos de diferentes tamaños, lo que puede llevar a una utilización ineficiente de la memoria.
+
+# 35
+Existen varios enfoques pra administrar las tablas de paginas:
+- tablas de paginas de 1 nivel
+- tablas de paginas de 2 niveles o mas
+- tablas de paginas invertidas
+
+Explique brevemente como trabajan estos mecanismos. Tenga en cuenta analizar como se resuelven las direcciones y que ventajas y desventajas presentan.
+
+**Tablas de páginas de 1 nivel:**
+- **Funcionamiento**: Cada proceso tiene una única tabla de páginas que mapea todas sus páginas lógicas a marcos físicos. La dirección lógica se divide en un número de página y un desplazamiento, y la tabla de páginas se utiliza para traducir el número de página a un marco físico.
+- **Ventajas**:
+    - Simplicidad en la implementación y gestión.
+    - Rápida traducción de direcciones.
+- **Desventajas**:
+    - Puede consumir mucha memoria para la tabla de páginas, especialmente si el espacio de direcciones es grande y el proceso utiliza pocas páginas.
+
+**Tablas de páginas de 2 niveles o más:**
+- **Funcionamiento**: La tabla de páginas se divide en varios niveles. La dirección lógica se divide en múltiples partes, donde la primera parte se utiliza para indexar la tabla de nivel superior, la segunda parte para la tabla de nivel inferior, y así sucesivamente, hasta llegar a la tabla de páginas que mapea las páginas lógicas a marcos físicos.
+- **Ventajas**:
+    - Reduce el tamaño de la tabla de páginas, ya que solo se crean tablas para las partes del espacio de direcciones que están en uso.
+    - Mejora la eficiencia en el uso de memoria.
+- **Desventajas**:
+    - Mayor complejidad en la implementación y gestión.
+    - Traducción de direcciones más lenta debido a múltiples accesos a tablas.
+
+**Tablas de páginas invertidas:**
+- **Funcionamiento**: En lugar de tener una tabla de páginas por proceso, se utiliza una única tabla global que mapea marcos físicos a páginas lógicas y procesos. Cada entrada en la tabla contiene el número de proceso y el número de página correspondiente al marco físico.
+- **Ventajas**:
+    - Reduce significativamente el uso de memoria para la tabla de páginas, ya que solo se necesita una tabla global.
+    - Facilita la gestión de memoria en sistemas con muchos procesos.
+- **Desventajas**:
+    - Traducción de direcciones más lenta, ya que se requiere una búsqueda en la tabla global.
+    - Mayor complejidad en la implementación y gestión.
+
+# 36
+Dado un esquema de paginación, donde cada dirección hace referencia a 1 byte, se tiene un tamaño de dirección de 32 bits y un tamaño de página de 2048 bytes. Suponga además un proceso P1 que necesita 51358 bytes para su código y 68131 bytes para sus datos
+
+a. De los 32 bits de las direcciones ¿Cuántos se utilizan para identificar página?¿Cuantos para desplazamiento?
+- Tamaño de página = 2048 bytes = 2^11 bytes
+- Desplazamiento = 11 bits
+- Bits para identificar página = 32 - 11 = 21 bits
+
+b. ¿Cual seria el tamaño logico maximo de un proceso?
+Como se tiene un tamaño de dirección de 32 bits, el tamaño lógico máximo de un proceso sería:
+Tamaño lógico máximo = 2^32 bytes = 4 GB
+
+c. ¿Cuántas páginas máximo puede tener el proceso P1?
+- Tamaño total del proceso P1 = 51358 bytes (código) + 68131 bytes (datos) = 119489 bytes
+- Número máximo de páginas = Tamaño total / Tamaño de página = 119489 / 2048 ≈ 58.34
+- Por lo tanto, el proceso P1 puede tener un máximo de 59 páginas (redondeando hacia arriba).
+
+d. Si se contaran con 4GiB (Gibibytes) de RAM, ¿cuantos marcos habría disponibles
+para utilizar?
+- Tamaño de RAM = 4 GiB = 4 × 2^30 bytes = 2^32 bytes = 4294967296 bytes
+- Tamaño de marco = Tamaño de página = 2048 bytes = 2^11 bytes = 2048 bytes
+- Número de marcos = Tamaño de RAM / Tamaño de marco = 2^32 / 2^11 = 2^21 ≈ 2097152 marcos
+
+e. ¿Cuántas páginas necesita P1 para almacenar su código?
+- Tamaño del código de P1 = 51358 bytes
+- Número de páginas para el código = Tamaño del código / Tamaño de página = 51358 / 2048 ≈ 25.07
+- Por lo tanto, P1 necesita 26 páginas para almacenar su código (redondeando hacia arriba).
+
+f. ¿Cuántas páginas necesita P1 para almacenar sus datos?
+- Tamaño de los datos de P1 = 68131 bytes
+- Número de páginas para los datos = Tamaño de los datos / Tamaño de página = 68131 / 2048 ≈ 33.26
+- Por lo tanto, P1 necesita 34 páginas para almacenar sus datos (redondeando hacia arriba).
+
+g. ¿Cuántos bytes habría de fragmentación interna entre lo necesario para almacenar su código y sus datos? Ayuda: Recuerde que en una misma página no pueden convivir código y datos
+
+- Fragmentación interna para el código:
+  - Páginas asignadas para el código = 26
+  - Espacio utilizado en la última página = 51358 % 2048 = 1022 bytes
+  - Espacio desperdiciado en la última página = 2048 - 1022 = 1026 bytes
+  - Total de fragmentación interna = 1026 bytes
+
+- Fragmentación interna para los datos:
+  - Páginas asignadas para los datos = 34
+    - Espacio utilizado en la última página = 68131 % 2048 = 1323 bytes
+    - Espacio desperdiciado en la última página = 2048 - 1323 = 725 bytes   
+    - Total de fragmentación interna = 1026 + 725 = 1751 bytes
+
+- Total de fragmentación interna = 1026 + 725 = 1751 bytes
+
+h. Asumiendo que el hardware utiliza tabla de páginas de un (1) nivel, que la dirección se interpreta como 20 bits para identificar página y 12 bits para desplazamiento, y que cada Entrada de Tabla de Páginas (PTE) requiere de 1 Kib. ¿Cuál será el tamaño mínimo que la tabla de páginas del proceso P1 ocupará en RAM?
+
+- Entradas en la tabla de páginas = 2^20 = 1048576 entradas
+- Tamaño de cada PTE (Entrada de Tabla de Páginas) = 1 KiB = 1024 bytes
+- Tamaño total de la tabla de páginas = 1048576 × 1024 bytes = 1073741824 bytes = 1 GiB
+
+i. Asumiendo que el hardware utiliza tabla de páginas de dos (2) niveles, que la dirección se interpreta como 10 bits para identificar primer nivel, 10 bits para identificar el segundo nivel, 12 bits para desplazamiento y que cada Entrada de Tabla de Páginas (PTE) requiere de 1 Kib. ¿Cuál será el tamaño mínimo que la tabla de páginas del proceso P1 ocupará en RAM?
+
+- Entradas en la tabla de primer nivel = 2^10 = 1024 entradas
+- Entradas en la tabla de segundo nivel = 2^10 = 1024 entradas
+- Tamaño de cada PTE (Entrada de Tabla de Páginas) = 1 KiB = 1024 bytes
+- Con la distribución 10/10/12, se necesitan 59 páginas para el proceso P1 (26 para código y 34 para datos).
+- Número de tablas de segundo nivel necesarias = 59 / 1024 ≈ 1 (redondeando hacia arriba)
+- Tamaño total de la tabla de primer nivel = 1024 × 1024 bytes = 1048576 bytes = 1 MiB
+- Tamaño total de la tabla de segundo nivel = 1 × 1024 × 1024 bytes = 1048576 bytes = 1 MiB
+- Tamaño total de la tabla de páginas = 1 MiB + 1 MiB = 2 MiB
+
+j. Dado los resultados obtenidos en los dos incisos anteriores (h, i) ¿Qué conclusiones se pueden obtener del uso de los 2 modelos de tablas de página?
+
+- La tabla de páginas de un nivel consume una cantidad significativa de memoria (1 GiB) debido a la necesidad de mantener entradas para todas las posibles páginas, incluso si muchas de ellas no se utilizan.
+- La tabla de páginas de dos niveles es mucho más eficiente en términos de uso de memoria (2 MiB) ya que solo se crean tablas de segundo nivel para las páginas que realmente se utilizan, reduciendo así el desperdicio de memoria.
+- La paginación de dos niveles introduce una mayor complejidad en la gestión de memoria y puede resultar en una traducción de direcciones más lenta debido a la necesidad de acceder a múltiples tablas.
+- En general, para procesos con un espacio de direcciones grande pero un uso de memoria relativamente pequeño, la paginación de dos niveles es preferible debido a su eficiencia en el uso de memoria.
+
+# 37 
+Cite similitudes y diferencias entre las 4 técnicas vistas: Particiones Fijas, Particiones Dinámicas, Segmentación y Paginación.
+
+**Similitudes:**
+- Todas son técnicas de gestión de memoria utilizadas por los sistemas operativos para asignar y administrar la memoria principal.
+- Todas buscan optimizar el uso de la memoria y minimizar el desperdicio.
+- Todas requieren estructuras de datos específicas (como tablas) para rastrear el uso de la memoria.
+- Todas implican la traducción de direcciones lógicas a direcciones físicas.
+
+**Diferencias:**
+- Las particiones fijas dividen la memoria en bloques de tamaño fijo, mientras que las particiones dinámicas permiten bloques de tamaño variable.
+- La segmentación divide la memoria en segmentos lógicos, mientras que la paginación divide la memoria en páginas de tamaño fijo.
+- La paginación puede introducir fragmentación interna, mientras que la segmentación puede introducir fragmentación externa.
+- La gestión de memoria en la paginación es más compleja debido a la necesidad de mantener tablas de páginas.
+- La segmentación permite una mejor organización lógica de los datos, mientras que la paginación se centra en la eficiencia del uso de la memoria.
+
+# 38
+Dada la técnica de administración de memoria por medio de segmentación paginada:
+a. Explique cómo funciona.
+b. Cite ventajas y desventajas respecto a las técnicas antes vistas.
+
+a. La segmentación paginada combina las ventajas de la segmentación y la paginación. En este enfoque, la memoria lógica de un proceso se divide en segmentos, y cada segmento se divide a su vez en páginas de tamaño fijo. Cada segmento tiene su propia tabla de páginas que mapea las páginas lógicas del segmento a marcos físicos en la memoria. Cuando un proceso accede a una dirección lógica, primero se determina el segmento al que pertenece la dirección, luego se utiliza la tabla de páginas del segmento para traducir la página lógica a un marco físico, y finalmente se suma el desplazamiento para obtener la dirección física final.
+
+b. **Ventajas:**
+- Combina la organización lógica de la segmentación con la eficiencia en el uso de memoria de la paginación.
+- Reduce la fragmentación externa al permitir que los segmentos se dividan en páginas.
+- Permite una mejor protección y compartición de segmentos entre procesos.
+**Desventajas:**
+- Mayor complejidad en la gestión de memoria debido a la necesidad de mantener múltiples tablas (una por segmento).
+- Traducción de direcciones más lenta debido a la necesidad de acceder a la tabla de segmentos y luego a la tabla de páginas.
+- Puede requerir más memoria para almacenar las tablas de segmentos y páginas.
+
+c. Teniéndose disponibles las siguientes tablas:
+|           tabla de segmentos          | 
+|-------------------|-------------------|
+| Numero de segmento | Dirección base   |
+|-------------------|-------------------|
+|        1          |      500          |
+|        2          |      1500         |
+|        3          |      5000         |
+
+|           tabla de páginas                                |
+|-------------------|-------------------|-------------------|
+| Numero de segmento | Numero de pagina | Numero de marco   |
+|-------------------|-------------------|-------------------|
+|        1          |        1          |        40         |
+|        1          |        2          |        80         |
+|        1          |        3          |        60         |
+|        2          |        1          |        20         |
+|        2          |        2          |        25         |
+|        2          |        3          |        0          |
+|        3          |        1          |        120        |
+|        3          |        2          |        150        |
+
+A. (2,1,1)
+- Segmento: 2, Página: 1, Desplazamiento: 1
+- Dirección base del segmento 2: 1500
+- Número de marco para segmento 2, página 1: 20
+- Dirección física = Direccion base +  + desplazamiento
+- Dirección física = 1500 + 20 * 4096 + 1 = 1500 + 81920 + 1 = 83421
+
