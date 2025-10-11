@@ -410,7 +410,7 @@ En este ejemplo, el comando `file` identifica `archivo.txt` como un archivo de t
     - Uso: `tail [opciones] archivo`
     - Ejemplo: `tail -n 10 archivo.log` muestra las últimas 10 líneas de `archivo.log`.
 6. **locate**: Busca archivos en el sistema utilizando una
-    base de datos preconstruida.
+    base de datos preconstruida.ls .
     - Uso: `locate [opciones] patrón`
     - Ejemplo: `locate archivo.txt` busca todos los archivos llamados `archivo.txt`.
 7. **ls (list)**: Lista los archivos y directorios en el directorio actual.
@@ -919,7 +919,7 @@ Cada uno de estos comandos lo llevará al directorio `/var/log`, utilizando dife
      - `-c`: especifica un formato personalizado para la salida.
      - `-f`: muestra información sobre el sistema de archivos en lugar del archivo.
 
-# Procesos 
+# Procesos
 **A-Que significa que un proceso se esta ejecutando en background? y en foreground?**
 - **Foreground (Primer Plano)**: Un proceso que se está ejecutando en primer plano es aquel que está activo y en el que el usuario puede interactuar directamente a través de la terminal. Mientras un proceso está en primer plano, la terminal está ocupada por ese proceso y no puede aceptar otros comandos hasta que el proceso termine o se detenga.
 - **Background (Segundo Plano)**: Un proceso que se está ejecutando en segundo plano es aquel que se ejecuta de manera independiente y no requiere interacción directa del usuario. Los procesos en segundo plano permiten al usuario continuar utilizando la terminal para otros comandos mientras el proceso sigue ejecutándose. Estos procesos no bloquean la terminal y pueden ser gestionados mediante comandos específicos.

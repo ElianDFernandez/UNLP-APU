@@ -617,6 +617,8 @@ A. Explique como trabaja este metodo de asignacion de memoria.
 
 La segmentación trabaja asignando segmentos de memoria a un proceso en función de sus necesidades lógicas. Cada segmento tiene una dirección base y un límite que define su tamaño. Cuando un proceso intenta acceder a una dirección de memoria, la MMU utiliza la dirección base del segmento correspondiente y suma el desplazamiento (offset) proporcionado por el proceso para calcular la dirección física real en la memoria.
 
+La segmentacion produce fragmentacion externa, ya que los segmentos pueden dejar huecos de memoria no utilizados entre ellos. Sin embargo, permite una gestión más flexible de la memoria, ya que los segmentos pueden crecer o reducirse según las necesidades del proceso.
+
 B. ¿Que estructuras son necesarias en el kernel para poder ejectuarse sobre un harware que utiliza segmentacion?
 
 Para que el kernel pueda gestionar la memoria utilizando segmentación, se requieren las siguientes estructuras:
@@ -690,6 +692,8 @@ e. 0003:0
 **Paginacion**
 A. Explique como trabaja este metodo de asignacion de memoria.
 La paginación es una técnica de gestión de memoria que divide la memoria física en bloques de tamaño fijo llamados marcos (frames) y la memoria lógica de un proceso en bloques del mismo tamaño llamados páginas (pages). Cuando un proceso necesita memoria, se le asignan marcos libres en la memoria física para alojar sus páginas. La paginación permite que los procesos utilicen memoria de manera más eficiente, ya que no requieren bloques contiguos de memoria y pueden aprovechar mejor el espacio disponible.
+
+La paginación puede producir fragmentación interna, ya que una página puede no utilizar todo el espacio del marco asignado. Sin embargo, evita la fragmentación externa, ya que las páginas pueden ser alojadas en marcos no contiguos.
 
 B. ¿Que estructuras son necesarias en el kernel para poder ejectuarse sobre un harware que utiliza paginacion?
 Para que el kernel pueda gestionar la memoria utilizando paginación, se requieren las siguientes estructuras:
@@ -925,9 +929,7 @@ Como se tiene un tamaño de dirección de 32 bits, el tamaño lógico máximo de
 Tamaño lógico máximo = 2^32 bytes = 4 GB
 
 c. ¿Cuántas páginas máximo puede tener el proceso P1?
-- Tamaño total del proceso P1 = 51358 bytes (código) + 68131 bytes (datos) = 119489 bytes
-- Número máximo de páginas = Tamaño total / Tamaño de página = 119489 / 2048 ≈ 58.34
-- Por lo tanto, el proceso P1 puede tener un máximo de 59 páginas (redondeando hacia arriba).
+- Número máximo de páginas = 2^21 = 2097152 páginas
 
 d. Si se contaran con 4GiB (Gibibytes) de RAM, ¿cuantos marcos habría disponibles
 para utilizar?
@@ -949,17 +951,19 @@ g. ¿Cuántos bytes habría de fragmentación interna entre lo necesario para al
 
 - Fragmentación interna para el código:
   - Páginas asignadas para el código = 26
-  - Espacio utilizado en la última página = 51358 % 2048 = 1022 bytes
-  - Espacio desperdiciado en la última página = 2048 - 1022 = 1026 bytes
-  - Total de fragmentación interna = 1026 bytes
+    - Espacio por las paginas = 26 × 2048 = 53248 bytes
+    - Espacio total = 51358 bytes
+    - Espacio desperdiciado en la última página = 53248 - 51358 = 1890 bytes
+    - Total de fragmentación interna = 1890 bytes
 
 - Fragmentación interna para los datos:
   - Páginas asignadas para los datos = 34
-    - Espacio utilizado en la última página = 68131 % 2048 = 1323 bytes
-    - Espacio desperdiciado en la última página = 2048 - 1323 = 725 bytes   
-    - Total de fragmentación interna = 1026 + 725 = 1751 bytes
+    - Espacio por las paginas = 34 × 2048 = 69632 bytes
+    - Espacio total = 68131 bytes
+    - Espacio desperdiciado en la última página = 69632 - 68131 = 1501 bytes
+    - Total de fragmentación interna = 1501 bytes
 
-- Total de fragmentación interna = 1026 + 725 = 1751 bytes
+total de fragmentación interna = 1890 + 1501 = 3391 bytes
 
 h. Asumiendo que el hardware utiliza tabla de páginas de un (1) nivel, que la dirección se interpreta como 20 bits para identificar página y 12 bits para desplazamiento, y que cada Entrada de Tabla de Páginas (PTE) requiere de 1 Kib. ¿Cuál será el tamaño mínimo que la tabla de páginas del proceso P1 ocupará en RAM?
 
@@ -1044,5 +1048,5 @@ A. (2,1,1)
 - Dirección base del segmento 2: 1500
 - Número de marco para segmento 2, página 1: 20
 - Dirección física = Direccion base +  + desplazamiento
-- Dirección física = 1500 + 20 * 4096 + 1 = 1500 + 81920 + 1 = 83421
+- Dirección física = 1500 + 20  + 1 = 1521
 
