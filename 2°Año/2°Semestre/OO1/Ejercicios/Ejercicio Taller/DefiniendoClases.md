@@ -64,3 +64,5 @@ Atributos y métodos principales:
 
 Como se defien cardinalidades en el diagrama de clases:
 - Entre Presupuesto y Excursion: Un Presupuesto puede tener 0 o más Excursiones (*), y una Excursion pertenece a exactamente 1 Presupuesto (1). Se indica con "*" en el lado de Excursion y "1" en el lado de Presupuesto.
+
+entre alquilerEquipo y Equipo, el alquiler tiene 1 o mas equipos y el equipo pertenece a un solo alquiler. Entonces se indica con "*" en el lado de Equipo y "1" en el lado de AlquilerEquipo.
