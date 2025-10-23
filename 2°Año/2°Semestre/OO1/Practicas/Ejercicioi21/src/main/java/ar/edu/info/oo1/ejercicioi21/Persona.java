@@ -1,4 +1,4 @@
-package ar.edu.info.oo1.ejercicio15;
+package ar.edu.info.oo1.ejercicioi21;
 
 /**
  * De esta forma crearemos las clases del ejercicio
