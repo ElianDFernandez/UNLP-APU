@@ -1,40 +1,29 @@
 package ar.edu.info.oo1.ejercicioi21;
 
+import java.time.LocalDate;
+
 /**
- * De esta forma crearemos las clases del ejercicio
  *
+ * @author elian
  */
-public class Persona {
+public class Persona extends Cliente{
+        private int dni;
 
-	private String nombre;
-	private String apellido;
-	private String dni;
-	
-	public String getNombre() {
-		return nombre;
-	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-	public String getApellido() {
-		return apellido;
-	}
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
-	}
-	public String getDni() {
-		return dni;
-	}
-	public void setDni(String dni) {
-		this.dni = dni;
-	}
-	
-	/**
-	 * Retorna el nombre completo de la persona de la forma apellido, nombre
-	 * @return
-	 */
-	public String getNombreCompleto() {
-		return this.getApellido() + ", " + this.getNombre();
-	}
+    public Persona(int dni, String nombre, String direccion) {
+        super(nombre, direccion);
+        this.dni = dni;
+    }
 
+    public int getDni() {
+        return dni;
+    }
+
+    public void setDni(int dni) {
+        this.dni = dni;
+    }
+    
+    @Override
+    public double montoAPagar(LocalDate inicio, LocalDate fin) {
+        return super.montoAPagar(inicio,fin) *0.9;
+    }
 }
