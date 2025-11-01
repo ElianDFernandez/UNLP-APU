@@ -50,7 +50,7 @@ public abstract class Cliente {
     protected double montoAPagar(LocalDate inicio, LocalDate fin) {
         double suma = 0;
         for (Envio envio : this.envios) {
-             if  ((envio.getFechaDespacho().isBefore(inicio)) && (envio.getFechaDespacho().isAfter(fin))) {
+             if  ((envio.getFechaDespacho().isAfter(inicio)) && (envio.getFechaDespacho().isBefore(fin))) {
                 suma += envio.monto();
             }
         }

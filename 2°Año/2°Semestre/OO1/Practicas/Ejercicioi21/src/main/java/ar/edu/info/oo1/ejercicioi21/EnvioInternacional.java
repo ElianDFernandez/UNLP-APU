@@ -14,7 +14,7 @@ public class EnvioInternacional extends Envio{
         this.esRapido = esRapido;
     }
 
-    public boolean isEsRapido() {
+    public boolean esRapido() {
         return esRapido;
     }
 
@@ -28,7 +28,7 @@ public class EnvioInternacional extends Envio{
             costo = 12;
         }
         
-        return this.esRapido ? 5000+costo*this.getPeso()+800 : 5000+costo*this.getPeso()+800;
+        return this.esRapido ? 5000+costo*this.getPeso()+800 : 5000+costo*this.getPeso();
     }
     
 }
