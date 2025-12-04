@@ -1370,6 +1370,229 @@ Tamaño máximo de un archivo = 10 KiB + 32 KiB + 1 MiB + 32 MiB = 33,042 KiB �
 
 # 43
 
+Dado el FileSystem de UNIX System V (visto en clase), indique qué cambios se producen el en mismo dada las siguientes situaciones:
+
+a. Se agrega un nuevo archivo "Archivo1" en el directorio "Directorio1".
+
+Al agregar un nuevo archivo "Archivo1" en el directorio "Directorio1", se producen los siguientes cambios en el FileSystem de UNIX System V:
+1. Se crea un nuevo inodo para "Archivo1" que contiene la información del archivo, como su tamaño, permisos, propietario y punteros a los bloques de datos.
+2. Se asignan bloques de datos en el disco para almacenar el contenido de "Archivo1".
+3. Se actualiza el directorio "Directorio1" para incluir una nueva entrada que mapea el nombre "Archivo1" al número de inodo correspondiente.
+
+b. Se agrega un nuevo contenido al archivo "Archivo1".
+
+Al agregar nuevo contenido al archivo "Archivo1", se producen los siguientes cambios en el FileSystem de UNIX System V:
+1. Se actualiza el inodo de "Archivo1" para reflejar el nuevo tamaño del archivo.
+2. Si el nuevo contenido requiere más bloques de datos, se asignan bloques adicionales en el disco y se actualizan los punteros en el inodo para incluir estos nuevos bloques.
+3. El contenido del archivo se escribe en los bloques de datos asignados.
+
+c. Se modifica el archivo "Archivo1" a "Archivo2".
+
+Al modificar el nombre del archivo de "Archivo1" a "Archivo2", se producen los siguientes cambios en el FileSystem de UNIX System V:
+1. Se actualiza la entrada en el directorio "Directorio1" para cambiar el nombre de "Archivo1" a "Archivo2", manteniendo el mismo número de inodo.
+2. No se realizan cambios en el inodo ni en los bloques de datos, ya que solo se está modificando el nombre del archivo.
+
+d. Se hace un link duro a "Archivo2" en el mismo directorio con nombre "LinkArchivo2".
+
+Al crear un link duro a "Archivo2" en el mismo directorio con el nombre "LinkArchivo2", se producen los siguientes cambios en el FileSystem de UNIX System V:
+1. Se crea una nueva entrada en el directorio "Directorio1" que mapea el nombre "LinkArchivo2" al mismo número de inodo que "Archivo2".
+2. Se incrementa el contador de enlaces (link count) en el inodo de "Archivo2" para reflejar que ahora hay dos nombres que apuntan al mismo archivo.
+
+e. Se borra un archivo "Archivo3"
+
+Al borrar el archivo "Archivo3", se producen los siguientes cambios en el FileSystem de UNIX System V:
+1. Se elimina la entrada correspondiente a "Archivo3" en su directorio padre.
+2. Se decrementa el contador de enlaces (link count) en el inodo de "Archivo3".
+3. Si el contador de enlaces llega a cero, se liberan los bloques de datos asignados al archivo y se marca el inodo como libre para su reutilización.
+
+# 44
+
+Se tiene un FileSystem con un modelo indexado con niveles de indirección, donde se mantiene un i-nodo con 10 índices de direccionamiento directo, 1 índice para indirecto simple y 2 para indirecto doble. Considerando además que utilizan 32 bits para referenciar direcciones a bloques/clusters.
+
+Suponga que existen dos siguientes archivos con sus tamaños logicos:
+● ArchivoA: de 55 KibiBytes
+● ArchivoB: de 12 KibiBytes
+● ArchivoC: de 1075 KibiBytes
+
+a. Si se utiliza como unidad de asignación el sector de disco de 512bytes
+i. ¿Cuántas direcciones a sectores puede contener un sector de disco?
+ii. ¿Cuál sería el tamaño máximo que un archivo podría alcanzar?
+iii. ¿Cuántos sectores se necesitan para almacenar cada uno de los archivos antes enumerados? Indique el tamaño físico que se requirió para almacenar cada uno.
+v. Indique la fragmentación interna que se produce para cada uno de los archivos antes enumerados
+
+a. Cálculos:
+i. Cantidad de direcciones a sectores que puede contener un sector de disco:
+Tamaño del sector = 512 bytes
+Tamaño de la dirección = 32 bits = 4 bytes
+Número de direcciones por sector = Tamaño del sector / Tamaño de la dirección = 512 bytes / 4 bytes = 128 direcciones
+
+ii. Tamaño máximo que un archivo podría alcanzar:
+- Direccionamiento directo: 10 bloques * 512 bytes = 5120 bytes
+- Direccionamiento indirecto simple: 1 indice para indirecto simple = 128 direcciones * 512 bytes = 65,536 bytes
+- Direccionamiento indirecto doble: 2 indices para indirecto doble = 128 direcciones * 128 direcciones * 512 bytes = 8,388,608 bytes
+
+Tamaño máximo de un archivo = 5120 bytes + 65,536 bytes + 8,388,608 bytes * 2 = 16,847,872 bytes ≈ 16.06 MiB
+
+iii. Cantidad de sectores necesarios para almacenar cada archivo y tamaño físico requerido:
+
+- ArchivoA: 55 KiB = 55 * 1024 bytes = 56,320 bytes
+  Sectores necesarios = 56,320 bytes / 512 bytes/sector = 110 sectores
+  Tamaño físico requerido = 110 sectores * 512 bytes/sector = 56,320 bytes
+
+- ArchivoB: 12 KiB = 12 * 1024 bytes = 12,288 bytes
+    Sectores necesarios = 12,288 bytes / 512 bytes/sector = 24 sectores
+    Tamaño físico requerido = 24 sectores * 512 bytes/sector = 12,288 bytes
+
+- ArchivoC: 1075 KiB = 1075 * 1024 bytes = 1,100,800 bytes
+    Sectores necesarios = 1,100,800 bytes / 512 bytes/sector = 2150 sectores
+    Tamaño físico requerido = 2150 sectores * 512 bytes/sector = 1,100,800 bytes
+
+v. Fragmentación interna para cada archivo:
+- ArchivoA: Tamaño del último sector utilizado = 56,320 bytes % 512 bytes = 0 bytes (no hay fragmentación interna)
+
+- ArchivoB: Tamaño del último sector utilizado = 12,288 bytes % 512 bytes = 0 bytes (no hay fragmentación interna)
+
+- ArchivoC: Tamaño del último sector utilizado. Total de sector a guardar = 2150 sectores
+
+Aquí sumamos los bloques que no son datos, sino punteros:
+A. Por los Directos:
+    * 10 sectores (los 10 directos). Restan 2,140 sectores de datos.
+A. Por el Indirecto Simple:
+    * 1 sector (la tabla simple). Restan 2,140 - 128 = 2,012 sectores de datos. Recordar el peso del indice simple = 1 sector.
+B. Por los Indirectos Dobles:
+    * Tenemos 2,012 bloques de datos para guardar. Cada bloque doble puede apuntar a 128 bloques simples, y cada bloque simple apunta a 128 bloques de datos. Entonces necesitamos:
+    * Indices dobles necesarios = 2,012 / (128) = 15.72 -> 16 bloques dobles. Pero tomamos el bloque dobre entero entonces tenemos fragmentación interna.
+
+Entonces 
+Sectores de ÍNDICES: 18 
+Sectores de DATOS: 2,150 - 18 = 2,132 sectores de datos
+Total fisico = 2,168 sectores * 512 bytes/sector = 1,108,736 bytes
+Fragmentación interna = 1,108,736 bytes - 1,100,800 bytes = 7,936 bytes
+
+# 45 
+
+Para los incisos a. y b. el ejercicio anterior, y considerando que el fileSystem se utiliza en un disco con las siguientes características:
+
+➢ 6 platos, con 2 caras útiles cada uno
+➢ 2500 pistas por cara y 100 sectores por pista de 512 bytes cada uno.
+➢ 7200 RPM
+➢ seek type de 10,5 ms
+➢ velocidad de transferencia de 146 MiB/seg (Mebibytes por segundo)
+
+Calcule el tiempo de transferencia de los 3 archivos (ArchivoA, ArchivoB y ArchivoC) del ejercicio previo.
+
+Entonces el tiempo de transferencia se calcula como:
+
+Tiempo de transferencia de un archivo = tamaño del archivo / velocidad de transferencia + tiempo de búsqueda + tiempo de latencia
+
+Donde:
+- Tiempo de búsqueda (Seek Time) = 10.5 ms = 0.0105 s
+- Tiempo de latencia (Latency Time) = (1 / (2 * RPM)) * 60 s = (1 / (2 * 7200)) * 60 s ≈ 0.00417 s
+- Velocidad de transferencia = 146 MiB/s = 146 * 1024 * 1024 bytes/s = 153,931,648 bytes/s
+
+a. ArchivoA: 56,320 bytes (Logico) -> 56,320 bytes (Fisico)
+
+Tiempo de transferencia = 56,320 bytes / 153,931,648 bytes/s + 0.0105 s + 0.00417 s
+Tiempo de transferencia ≈ 0.000366 s + 0.0105 s + 0.00417 s ≈ **0.015036 s**
+
+b. ArchivoB: 12,288 bytes (Logico) -> 12,288 bytes (Fisico)
+
+Tiempo de transferencia = 12,288 bytes / 153,931,648 bytes/s + 0.0105 s + 0.00417 s
+Tiempo de transferencia ≈ 0.00008 s + 0.0105 s + 0.00417 s ≈ **0.01475 s**
+
+c. ArchivoC: 1,100,800 bytes (Logico) -> 1,108,736 bytes (Fisico)
+
+Tiempo de transferencia = 1,108,736 bytes / 153,931,648 bytes/s + 0.0105 s + 0.00417 s
+Tiempo de transferencia ≈ 0.0072 s + 0.0105 s + 0.00417 s ≈ **0.02187 s**
+
+
+# 46
+
+Analice las siguientes fórmulas necesarias para localizar un I-NODO en la tabla de i-nodos de un filesystem similar a System V (visto en la teoría)
+
+nro bloque = ((nro de inodo-1)/nro. de inodos por bloque) + bloque de comienzo de la lista de inodos
+Desplazamiento del inodo en el bloque = ((nro de inodo - 1) módulo (número de inodos por bloque)) * medida de inodo del disco.
+
+a. Según la primera fórmula, asumiendo que en el bloque 2 está en el comienzo de la lista de inodos y que hay 8 inodos por bloque:
+calcule donde se encuentra el inodo 8 y el 9. ¿Dónde estarían para un bloque de disco con 16 inodos?
+
+Cálculos:
+Para un bloque con 8 inodos por bloque:
+- Inodo 8:
+nro bloque = ((8-1)/8) + 2 = (7/8) + 2 = 0 + 2 = 2
+
+- Inodo 9:
+nro bloque = ((9-1)/8) + 2 = (8/8) + 2 = 1 + 2 = 3
+
+Para un bloque con 16 inodos por bloque:
+- Inodo 8:
+nro bloque = ((8-1)/16) + 2 = (7/16) + 2 = 0 + 2 = 2
+
+- Inodo 9:
+nro bloque = ((9-1)/16) + 2 = (8/16) + 2 = 0 + 2 = 2
+
+b.De acuerdo a la segunda fórmula, si cada inodo del disco ocupa 64 bytes y hay 8 inodos por bloque de disco, el inodo 8 comienza en el desplazamiento 448 del bloque de disco. ¿Dónde empieza el 6? Si fueran inodos de 128 bytes y 24 inodos por bloque: ¿dónde empezaría el inodo 8?
+
+Cálculos:
+Para inodos de 64 bytes y 8 inodos por bloque:
+- Inodo 6:
+Desplazamiento del inodo en el bloque = ((6-1) módulo 8) * 64 bytes = (5 módulo 8) * 64 bytes = 5 * 64 bytes = 320 bytes
+Nro de bloque = ((6-1)/8) + 2 = (5/8) + 2 = 0 + 2 = 2
+El inodo 6 comienza en el desplazamiento 320 del bloque 2
+
+Para inodos de 128 bytes y 24 inodos por bloque:
+- Inodo 8:
+Desplazamiento del inodo en el bloque = ((8-1) módulo 24) * 128 bytes = (7 módulo 24) * 128 bytes = 7 * 128 bytes = 896 bytes
+Nro de bloque = ((8-1)/24) + 2 = (7/24) + 2 = 0 + 2 = 2
+El inodo 8 comienza en el desplazamiento 896 del bloque 2
+
+# 47
+
+Dado el siguiente gráfico que representa el estado de Buffer Cache en Unix System V (Visto en clase):
+
+```plaintext
++-Hash Queue-+
+| 0 mod 5    | <-> | 45 | <-> | 25 | <-> | 55 | <-> | 20 |
++------------+     
+| 1 mod 5    | <-> | 21 | <-> | 36 | <-> | 6  | <-> | 101|
++------------+
+| 2 mod 5    | <-> | 237 | <-> | 152DW | <-> | 127 | <-> | 102 |
++------------+
+| 3 mod 5    | <-> | 18 | <-> | 78 | <-> | 103 |
++------------+
+| 4 mod 5    | <-> | 59 | <-> | 9DW | <-> | 94 | <-> | 319DW |
++------------+
+
++-Free List--+ <-> | 9DW | <-> | 152DW | <-> | 102 | <-> | 25 | <-> | 237 |
+```
+Responda a los siguientes incisos (considere cambios en los headers, las hash queue, free list, operaciones de E/S, etc):
+
+a. ¿Qué sucedería si un proceso P1 requiere el bloque 45?
+
+1. El sistema busca el bloque 45 en la Hash Queue correspondiente 45 mod 5 = 0.
+2. Encuentra el bloque 45 en la Hash Queue. Pero el buffer está marcado como "busy", es decir no esta en la free list.
+3. El proceso P1 se bloquea y espera hasta que el bloque 45 esté disponible.
+
+
+b. ¿Qué sucedería si un proceso P1 solicita el bloque 113?
+1. El sistema busca el bloque 113 en la Hash Queue correspondiente 113 mod 5 = 3.
+2. No encuentra el bloque 113 en la Hash Queue.
+3. El sistema selecciona un bloque libre de la Free List, siempre el primero (en este caso el bloque 9DW).
+4. Se lee del disco el bloque 113 y se carga en el buffer del bloque 9DW.
+5. El bloque 9DW se elimina de la Free List y se agrega a la Hash Queue correspondiente 113 mod 5 = 3. Ahora etonces el bloque 9DW contiene los datos del bloque 113.
+Solo se modifican los headers del bloque 9DW, y las listas de la Hash Queue y Free List. No se modifican ubicaciones de disco.
+
+c. ¿Qué sucedería si un proceso P1 solicita el bloque 102?
+1. El sistema busca el bloque 102 en la Hash Queue correspondiente 102 mod 5 = 2.
+2. Encuentra el bloque 102 en la Hash Queue. Pero el buffer está marcado como "busy", es decir no esta en la free list.
+3. El proceso P1 se bloquea y espera hasta que el bloque 102 esté disponible
+
+d. ¿Qué sucedería si un proceso P1 solicita el bloque 9?
+1. El sistema busca el bloque 9 en la Hash Queue correspondiente 9 mod 5 = 4.
+2. Encuentra el bloque 9 en la Hash Queue. Pero el buffer está marcado como "dirty write" (DW), es decir que tiene datos modificados que no han sido escritos en el disco.
+3. El sistema inicia una operación de escritura en el disco para guardar los datos del bloque 9.
+4. Una vez que la operación de escritura se completa, el bloque 9 se marca como "clean" y se libera.
+5. El proceso P1 puede ahora acceder al bloque 9.
 
 
 
