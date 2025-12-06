@@ -1577,22 +1577,12 @@ a. ¿Qué sucedería si un proceso P1 requiere el bloque 45?
 b. ¿Qué sucedería si un proceso P1 solicita el bloque 113?
 1. El sistema busca el bloque 113 en la Hash Queue correspondiente 113 mod 5 = 3.
 2. No encuentra el bloque 113 en la Hash Queue.
-3. El sistema selecciona un bloque libre de la Free List, siempre el primero (en este caso el bloque 9DW).
-4. Se lee del disco el bloque 113 y se carga en el buffer del bloque 9DW.
-5. El bloque 9DW se elimina de la Free List y se agrega a la Hash Queue correspondiente 113 mod 5 = 3. Ahora etonces el bloque 9DW contiene los datos del bloque 113.
-Solo se modifican los headers del bloque 9DW, y las listas de la Hash Queue y Free List. No se modifican ubicaciones de disco.
-
-c. ¿Qué sucedería si un proceso P1 solicita el bloque 102?
-1. El sistema busca el bloque 102 en la Hash Queue correspondiente 102 mod 5 = 2.
-2. Encuentra el bloque 102 en la Hash Queue. Pero el buffer está marcado como "busy", es decir no esta en la free list.
-3. El proceso P1 se bloquea y espera hasta que el bloque 102 esté disponible
-
-d. ¿Qué sucedería si un proceso P1 solicita el bloque 9?
-1. El sistema busca el bloque 9 en la Hash Queue correspondiente 9 mod 5 = 4.
-2. Encuentra el bloque 9 en la Hash Queue. Pero el buffer está marcado como "dirty write" (DW), es decir que tiene datos modificados que no han sido escritos en el disco.
-3. El sistema inicia una operación de escritura en el disco para guardar los datos del bloque 9.
-4. Una vez que la operación de escritura se completa, el bloque 9 se marca como "clean" y se libera.
+3. El sistema selecciona un bloque libre de la Free List, siempre el primero (en este caso el bloque 9DW esta delay write, entonces avanzo al siguiente bloque libre que es el 152DW, pero este tambien esta delay write, entonces avanzo al siguiente bloque libre que es el 102). Cuando pasa al siguiente en la free list por que el bloque esta delay write, el sistema debe iniciar una operación de escritura en disco para guardar los datos del bloque 152DW antes de reutilizarlo.
+4. El sistema asigna el bloque 102 al proceso P1, actualiza el header del bloque 102 con el número de bloque 113 y lo marca como "busy".
 5. El proceso P1 puede ahora acceder al bloque 9.
 
 
+# TLB
 
+Table de Traducción de Direcciones (TLB - Translation Lookaside Buffer)
+Es una memoria cache que almacena las traducciones de direcciones virtuales a físicas para acelerar el proceso de traducción de direcciones en sistemas con memoria virtual. Si una dirección virtual solicitada está en la TLB, la traducción se realiza rápidamente sin necesidad de acceder a la tabla de páginas principal, mejorando así el rendimiento del sistema. Si no esta en la TLB, se produce un fallo de TLB y el sistema debe buscar la traducción en la tabla de páginas, lo que es más lento.
