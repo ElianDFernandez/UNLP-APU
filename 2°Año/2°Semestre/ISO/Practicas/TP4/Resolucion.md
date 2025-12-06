@@ -1224,12 +1224,12 @@ Tamaño del archivo = 16 MiB = 16 * 1024 * 102
 4 bytes = 16,777,216 bytes
 Velocidad de transferencia = 10 MiB/s = 10 * 1024 * 1024 bytes/s = 10,485,760 bytes/s
 Número de bloques = Tamaño del archivo / Capacidad por sector = 16,777,
-216 bytes / 512 bytes/sector = 32,768 sectores
+216 bytes / 512 bytes/sector = 32768 sectores
 Tiempo de transferencia = Número de bloques * (Seek Time + Latency Time + Transfer Time por bloque)
 Seek Time = 10 ms = 0.01 s
 Latency Time = 3.33 ms = 0.00333 s
 Transfer Time por bloque = Capacidad por sector / Velocidad de transferencia = 512 bytes / 10,485,760 bytes/s ≈ 0.0000488 s
-Tiempo de transferencia = 32,768 * (0.01 s + 0.00333 s + 0.0000488 s) ≈ 32,768 * 0.0133788 s ≈ 438.5 segundos
+Tiempo de transferencia = 32768 * (0.01 s + 0.00333 s + 0.0000488 s) ≈ 32768 * 0.0133788 s ≈ 438.5 segundos
 
 # 38
 Unidad de Asignación. Las técnicas vistas pueden referenciar a sectores físicos de medio de almacenamiento o clusters (conjunto consecutivo de sectores físicos). Cite ventajas y desventajas de la utilización de cada forma de unidad de asignación.

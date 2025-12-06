@@ -131,15 +131,28 @@ Usamos $(...) en lugar de las backquotes para la sustitución de comandos, ya qu
 
 - El comando `test` (o los corchetes `[ ]`) permite evaluar diferentes tipos de expresiones en scripts de shell. Los tipos de expresiones que pueden ser usadas incluyen:
   - Evaluación de archivos:
-    - `-e archivo`: verifica si el archivo existe.
+    - `-e archivo`: verifica si el archivo existe. Ejemplo:
+    ```bash
+    if [ -e "$mi_archivo" ]; then
+        echo "El archivo existe."
+    else
+        echo "El archivo no existe."
+    fi
+    ```
     - `-f archivo`: verifica si el archivo es un archivo regular.
     - `-d archivo`: verifica si el archivo es un directorio.
     - `-r archivo`: verifica si el archivo es legible.
     - `-w archivo`: verifica si el archivo es escribible.
     - `-x archivo`: verifica si el archivo es ejecutable.
-
     - Evaluación de cadenas:
-    - `-z cadena`: verifica si la cadena es de longitud cero.
+    - `-z cadena`: verifica si la cadena es de longitud cero. Ejemplo: 
+    ```bash
+    if [ -z "$mi_cadena" ]; then
+        echo "La cadena está vacía."
+    else
+        echo "La cadena no está vacía."
+    fi
+    ```
     - `-n cadena`: verifica si la cadena no es de longitud cero.
     - `cadena1 = cadena2`: verifica si las dos cadenas son iguales.
     - `cadena1 != cadena2`: verifica si las dos cadenas son diferentes.
@@ -227,6 +240,28 @@ select variable in lista; do
     break  # salir del bucle después de una selección
 done
 ```
+Ejemplo de uso de select:
+```bash
+#!/bin/bash
+echo "Seleccione una opción:"
+select opcion in "Opción 1" "Opción 2" "Salir"; do
+    case $opcion in
+        "Opción 1")
+            echo "Ha seleccionado Opción 1"
+            ;;
+        "Opción 2")
+            echo "Ha seleccionado Opción 2"
+            ;;
+        "Salir")
+            echo "Saliendo..."
+            break
+            ;;
+        *)
+            echo "Opción no válida."
+            ;;
+    esac
+done
+```
 
 ## 9 ¿Que acciones realizan las sentencias break y continue dentro de un bucle? ¿Que parametros reciben?
 
@@ -275,7 +310,7 @@ multiplicacion=$(expr $num1 \* $num2)
 echo "Suma: $suma"
 echo "Resta: $resta"
 echo "Multiplicación: $multiplicacion"
-if [ $num1 -gt $num2 ]; then
+if ((num1 > num2)); then
     echo "El mayor es: $num1"
 else
     echo "El mayor es: $num2"
@@ -297,7 +332,7 @@ multiplicacion=$(expr $num1 \* $num2)
 echo "Suma: $suma"
 echo "Resta: $resta"
 echo "Multiplicación: $multiplicacion"
-if [ $num1 -gt $num2 ]; then
+if ((num1 > num2)); then
     echo "El mayor es: $num1"
 else
     echo "El mayor es: $num2"
@@ -306,7 +341,7 @@ fi
 c. Realizar una calculadora que ejecute las 4 operaciones basicas +,-,*,%. Esta calculadora debe funcionar recibiendo la opreacion y los numeros como parametros.
 ```bash
 #!/bin/bash
-if [ $# -ne 3 ]; then
+if (( $# != 3 )); then
     echo "Uso: $0 operacion num1 num2"
     echo "Operaciones: suma, resta, multiplicacion, division, modulo"
     exit 1
@@ -458,7 +493,7 @@ fi
 extension=$1
 echo "Usuario Cantidad_de_Archivos" > reporte.txt
 for usuario in $(cut -d: -f1 /etc/passwd); do
-    cantidad=$(find /home/$usuario -type f -name "*.$extension" 2>/dev/null | wc -l)
+    cantidad=$(find /home/$usuario -type f -name "*.$extension" | wc -l)
     if [ $cantidad -gt 0 ]; then
         echo "$usuario $cantidad" >> reporte.txt
     fi
