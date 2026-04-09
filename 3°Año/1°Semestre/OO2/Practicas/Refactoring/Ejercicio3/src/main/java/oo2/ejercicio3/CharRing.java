@@ -1,16 +1,14 @@
-package oo2.practica;
+package oo2.ejercicio3;
 
 /**
  *
- * @author elian
+ * @author Elian
  */
-public class CharRing {
+public class CharRing extends Ring {
     private char[] source;
-    private int idx;
 
     public CharRing(String src) {
         source = src.toCharArray();
-        idx = 0;
     }
 
     public char next() {
@@ -19,3 +17,4 @@ public class CharRing {
         return source[idx++];
     }
 }
+

@@ -1,5 +1,6 @@
 package oo2.practica;
 
+import ejercicio3.CharRing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;

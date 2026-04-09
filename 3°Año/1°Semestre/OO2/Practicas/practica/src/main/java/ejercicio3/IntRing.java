@@ -1,4 +1,4 @@
-package oo2.practica;
+package ejercicio3;
 
 public class IntRing {
     private int[] source;
