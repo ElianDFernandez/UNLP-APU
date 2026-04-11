@@ -16,6 +16,7 @@ La **refactorización** es el proceso de modificar el código interno de un prog
 
 ### Pull Up Method (Subir Método)
 - **Precondiciones:** Subclases distintas tienen un método con resultados idénticos (misma firma y comportamiento).
+Independencia de la subclase (Crucial): El método que se desea subir no debe depender de atributos o métodos que existan únicamente en las subclases.
 - **Postcondiciones:** El método se centraliza en la clase padre compartida.
 - **Transformación:** Se extrae el método común de las subclases y se traslada a la superclase, eliminando la duplicación de código.
 
@@ -23,6 +24,17 @@ La **refactorización** es el proceso de modificar el código interno de un prog
 - **Precondiciones:** Dos o más subclases declaran el mismo atributo (mismo tipo y propósito).
 - **Postcondiciones:** El atributo reside únicamente en la clase padre.
 - **Transformación:** Se elimina el atributo de las subclases y se declara en la superclase para que todas lo hereden.
+
+
+### Extract Method (Extraer Método)
+- **Precondiciones:** Un método tiene un bloque de código que puede ser identificado como una tarea lógica independiente.
+- **Postcondiciones:** El bloque de código se convierte en un nuevo método con un nombre descriptivo, y el método original ahora llama a este nuevo método.
+- **Transformación:** Se selecciona el bloque de código, se extrae a un nuevo método y se reemplaza el bloque original con una llamada a este nuevo método, mejorando la legibilidad y la reutilabilidad.
+
+### Move Method (Mover Método)
+- **Precondiciones:** Un método utiliza más datos de otra clase que de la clase a la que pertenece actualmente.
+- **Postcondiciones:** El método se traslada a la clase que maneja los datos que utiliza.
+- **Transformación:** Se mueve el método a la clase que tiene más sentido para su funcionalidad, lo que puede mejorar la cohesión y reducir el acoplamiento.
 
 ---
 
