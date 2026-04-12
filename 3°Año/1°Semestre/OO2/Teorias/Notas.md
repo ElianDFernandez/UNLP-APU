@@ -168,3 +168,325 @@ Smells que indican un alto grado de dependencia (acoplamiento) entre clases, lo 
 	- *Hide Delegate*: En lugar de encadenar llamadas, la clase cliente debe llamar a un método en el primer objeto, y ese objeto se encarga de delegar internamente.
 - **Middle Man:**
 	- *Remove Middle Man*: Hacer que la clase cliente llame directamente a la clase delegada en lugar de pasar por el intermediario inútil.
+
+# Patrones de Diseño
+
+## Adapter (Adaptador)
+
+El patrón Adapter es un patrón de diseño estructural que permite que dos interfaces incompatibles trabajen juntas. El adaptador actúa como un puente entre las dos interfaces, traduciendo las llamadas de una a la otra.
+Cuando usarlo:
+- Cuando tienes una clase existente que no tiene la interfaz que necesitas.
+- Cuando quieres usar una clase existente pero su interfaz no es compatible con el código que tienes.
+- Cuando quieres crear una clase reutilizable que coopere con clases no relacionadas o con interfaces desconocidas.
+
+Ejemplo:
+```java
+// 1. Target: La interfaz que nuestro sistema (el Celular Nuevo) espera usar.
+public interface CargadorTipoC {
+    void cargarConTipoC();
+}
+
+// Cliente: Nuestro sistema que solo entiende la interfaz Target.
+public class CelularNuevo {
+    public void cargarCelular(CargadorTipoC cargador) {
+        System.out.println("Conectando al puerto Tipo C...");
+        cargador.cargarConTipoC();
+    }
+}
+
+// ---------------------------------------------------------
+
+// 2. Adaptee: La clase que ya existe y funciona, pero es INCOMPATIBLE.
+public class CableMicroUSB {
+    public void proveerEnergiaMicroUSB() {
+        System.out.println("Enviando energía a través del cable Micro-USB viejo.");
+    }
+}
+
+// ---------------------------------------------------------
+
+// 3. Adapter: La clase puente. "Se disfraza" de Tipo C, pero usa el Micro-USB por dentro.
+public class AdaptadorMicroUSB_A_TipoC implements CargadorTipoC {
+    
+    // Tiene una referencia al objeto incompatible
+    private CableMicroUSB cableViejo;
+
+    public AdaptadorMicroUSB_A_TipoC(CableMicroUSB cableViejo) {
+        this.cableViejo = cableViejo;
+    }
+
+    // Implementa el método que espera el celular nuevo...
+    @Override
+    public void cargarConTipoC() {
+        // ...pero por dentro "traduce" la llamada al método del cable viejo
+        System.out.println("Adaptador: Convirtiendo conexión Micro-USB a Tipo C...");
+        this.cableViejo.proveerEnergiaMicroUSB();
+    }
+}
+
+// ---------------------------------------------------------
+
+// 4. Main: Cómo se ve todo esto funcionando junto
+public class Main {
+    public static void main(String[] args) {
+        CelularNuevo miCelular = new CelularNuevo();
+        CableMicroUSB cableQueTengoEnCasa = new CableMicroUSB();
+        
+        // miCelular.cargarCelular(cableQueTengoEnCasa); // ¡ERROR! No encajan.
+
+        // Solución: Usamos el adaptador
+        CargadorTipoC adaptador = new AdaptadorMicroUSB_A_TipoC(cableQueTengoEnCasa);
+        
+        // Ahora el celular se carga sin problemas sin tener que romper el cable viejo
+        miCelular.cargarCelular(adaptador);
+    }
+}
+```
+
+## Composite (Compuesto)
+
+El patrón Composite es un patrón de diseño estructural que permite tratar objetos individuales y composiciones de objetos de manera uniforme. Es útil para representar jerarquías de objetos donde los objetos pueden ser tanto simples (hojas) como compuestos (nodos con hijos).
+Cuando usarlo:
+- Cuando quieres representar una jerarquía de objetos en forma de árbol.
+- Cuando quieres que los clientes traten a los objetos individuales y a las composiciones de manera uniforme.
+Ejemplo:
+```java
+// 1. Component: La interfaz común para objetos individuales y compuestos.
+public interface Componente {
+	void mostrarDetalles();
+}
+
+// ---------------------------------------------------------
+// 2. Leaf: Representa objetos individuales (hojas).
+public class Archivo implements Componente {
+	private String nombre;
+
+	public Archivo(String nombre) {
+		this.nombre = nombre;
+	}
+
+	@Override
+	public void mostrarDetalles() {
+		System.out.println("Archivo: " + nombre);
+	}
+}
+// ---------------------------------------------------------
+// 3. Composite: Representa objetos compuestos (nodos con hijos).
+import java.util.ArrayList;
+import java.util.List;
+
+public class Carpeta implements Componente {
+	private String nombre;
+	private List<Componente> componentes = new ArrayList<>();
+
+	public Carpeta(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void agregar(Componente componente) {
+		componentes.add(componente);
+	}
+
+	public void eliminar(Componente componente) {
+		componentes.remove(componente);
+	}
+
+	@Override
+	public void mostrarDetalles() {
+		System.out.println("Carpeta: " + nombre);
+		for (Componente componente : componentes) {
+			componente.mostrarDetalles();
+		}
+	}
+}
+// ---------------------------------------------------------
+// 4. Main: Cómo se ve todo esto funcionando junto
+public class Main {
+	public static void main(String[] args) {
+		Archivo archivo1 = new Archivo("documento.txt");
+		Archivo archivo2 = new Archivo("foto.jpg");
+
+		Carpeta carpeta1 = new Carpeta("Mis Documentos");
+		carpeta1.agregar(archivo1);
+
+		Carpeta carpeta2 = new Carpeta("Mis Fotos");
+		carpeta2.agregar(archivo2);
+
+		Carpeta carpetaPrincipal = new Carpeta("Mi Computadora");
+		carpetaPrincipal.agregar(carpeta1);
+		carpetaPrincipal.agregar(carpeta2);
+
+		carpetaPrincipal.mostrarDetalles();
+	}
+}
+```
+
+## Factory Method (Método de Fábrica)
+El patrón Factory Method es un patrón de diseño creacional que define una interfaz para crear objetos, pero permite que las subclases decidan qué clase instanciar. El Factory Method delega la responsabilidad de creación a las subclases, lo que permite una mayor flexibilidad y desacoplamiento en el código.
+Cuando usarlo:
+- Cuando una clase no puede anticipar la clase de objetos que debe crear.
+- Cuando quieres que las subclases especifiquen los objetos que se deben crear.
+- Cuando quieres centralizar la creación de objetos para facilitar el mantenimiento y la extensión.
+- Cuando quieres proporcionar una interfaz común para la creación de objetos en una jerarquía de clases.
+- Cuando quieres evitar acoplar el código a clases concretas y prefieres trabajar con interfaces o clases abstractas.
+Ejemplo:
+```java
+// 1. Product: La interfaz común para los objetos que se van a crear.
+public interface Animal {
+	void hacerSonido();
+}
+
+// ---------------------------------------------------------
+// 2. Concrete Products: Clases concretas que implementan la interfaz Product.
+public class Perro implements Animal {
+	@Override
+	public void hacerSonido() {
+		System.out.println("¡Guau!");
+	}
+}
+
+public class Gato implements Animal {
+	@Override
+	public void hacerSonido() {
+		System.out.println("¡Miau!");
+	}
+}
+
+// ---------------------------------------------------------
+// 3. Creator: La clase que declara el método de fábrica, que devuelve un objeto del tipo Product.
+public abstract class CreadorAnimal {
+	public abstract Animal crearAnimal();
+}
+
+// ---------------------------------------------------------
+// 4. Concrete Creators: Clases concretas que implementan el método de fábrica para crear objetos específicos.
+public class CreadorPerro extends CreadorAnimal {
+	@Override
+	public Animal crearAnimal() {
+		return new Perro();
+	}
+}
+
+public class CreadorGato extends CreadorAnimal {
+	@Override
+	public Animal crearAnimal() {
+		return new Gato();
+	}
+}
+
+// ---------------------------------------------------------
+// 5. Main: Cómo se ve todo esto funcionando junto
+public class Main {
+	public static void main(String[] args) {
+		CreadorAnimal creadorPerro = new CreadorPerro();
+		Animal perro = creadorPerro.crearAnimal();
+		perro.hacerSonido(); // Output: ¡Guau!
+
+		CreadorAnimal creadorGato = new CreadorGato();
+		Animal gato = creadorGato.crearAnimal();
+		gato.hacerSonido(); // Output: ¡Miau!
+	}
+}
+```
+
+## Builder (Constructor)
+El patrón Builder es un patrón de diseño creacional que permite construir objetos complejos paso a paso, separando la construcción de la representación del objeto. El Builder proporciona una interfaz para crear diferentes representaciones de un objeto utilizando el mismo proceso de construcción.
+Cuando usarlo:
+- Cuando quieres construir un objeto complejo que requiere múltiples pasos o configuraciones.
+- Cuando quieres separar la construcción de un objeto de su representación para que el mismo proceso de construcción pueda crear diferentes representaciones.
+- Cuando quieres evitar un constructor telescópico (constructores con muchos parámetros) y prefieres una forma más legible y flexible de crear objetos.
+- Cuando quieres construir objetos de manera incremental, permitiendo que el cliente controle el proceso de construcción.
+Ejemplo:
+```java
+// 1. Product: La clase del objeto complejo que se va a construir.
+public class Casa {
+	private String tipo;
+	private int habitaciones;
+	private boolean tieneGaraje;
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	public void setHabitaciones(int habitaciones) {
+		this.habitaciones = habitaciones;
+	}
+
+	public void setTieneGaraje(boolean tieneGaraje) {
+		this.tieneGaraje = tieneGaraje;
+	}
+
+	@Override
+	public String toString() {
+		return "Casa{" +
+				"tipo='" + tipo + '\'' +
+				", habitaciones=" + habitaciones +
+				", tieneGaraje=" + tieneGaraje +
+				'}';
+	}
+}
+// ---------------------------------------------------------
+// 2. Builder: La interfaz que define los pasos para construir el objeto.
+public interface CasaBuilder {
+	void construirTipo();
+	void construirHabitaciones();
+	void construirGaraje();
+	Casa getCasa();
+}
+
+// ---------------------------------------------------------
+// 3. Concrete Builder: La clase concreta que implementa la interfaz Builder para construir un tipo específico de objeto.
+public class CasaModernaBuilder implements CasaBuilder {
+	private Casa casa;
+
+	public CasaModernaBuilder() {
+		this.casa = new Casa();
+	}
+
+	@Override
+	public void construirTipo() {
+		casa.setTipo("Moderna");
+	}
+
+	@Override
+	public void construirHabitaciones() {
+		casa.setHabitaciones(4);
+	}
+
+	@Override
+	public void construirGaraje() {
+		casa.setTieneGaraje(true);
+	}
+
+	@Override
+	public Casa getCasa() {
+		return this.casa;
+	}
+}
+// ---------------------------------------------------------
+// 4. Director: La clase que controla el proceso de construcción utilizando el Builder.
+public class Director {
+	private CasaBuilder builder;
+
+	public Director(CasaBuilder builder) {
+		this.builder = builder;
+	}
+
+	public void construirCasa() {
+		builder.construirTipo();
+		builder.construirHabitaciones();
+		builder.construirGaraje();
+	}
+}
+// ---------------------------------------------------------
+// 5. Main: Cómo se ve todo esto funcionando junto
+public class Main {
+	public static void main(String[] args) {
+		CasaBuilder builder = new CasaModernaBuilder();
+		Director director = new Director(builder);
+		director.construirCasa();
+		Casa casa = builder.getCasa();
+		System.out.println(casa);
+	}
+}
+```
