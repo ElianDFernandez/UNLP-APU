@@ -490,3 +490,120 @@ public class Main {
 	}
 }
 ```
+
+## Strategy (Estrategia)
+
+El patrón Strategy es un patrón de diseño de comportamiento que permite definir una familia de algoritmos, encapsular cada uno de ellos y hacerlos intercambiables. El Strategy permite que el algoritmo varíe independientemente de los clientes que lo utilizan.
+Cuando usarlo:
+- Cuando tienes varias formas de realizar una tarea y quieres que el cliente pueda elegir entre ellas en tiempo de ejecución.
+- Cuando quieres evitar condicionales complejos para seleccionar el comportamiento y prefieres encapsular cada comportamiento en su propia clase.
+- Cuando quieres que el algoritmo pueda cambiar sin afectar a los clientes que lo utilizan, promoviendo el principio de abierto/cerrado.
+- Cuando quieres separar el código que utiliza un algoritmo del código que implementa el algoritmo, para mejorar la mantenibilidad y la extensibilidad.
+Ejemplo:
+
+```java
+// 1. Strategy: La interfaz común para todos los algoritmos.
+public interface Estrategia {
+	void ejecutar();
+}
+// ---------------------------------------------------------
+// 2. Concrete Strategies: Clases concretas que implementan la interfaz Strategy para proporcionar
+// diferentes implementaciones del algoritmo.
+public class EstrategiaA implements Estrategia {
+	@Override
+	public void ejecutar() {
+		System.out.println("Ejecutando Estrategia A");
+	}
+}
+
+public class EstrategiaB implements Estrategia {
+	@Override
+	public void ejecutar() {
+		System.out.println("Ejecutando Estrategia B");
+	}
+}
+// ---------------------------------------------------------
+// 3. Context: La clase que utiliza una instancia de Strategy para ejecutar el algoritmo.
+public class Contexto {
+	private Estrategia estrategia;
+
+	public void setEstrategia(Estrategia estrategia) {
+		this.estrategia = estrategia;
+	}
+	public void ejecutarEstrategia() {
+		if (estrategia != null) {
+			estrategia.ejecutar();
+		} else {
+			System.out.println("No se ha establecido una estrategia.");
+		}
+	}
+}
+```
+
+## State (Estado)
+
+Patrón de diseño de comportamiento que permite a un objeto alterar su comportamiento cuando su estado interno cambia. El objeto parecerá cambiar su clase.
+Cuando usarlo:
+- Cuando un objeto debe cambiar su comportamiento en función de su estado interno.
+- Cuando tienes un gran número de condicionales que dependen del estado de un objeto, y quieres eliminar esos condicionales para mejorar la mantenibilidad.
+- Cuando quieres que el estado de un objeto sea explícito y fácil de entender, en lugar de ocultar la lógica de cambio de estado dentro de métodos con condicionales.
+- Cuando quieres que el comportamiento de un objeto pueda cambiar en tiempo de ejecución sin necesidad de modificar su código, promoviendo el principio de abierto/cerrado.
+Ejemplo:
+```java
+// 1. State: La interfaz común para todos los estados.
+public interface Estado {
+	void manejar(Contexto contexto);
+}
+
+// ---------------------------------------------------------
+// 2. Concrete States: Clases concretas que implementan la interfaz State para proporcionar
+// diferentes comportamientos para cada estado.
+public class EstadoEncendido implements Estado {
+	@Override
+	public void manejar(Contexto contexto) {
+		System.out.println("El dispositivo está encendido.");
+		contexto.setEstado(new EstadoApagado());
+	}
+}
+
+public class EstadoApagado implements Estado {
+	@Override
+	public void manejar(Contexto contexto) {
+		System.out.println("El dispositivo está apagado.");
+		contexto.setEstado(new EstadoEncendido());
+	}
+}
+// ---------------------------------------------------------
+// 3. Context: La clase que mantiene una referencia al estado actual y delega el comportamiento al estado.
+public class Contexto {
+	private Estado estado;
+	public Contexto() {
+		this.estado = new EstadoApagado(); // Estado inicial
+	}
+	public void setEstado(Estado estado) {
+		this.estado = estado;
+	}
+	public void manejar() {
+		if (estado != null) {
+			estado.manejar(this);
+		} else {
+			System.out.println("No se ha establecido un estado.");
+		}
+	}
+}
+// ---------------------------------------------------------
+// 4. Main: Cómo se ve todo esto funcionando junto
+public class Main {
+	public static void main(String[] args) {
+		Contexto contexto = new Contexto();
+		contexto.manejar(); // Output: El dispositivo está apagado.
+		contexto.manejar(); // Output: El dispositivo está encendido.
+		contexto.manejar(); // Output: El dispositivo está apagado.
+	}
+}
+```
+
+Strategy vs State:
+- Ambos patrones utilizan la composición para cambiar el comportamiento de un objeto en tiempo de ejecución.
+- La diferencia clave es que Strategy se enfoca en cambiar el algoritmo o comportamiento de un objeto, mientras que State se enfoca en cambiar el estado interno de un objeto, lo que a su vez cambia su comportamiento.
+- En Strategy, el cliente es responsable de seleccionar la estrategia adecuada, mientras que en State, el objeto cambia su estado internamente y el cliente no necesita preocuparse por los detalles de cómo se manejan los estados.
