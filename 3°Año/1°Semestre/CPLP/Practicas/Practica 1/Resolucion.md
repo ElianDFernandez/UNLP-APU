@@ -3,7 +3,6 @@
 ## Ejercicio 1: 
 
 Los lenguajes de programación más representativos son:  
-
 1951 - 1955: Lenguajes tipo assembly
 1956 - 1960: FORTRAN, ALGOL 58, ALGOL 60, LISP
 1961 - 1965: COBOL, ALGOL 60, SNOBOL, JOVIAL
