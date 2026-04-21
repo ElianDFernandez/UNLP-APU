@@ -155,6 +155,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "obsidian-git:Open Git source control": false,
       "switcher:Abrir selector rápido": false,
       "graph:Abrir vista gráfica": false,
       "canvas:Crear nuevo lienzo": false,
@@ -165,7 +166,7 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "4919f29b6604b945",
+  "active": "5b7e09a16395883f",
   "lastOpenFiles": [
     "3°Año/1°Semestre/CPLP/Notas-Tablet/Notas-Pruebas 20.48.50.excalidraw.md",
     "3°Año/1°Semestre/CPLP/Notas-Tablet",
