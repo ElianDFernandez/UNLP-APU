@@ -11,10 +11,12 @@
             "id": "ef99f6970d415ee0",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "Nueva pestaña"
+              "type": "pdf",
+              "state": {
+                "file": "2°Año/2°Semestre/ISO/Conceptos básicos sobre GNU_Linux.pdf"
+              },
+              "icon": "lucide-file-text",
+              "title": "Conceptos básicos sobre GNU_Linux"
             }
           }
         ]
@@ -139,6 +141,7 @@
         "state": {
           "type": "outline",
           "state": {
+            "file": "2°Año/2°Semestre/ISO/Conceptos básicos sobre GNU_Linux.pdf",
             "followCursor": false,
             "showSearch": false,
             "searchQuery": ""
@@ -146,19 +149,9 @@
           "icon": "lucide-list",
           "title": "Esquema"
         }
-      },
-      {
-        "id": "838e06a04cd8c10c",
-        "type": "leaf",
-        "state": {
-          "type": "git-view",
-          "state": {},
-          "icon": "git-pull-request",
-          "title": "Source Control"
-        }
       }
     ],
-    "currentTab": 3
+    "currentTab": 2
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -175,6 +168,7 @@
   },
   "active": "ef99f6970d415ee0",
   "lastOpenFiles": [
+    "README.md",
     "Sin título.md",
     "3°Año/1°Semestre/CPLP/Notas-Tablet/Notas 20.09.21.excalidraw.md",
     "3°Año/1°Semestre/CPLP/Practicas/Practica 1/Resolucion.md",
