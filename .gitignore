@@ -42,3 +42,8 @@ node_modules/
 .idea/
 *.class
 *.jar
+
+.obsidian/workspace
+.obsidian/workspace.json
+.obsidian/cache/
+.trash/
