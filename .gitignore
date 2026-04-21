@@ -35,3 +35,10 @@
 /3°Año/1°Semestre/OO2/Practicas/practica/target/
 /3°Año/1°Semestre/OO2/Practicas/Refactoring/Ejercicio3/target/
 /3°Año/1°Semestre/OO2/Practicas/Patrones/Ejercicio1/target/
+
+vendor/
+target/
+node_modules/
+.idea/
+*.class
+*.jar
