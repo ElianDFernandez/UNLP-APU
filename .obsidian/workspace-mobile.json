@@ -4,19 +4,19 @@
     "type": "split",
     "children": [
       {
-        "id": "15becb81a58349fa",
+        "id": "7b6ef2efdddb7dc5",
         "type": "tabs",
         "children": [
           {
-            "id": "ef99f6970d415ee0",
+            "id": "5b7e09a16395883f",
             "type": "leaf",
             "state": {
-              "type": "pdf",
+              "type": "excalidraw",
               "state": {
-                "file": "2°Año/2°Semestre/ISO/Conceptos básicos sobre GNU_Linux.pdf"
+                "file": "3°Año/1°Semestre/CPLP/Notas-Tablet/Notas-Pruebas 20.48.50.excalidraw.md"
               },
-              "icon": "lucide-file-text",
-              "title": "Conceptos básicos sobre GNU_Linux"
+              "icon": "excalidraw-icon",
+              "title": "Notas-Pruebas 20.48.50.excalidraw"
             }
           }
         ]
@@ -162,12 +162,14 @@
       "templates:Insertar plantilla": false,
       "command-palette:Abrir paleta de comandos": false,
       "bases:Crear nueva base": false,
-      "obsidian-git:Open Git source control": false,
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "ef99f6970d415ee0",
+  "active": "4919f29b6604b945",
   "lastOpenFiles": [
+    "3°Año/1°Semestre/CPLP/Notas-Tablet/Notas-Pruebas 20.48.50.excalidraw.md",
+    "3°Año/1°Semestre/CPLP/Notas-Tablet",
+    "2°Año/2°Semestre/ISO/Conceptos básicos sobre GNU_Linux.pdf",
     "README.md",
     "Sin título.md",
     "3°Año/1°Semestre/CPLP/Notas-Tablet/Notas 20.09.21.excalidraw.md",
