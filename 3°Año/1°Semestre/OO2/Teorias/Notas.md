@@ -608,4 +608,3 @@ Strategy vs State:
 - La diferencia clave es que Strategy se enfoca en cambiar el algoritmo o comportamiento de un objeto, mientras que State se enfoca en cambiar el estado interno de un objeto, lo que a su vez cambia su comportamiento.
 - En Strategy, el cliente es responsable de seleccionar la estrategia adecuada, mientras que en State, el objeto cambia su estado internamente y el cliente no necesita preocuparse por los detalles de cómo se manejan los estados.
 
-

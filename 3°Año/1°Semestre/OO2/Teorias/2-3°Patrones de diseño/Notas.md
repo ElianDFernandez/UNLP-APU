@@ -1,5 +1,7 @@
 # Pratrones de diseño
 
+[[IntroPatrones-Adapter-Template.pdf]]
+
 # Patron adapter
 
 El patrón Adapter es un patrón de diseño estructural que permite que objetos con interfaces incompatibles trabajen juntos. El Adapter actúa como un puente entre dos interfaces, permitiendo que una clase utilice la funcionalidad de otra clase sin necesidad de modificar su código.

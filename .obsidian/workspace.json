@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "79b10ebb88b5c7d6",
+        "id": "11a3011a21c80ae9",
         "type": "tabs",
         "children": [
           {
-            "id": "c2cce75cde1bb90f",
+            "id": "dacd92af40a3ba13",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "3°Año/1°Semestre/OO2/Teorias/Notas.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Notas"
+              "title": "README"
             }
           }
         ]
@@ -94,7 +94,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "3°Año/1°Semestre/OO2/Teorias/Notas.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +103,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Enlaces entrantes de Notas"
+              "title": "Enlaces entrantes"
             }
           },
           {
@@ -113,12 +112,11 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "3°Año/1°Semestre/OO2/Teorias/Notas.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Enlaces salientes de Notas"
+              "title": "Enlaces salientes"
             }
           },
           {
@@ -156,20 +154,31 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "3°Año/1°Semestre/OO2/Teorias/Notas.md",
+                "file": "Excalidraw/Drawing 2026-04-21 10.41.19.excalidraw.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Esquema de Notas"
+              "title": "Esquema de Drawing 2026-04-21 10.41.19.excalidraw"
+            }
+          },
+          {
+            "id": "fb3ee8f8abe3a3d5",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
             }
           }
-        ]
+        ],
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
-    "width": 300,
+    "width": 200,
     "collapsed": true
   },
   "left-ribbon": {
@@ -180,11 +189,23 @@
       "daily-notes:Abrir la nota de hoy": false,
       "templates:Insertar plantilla": false,
       "command-palette:Abrir paleta de comandos": false,
-      "bases:Crear nueva base": false
+      "bases:Crear nueva base": false,
+      "obsidian-git:Open Git source control": false,
+      "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "c2cce75cde1bb90f",
+  "active": "cb3c13371ea05fe9",
   "lastOpenFiles": [
+    "README.md",
+    "Excalidraw/Drawing 2026-04-21 10.41.19.excalidraw.md",
+    "Excalidraw",
+    "3°Año/1°Semestre/OO2/Teorias/2-3°Patrones de diseño/Notas.md",
+    "3°Año/1°Semestre/OO2/Teorias/2-3°Patrones de diseño/Composite2026 (1).pdf",
+    "3°Año/1°Semestre/OO2/Teorias/2-3°Patrones de diseño/IntroPatrones-Adapter-Template.pdf",
+    "3°Año/1°Semestre/OO2/Teorias/Libros/Refactoring to patterns -- Kerievsky, Joshua -- 2005 -- Boston_ Addison-Wesley -- 9780321213358 -- 25eaf7abcc80a6b83613d5f432895043 -- Anna’s Archive.pdf",
+    "3°Año/1°Semestre/OO2/Teorias/Libros/Refactoring - Improving the Design of Existing Code (2002, Beck, Fowler).pdf",
+    "3°Año/1°Semestre/OO2/Teorias/Libros/Patrones de diseño - Erich Gamma.pdf",
+    "3°Año/1°Semestre/OO2/Teorias/Libros/OOAplicationFramework-Fayad-1997.pdf",
     "3°Año/1°Semestre/OO2/Teorias/Notas.md",
     "Sin título.canvas"
   ]
