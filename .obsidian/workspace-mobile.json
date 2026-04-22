@@ -4,19 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "a0513a96d37c1130",
+        "id": "65f3d572f7461ebf",
         "type": "tabs",
         "children": [
           {
-            "id": "25fbca9f63c3987b",
+            "id": "b394a1f21be835ae",
             "type": "leaf",
             "state": {
-              "type": "excalidraw",
+              "type": "markdown",
               "state": {
-                "file": "3°Año/1°Semestre/CPLP/Notas-Tablet/Drawing 2026-04-22 17.16.08.excalidraw.md"
+                "file": "3°Año/1°Semestre/CPLP/Parcial 1/Notas Parcial 1.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "excalidraw-icon",
-              "title": "Drawing 2026-04-22 17.16.08.excalidraw"
+              "icon": "lucide-file",
+              "title": "Notas Parcial 1"
             }
           }
         ]
@@ -165,10 +167,12 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "25fbca9f63c3987b",
+  "active": "b394a1f21be835ae",
   "lastOpenFiles": [
-    "3°Año/1°Semestre/CPLP/Notas-Tablet/Drawing 2026-04-22 17.16.08.excalidraw.excalidraw",
+    "3°Año/1°Semestre/CPLP/Parcial 1/Notas Parcial 1.md",
+    "3°Año/1°Semestre/CPLP/Parcial 1",
     "3°Año/1°Semestre/CPLP/Notas-Tablet/Drawing 2026-04-22 17.16.08.excalidraw.md",
+    "3°Año/1°Semestre/CPLP/Notas-Tablet/Drawing 2026-04-22 17.16.08.excalidraw.excalidraw",
     "3°Año/1°Semestre/CPLP/Notas-Tablet/Drawing 2026-04-21 21.53.12.excalidraw.excalidraw",
     "3°Año/1°Semestre/CPLP/Notas-Tablet/Drawing 2026-04-21 21.53.12.excalidraw.md",
     "README.md",
