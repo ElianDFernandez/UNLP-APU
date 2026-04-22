@@ -6,8 +6,8 @@
   "appState": {
     "gridSize": 20,
     "gridStep": 5,
-    "gridModeEnabled": true,
-    "viewBackgroundColor": "#e9ecef"
+    "gridModeEnabled": false,
+    "viewBackgroundColor": "#ffffff"
   },
   "files": {}
 }
