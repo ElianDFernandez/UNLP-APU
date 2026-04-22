@@ -141,7 +141,7 @@
         "state": {
           "type": "outline",
           "state": {
-            "file": "2°Año/2°Semestre/ISO/Conceptos básicos sobre GNU_Linux.pdf",
+            "file": "3°Año/1°Semestre/CPLP/Notas-Tablet/Notas-Pruebas 20.48.50.excalidraw.md",
             "followCursor": false,
             "showSearch": false,
             "searchQuery": ""
@@ -155,7 +155,6 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "obsidian-git:Open Git source control": false,
       "switcher:Abrir selector rápido": false,
       "graph:Abrir vista gráfica": false,
       "canvas:Crear nuevo lienzo": false,
