@@ -12,7 +12,7 @@ Resumen de temas:
 	- Axiomatica
 	- Denotacional
 	- Operacional 
-- Tema 4: Las variables y la 5 tupla 
+- Tema 4: Las variables y la 5 tupla
 	- Concepto de ligadura
 	- Alcance (scope)
 	- Tiempo de vida(l-valor)
