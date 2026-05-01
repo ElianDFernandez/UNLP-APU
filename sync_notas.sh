@@ -36,7 +36,6 @@ echo -e "${C_YELLOW}☁️  Sincronizando con GitHub (Pull)...${C_RESET}"
 if ! git pull -q origin main --rebase; then
     git rebase --abort
     echo -e "\n${C_RED}❌ Error de conflictos. Resolvé manualmente.${C_RESET}"
-    notify-send "Error Sync Facultad" "Conflicto al hacer pull." -u critical
 else
     echo -e "${C_GREEN}📥 Pull completado.${C_RESET}"
 
@@ -44,10 +43,8 @@ else
         echo -e "${C_YELLOW}📤 Subiendo cambios (Push)...${C_RESET}"
         if git push -q origin main; then
             echo -e "\n${C_GREEN}✅ ¡Todo sincronizado exitosamente!${C_RESET}"
-            notify-send "Repo Facultad" "Sincronización completada." -u normal
         else
             echo -e "\n${C_RED}❌ Error en el Push.${C_RESET}"
-            notify-send "Error Sync Facultad" "Falló el push." -u critical
         fi
     elif [ $SYNC_DONE -eq 1 ]; then
         echo -e "\n${C_GREEN}✅ Cambios guardados localmente.${C_RESET}"
