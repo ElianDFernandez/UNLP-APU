@@ -243,6 +243,149 @@ public class Main {
 }
 ```
 
+## Decorator (Decorador)
+
+El patron Decorador es un patrón de diseño estructural que permite agregar funcionalidades a un objeto de manera dinámica sin alterar su estructura. El decorador envuelve al objeto original y proporciona una interfaz idéntica, permitiendo que el cliente interactúe con el objeto decorado como si fuera el original.
+
+Ejemplo:
+```java
+// 1. Component: La interfaz común para el objeto original y los decoradores.
+public interface Cafe {
+	String getDescripcion();
+	double getCosto();
+}
+
+// ---------------------------------------------------------
+// 2. Concrete Component: La clase concreta que implementa la interfaz Component.
+public class CafeSimple implements Cafe {
+	@Override
+	public String getDescripcion() {
+		return "Café simple";
+	}
+
+	@Override
+	public double getCosto() {
+		return 2.0;
+	}
+}
+
+// ---------------------------------------------------------
+// 3. Decorator: La clase abstracta que implementa la interfaz Component y tiene una referencia al objeto Component que decora.
+public abstract class CafeDecorador implements Cafe {
+	protected Cafe cafeDecorado;
+	public CafeDecorador(Cafe cafeDecorado) {
+		this.cafeDecorado = cafeDecorado;
+	}
+}
+
+// ---------------------------------------------------------
+// 4. Concrete Decorators: Clases concretas que extienden el decorador para agregar funcionalidades específicas.
+public class ConLeche extends CafeDecorador {
+	public ConLeche(Cafe cafeDecorado) {
+		super(cafeDecorado);
+	}
+
+	@Override
+	public String getDescripcion() {
+		return cafeDecorado.getDescripcion() + " con leche";
+	}
+
+	@Override
+	public double getCosto() {
+		return cafeDecorado.getCosto() + 0.5;
+	}
+}
+```
+
+## Proxy (Proxy)
+
+El patrón Proxy es un patrón de diseño estructural que proporciona un sustituto o representante de otro objeto para controlar el acceso a él. El proxy puede agregar funcionalidad adicional, como control de acceso, registro o carga diferida, sin modificar la clase original.
+
+Ejemplo:
+```java
+// 1. Subject: La interfaz común para el objeto real y el proxy.
+public interface Imagen {
+	void mostrar();
+}
+
+// ---------------------------------------------------------
+// 2. Real Subject: La clase concreta que implementa la interfaz Subject y representa el objeto real que se va a controlar.
+public class ImagenReal implements Imagen {
+	private String archivo;
+
+	public ImagenReal(String archivo) {
+		this.archivo = archivo;
+		cargarImagenDesdeDisco();
+	}
+
+	@Override
+	public void mostrar() {
+		System.out.println("Mostrando " + archivo);
+	}
+
+	private void cargarImagenDesdeDisco() {
+		System.out.println("Cargando " + archivo + " desde el disco...");
+	}
+}
+
+// ---------------------------------------------------------
+// 3. Proxy: La clase que implementa la interfaz Subject y controla el acceso al objeto real.
+public class ImagenProxy implements Imagen {
+	private String archivo;
+	private ImagenReal imagenReal;
+
+	public ImagenProxy(String archivo) {
+		this.archivo = archivo;
+	}
+
+	@Override
+	public void mostrar() {
+		if (imagenReal == null) {
+			imagenReal = new ImagenReal(archivo);
+		}
+		imagenReal.mostrar();
+	}
+}
+```
+## Template Method (Método Plantilla)
+Template Method (Método Plantilla) es un patrón de diseño de comportamiento que define el esqueleto de un algoritmo en una operación, delegando algunos pasos a subclases. El Template Method permite que las subclases redefinan ciertos pasos de un algoritmo sin cambiar su estructura general.
+
+Ejemplo:
+```java
+// 1. Abstract Class: La clase abstracta que define el método plantilla y los pasos del algoritmo.
+public abstract class Juego {
+	public final void jugar() {
+		iniciar();
+		while (!terminado()) {
+			jugarTurno();
+		}
+		finalizar();
+	}
+}
+
+// ---------------------------------------------------------
+// 2. Concrete Class: La clase concreta que implementa los pasos específicos del algoritmo.
+public class Ajedrez extends Juego {
+	@Override
+	protected void iniciar() {
+		System.out.println("Iniciando el juego de ajedrez...");
+	}
+	@Override
+	protected void jugarTurno() {
+		System.out.println("Jugando un turno de ajedrez...");
+	}
+	@Override
+	protected boolean terminado() {
+		// Lógica para determinar si el juego ha terminado
+		return false; // Placeholder
+	}	
+	@Override
+	protected void finalizar() {
+		System.out.println("Finalizando el juego de ajedrez...");
+	}
+}
+```
+
 ## Composite (Compuesto)
 
 El patrón Composite es un patrón de diseño estructural que permite tratar objetos individuales y composiciones de objetos de manera uniforme. Es útil para representar jerarquías de objetos donde los objetos pueden ser tanto simples (hojas) como compuestos (nodos con hijos).
@@ -608,3 +751,162 @@ Strategy vs State:
 - La diferencia clave es que Strategy se enfoca en cambiar el algoritmo o comportamiento de un objeto, mientras que State se enfoca en cambiar el estado interno de un objeto, lo que a su vez cambia su comportamiento.
 - En Strategy, el cliente es responsable de seleccionar la estrategia adecuada, mientras que en State, el objeto cambia su estado internamente y el cliente no necesita preocuparse por los detalles de cómo se manejan los estados.
 
+## Null Object (Objeto Nulo)
+El patrón Null Object es un patrón de diseño de comportamiento que proporciona un objeto que implementa una interfaz pero no hace nada. El Null Object se utiliza para evitar la necesidad de verificar si un objeto es nulo antes de usarlo, proporcionando una implementación predeterminada que no realiza ninguna acción.
+
+Ejemplo: 
+```java
+// 1. Null Object: La clase que implementa la interfaz pero no hace nada.
+public class NullLogger implements Logger {
+	@Override
+	public void log(String mensaje) {
+		// No hace nada
+	}
+}
+
+// Se usa asi: 
+public class Main {
+	public static void main(String[] args) {
+		Logger logger = new NullLogger(); // En lugar de null
+		logger.log("Este mensaje no se registrará, pero no causará un NullPointerException.");
+	}
+}
+```
+
+# Refactorizacion a Patrones de Diseño
+
+## Replace conditional logic with strategy (Reemplazar lógica condicional con estrategia)
+
+- **Precondiciones:** Tienes un método con una lógica condicional (if-else o switch) que selecciona entre diferentes comportamientos o algoritmos.
+- **Postcondiciones:** La lógica condicional se ha eliminado y se ha reemplazado por una estructura de clases que implementan una interfaz común (Strategy), y el método ahora delega el comportamiento a una instancia de esa interfaz.
+- **Transformación:** Se crea una interfaz Strategy, se implementan clases concretas para cada caso de la lógica condicional, y el método original se modifica para usar una instancia de Strategy en lugar de la lógica condicional, lo que mejora la extensibilidad y la mantenibilidad del código.
+
+Ejemplo jugadores de tennis zona a,b y c
+
+```java
+// Antes: Lógica condicional para determinar el puntaje
+public class Jugador {
+	public void puntosGanadorEnPartido(Partido partido) {
+		if (partido.getZona() == 'A') {
+			System.out.println("Puntos ganados en zona A");
+		} else if (partido.getZona() == 'B') {
+			System.out.println("Puntos ganados en zona B");
+		} else if (partido.getZona() == 'C') {
+			System.out.println("Puntos ganados en zona C");
+		}
+	}
+}
+```
+
+```java
+// Después: Reemplazando la lógica condicional con el patrón Strategy
+// 1. Strategy: La interfaz común para todas las estrategias de puntaje.
+public interface EstrategiaPuntaje {
+	void calcularPuntaje();
+}
+
+// 2. Concrete Strategies: Clases concretas que implementan la interfaz EstrategiaPuntaje para cada zona.
+public class EstrategiaZonaA implements EstrategiaPuntaje {
+	@Override
+	public void calcularPuntaje() {
+		System.out.println("Puntos ganados en zona A");
+	}
+}
+
+public class EstrategiaZonaB implements EstrategiaPuntaje {
+	@Override
+	public void calcularPuntaje() {
+		System.out.println("Puntos ganados en zona B");
+	}
+}
+
+public class EstrategiaZonaC implements EstrategiaPuntaje {
+	@Override
+	public void calcularPuntaje() {
+		System.out.println("Puntos ganados en zona C");
+	}
+}
+
+public class Jugador {
+	private EstrategiaPuntaje estrategiaPuntaje;
+
+	public void setEstrategiaPuntaje(EstrategiaPuntaje estrategiaPuntaje) {
+		this.estrategiaPuntaje = estrategiaPuntaje;
+	}
+
+	public void puntosGanadorEnPartido() {
+		if (estrategiaPuntaje != null) {
+			estrategiaPuntaje.calcularPuntaje();
+		} else {
+			System.out.println("No se ha establecido una estrategia de puntaje.");
+		}
+	}
+}
+```
+
+## Replace state altering codns with state (Reemplazar condicionales que alteran el estado con el patrón State)
+
+- **Precondiciones:** Tienes un método con una lógica condicional que altera el estado interno de un objeto y cambia su comportamiento en función de ese estado.
+- **Postcondiciones:** La lógica condicional se ha eliminado y se ha reemplazado por una estructura de clases que implementan una interfaz común (State), y el método ahora delega el comportamiento al estado actual del objeto, lo que mejora la claridad y la mantenibilidad del código.
+
+Ejemplo de una máquina expendedora con estados de "Sin Moneda", "Con Moneda" y "Producto Entregado":
+
+```java
+// Antes: Lógica condicional para manejar los estados de la máquina expendedora
+public class MaquinaExpendedora {
+	private String estado;
+
+	public void insertarMoneda() {
+		if (estado.equals("Sin Moneda")) {
+			estado = "Con Moneda";
+			System.out.println("Moneda insertada.");
+		} else {
+			System.out.println("Ya hay una moneda insertada.");
+		}
+	}
+}
+```
+
+```java
+// Después: Reemplazando la lógica condicional con el patrón State
+// 1. State: La interfaz común para todos los estados de la máquina expendedora
+public interface EstadoMaquina {
+	void insertarMoneda(MaquinaExpendedora maquina);
+}
+
+// 2. Concrete States: Clases concretas que implementan la interfaz EstadoMaquina para cada estado
+public class EstadoSinMoneda implements EstadoMaquina {
+	@Override
+	public void insertarMoneda(MaquinaExpendedora maquina) {
+		System.out.println("Moneda insertada.");
+		maquina.setEstado(new EstadoConMoneda());
+	}
+}
+
+public class EstadoConMoneda implements EstadoMaquina {
+	@Override
+	public void insertarMoneda(MaquinaExpendedora maquina) {
+		System.out.println("Ya hay una moneda insertada.");
+	}
+}
+
+public class MaquinaExpendedora {
+	private EstadoMaquina estado;
+
+	public MaquinaExpendedora() {
+		this.estado = new EstadoSinMoneda(); // Estado inicial
+	}
+
+	public void setEstado(EstadoMaquina estado) {
+		this.estado = estado;
+	}
+
+	public void insertarMoneda() {
+		if (estado != null) {
+			estado.insertarMoneda(this);
+		} else {
+			System.out.println("No se ha establecido un estado para la máquina expendedora.");
+		}
+	}
+}
+```
