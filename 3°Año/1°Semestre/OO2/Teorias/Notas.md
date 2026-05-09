@@ -759,7 +759,7 @@ Ejemplo:
 // 1. Null Object: La clase que implementa la interfaz pero no hace nada.
 public class NullLogger implements Logger {
 	@Override
-	public void log(String mensaje) {
+	public void log(String mensaje) {mn
 		// No hace nada
 	}
 }
