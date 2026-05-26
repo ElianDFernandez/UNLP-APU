@@ -1,0 +1,118 @@
+
+**Donde se almacenan las variables estaticas en C y cual es la politica de inicializacion de variables en C para las variables globales y estaticas**
+
+Las variables estaticas en C se almacenan en el segmeneto de Datos, estas no ocupan memoria, si no que en el momento de compilacion se reemplazan en los lugares donde se utilizan por su valor, es decir, no son variables en el sentido tradicional, sino constantes que se definen en tiempo de compilacion.
+
+En cuanto a la politica de inicializacion de variables en C, las variables globales y estaticas se inicializan automaticamente a cero si no se les asigna un valor explicito. Esto significa que si declaramos una variable global o estatica sin inicializarla, su valor por defecto sera cero. Sin embargo, es importante destacar que las variables locales no se inicializan automaticamente y pueden contener valores basura si no se les asigna un valor antes de su uso.
+
+**Ejemplo de una variable donde su tiempo de vida es mayor que su alcance**
+
+```pascal
+programa Ejemplo;
+var
+    x: entero
+
+procedimiento ProcedimientoEjemplo;
+var
+    x: entero;
+begin
+    x := 10;
+end;
+
+begin
+    x := 5;
+    ProcedimientoEjemplo;
+end.
+```
+
+```c
+1.  #include <stdio.h>
+2.  void funcion() {
+3.      int x = 10;
+4.      printf("%d", x);
+5.  }
+6.  void miFuncion() {
+8.      static int contador = 0; 
+9.      
+10.     contador = contador + 1;
+11.     printf("El contador vale: %d\n", contador);
+12. }
+13. 
+14. int main() {
+15.     miFuncion(); // Imprime: 1
+16.     miFuncion(); // Imprime: 2
+17.     miFuncion(); // Imprime: 3
+18.     return 0;
+19. }
+```
+
+Alcance de contador en lineas = 9-12
+tiempo de vida de contador = 1-19
+
+Entonces 
+x(global) = tiempo de vida del programa, alcance solo en el bloque principal
+
+**Ejemplo de una variable donde su tiempo de vida es menor a su alcance**
+
+```pascal
+programa EjemploPunteroColgante;
+type
+    PunteroEntero = ^entero;
+var
+    p: PunteroEntero;
+begin
+    new(p);
+    p^ := 10;    
+    dispose(p);
+end
+```
+
+Entonces
+p = tiempo de vida del bloque donde se declara, alcance en todo el programa
+
+**Porque es importante contar con criterios de evaluacion pra lso lenguajes de programacion. Detallos en algun lenguaje de programacion que conozcan.**
+
+Es importante contar con criterios de evaluacion para los lenguajes de programacion porque esto permite medir y comparar la eficiencia, legibilidad, mantenibilidad y otros aspectos importantes de un lenguaje. Estos criterios ayudan a los desarrolladores a elegir el lenguaje adecuado para un proyecto específico y a mejorar sus habilidades de programación.
+
+Los mas relevantes para mi son la 
+- Legibilidad: Un lenguaje de programación debe ser fácil de leer y entender para los desarrolladores.
+- Eficiencia: Un lenguaje de programación debe ser eficiente en términos de tiempo de ejecución y uso de recursos.
+- Abstracción: Un lenguaje de programación debe permitir a los desarrolladores abstraer conceptos complejos y trabajar con ellos de manera sencilla.
+
+**Constantes y varaibles estaticas. Analice los atributos asociados en ambos conceptos, indicando momentos de ligadura y estabilidad. De acuerdo al analisis realizado indique si son concepto similares o no. Justifique**
+
+Las constantes y las variables estaticas son conceptos relacionados pero no son iguales.
+
+Las constantes son valores que no puede cambiar durante la ejecucion. su ligadura es en tiempo de compilacion.
+Las variables estaticas, por otro lado, son variables que pueden cambiar su valor durante la ejecucion, su ligadura es en tiempo de compilacion, pero su valor puede ser modificado durante la ejecucion del programa.
+
+En cuanto a la estabilidad, las constantes son estables ya que su valor no cambia, mientras que las variables estaticas no son estables ya que su valor puede cambiar durante la ejecucion del programa.
+
+En resumen, aunque ambos conceptos tienen una ligadura en tiempo de compilacion, las constantes son inmutables y estables, mientras que las variables estaticas son mutables y no estables. Por lo tanto, no son conceptos similares.
+
+**Semantica estica**
+
+Analiza el significado de las contrucciones sintacticas del lenguaje, tal y como esta escrito, sin tener en cuenta el contexto de ejecucion.Se realiza antes de la ejecucion del programa.
+Aca se analiza el tipo de datos, la validez de las operaciones, entre otras cosas.
+
+Ejmplo
+```c
+int main() {
+    int numero = "Hola mundo"; // Error de tipo: se esta asignando una cadena a una variable de tipo entero    
+    return 0;
+}
+```
+
+**Semantica dinamica**
+
+Analiza el significado de las construcciones sintacticas del lenguaje, teniendo en cuenta el contexto de ejecucion, es decir, como se comporta el programa durante su ejecucion. Se realiza durante la ejecucion del programa.
+
+Ejemplo
+```c
+int main() {
+    int numero = 10;
+    int resultado = numero / 0; // Error de ejecucion: division por cero
+    return 0;
+}
+```
+

@@ -1,6 +1,6 @@
 Resumen de temas:
-- **Tema 1: Introducción y procesamiento de lenguajes.**
-	-  Paradigmas de programación
+- Tema 1: Introducción y procesamiento de lenguajes.
+	- Paradigmas de programación
 	- Sintaxis vs Semántica 
 	- Interprete vs Compilador
 - Tema 2: Las Etapas de la compilacion.
