@@ -63,3 +63,22 @@ Se utiliza el mismo material de teorías de la cursada y se trabaja en un **trab
 
 ## 5. Taller de Tecnologías de Producción de Software
 > Sin información disponible.
+
+---
+
+# 📋 Propuesta de Cursada
+
+| Día | Bloque | Materia | Horario |
+|-----|--------|---------|---------|
+| **Lunes**  | Mañana | Concurrente (T) | 8:00 – 10:00 |
+|            | Mediodía | Concurrente (P) | 11:00 – 14:00 |
+| **Martes** | Mañana | Redes (T) | 8:30 – 10:30 |
+|            | Media mañana | Proyecto (T) | 10:30 – 12:00(?) |
+| **Jueves** | Mañana | Redes (P) | 8:00 – 10:00 |
+|            | Tarde | Proyecto (P) | 15:30 – 18:30 |
+
+**Resumen:**
+- **Lunes:** Concurrente teoría (mañana) + Concurrente práctica (mediodía)
+- **Martes:** Redes teoría + Proyecto teoría (mañana corrida)
+- **Jueves:** Redes práctica (mañana) + Proyecto práctica (tarde)
+- **Miércoles, Viernes y Sábado:** Libres
