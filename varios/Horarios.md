@@ -62,7 +62,7 @@ Se utiliza el mismo material de teorías de la cursada y se trabaja en un **trab
 ---
 
 ## 5. Taller de Tecnologías de Producción de Software
-> Sin información disponible.
+> **Inicio de clases:** Martes 01/09/2026 – Aula 1-3 - 16 hs.
 
 ---
 
