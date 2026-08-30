@@ -230,5 +230,185 @@ process Consumidor::
 
 4. Resolver con SETENCIAS AWAIT (<> y <await B;S>). Un sistema operativo mantiene 5 instancias de un recurso almacenadas en una cola, cuando un proceso necesita usar una instancia del recurso la saca de la cola, la usa y cuando termina de usarla la vuelve a depositar.
 
-Precondiciones:
+// Pseudocódigo:
 
+proccess Proceso [id: 0..N] 
+{
+    // Proceso necesita un recurso
+    // Si hay recursos disponibles
+        // Saca un recurso de la cola, y coninua con su ejecución
+    // Si no hay recursos disponibles
+        // Espera hasta que haya un recurso disponible
+}
+
+// Solución con sentencias AWAIT:
+
+int recursos = 5; // cantidad de recursos disponibles
+Cola recursosCola; // cola de recursos disponibles
+
+process Proceso [id: 0..N] 
+{
+    <await (recursos > 0);
+    Recurso r = recursosCola.sacar(); // Saca un recurso de la cola
+    recursos-->
+    // ...
+    <recursosCola.depositar(r);
+    recursos++>
+}
+
+5. En  cada  ítem  debe  realizar  una  solución  concurrente  de  grano  grueso  (utilizando  <>  y/o 
+<await B; S>) para el siguiente problema, teniendo en cuenta las condiciones indicadas en el 
+item. Existen N personas que deben imprimir un trabajo cada una.
+
+a) Implemente  una  solución  suponiendo  que  existe  una  única  impresora  compartida  por 
+todas las personas, y las mismas la deben usar de a una persona a la vez, sin importar el 
+orden. Existe una función Imprimir(documento) llamada por la persona que simula el uso 
+de la impresora. Sólo se deben usar los procesos que representan a las Personas. 
+b) Modifique la solución de (a) para el caso en que se deba respetar el orden de llegada. 
+c) Modifique la solución de (a) para el caso en que se deba respetar el orden  dado por el 
+identificador  del  proceso  (cuando  está  libre  la  impresora,  de  los  procesos  que  han 
+solicitado su uso la debe usar el que tenga menor identificador). 
+d) Modifique la solución de (b) para el caso en que además hay un proceso Coordinador que 
+le indica a cada persona que es su turno de usar la impresora.
+
+Soluciones:
+
+a) En este caso no importa el orden de llegada, por lo que se puede usar una variable booleana para indicar si la impresora está libre o no.
+
+bool impresoraLibre = true;
+
+process Persona [id: 0..N-1] 
+{
+    <await (impresoraLibre); impresoraLibre = false>
+    Imprimir(documento);
+    <impresoraLibre = true>
+}
+
+b) Para respetar el orden de llegada, se puede usar una cola para almacenar los identificadores de las personas que están esperando para usar la impresora.
+
+Cola<int> colaPersonas;
+int siguiente = -1;
+
+process Persona [id: 0..N-1] 
+{
+    // Antes de encolarme debo ver si al impresora esta libre, si no lo esta, me pongo en cola
+    // al llegar se agrega a la cola de espera
+    <if(siguiente == -1) {
+        siguiente = id;
+    } else {
+        colaPersonas.agregar(id);
+    }>
+    <await (siguiente == id)>
+    imprimir(documento);
+    <if (!colaPersonas.vacia()) {
+        siguiente = colaPersonas.sacar();
+    } else {
+        siguiente = -1;
+    }>
+}
+
+c) Para respetar el orden de los identificadores, se puede usar una cola que agregue por orden de identificador.
+
+int siguiente = -1;
+Cola<int> colaPersonas;
+
+process Persona [id: 0..N-1] 
+{
+    <if(siguiente == -1) {
+        siguiente = id;
+    } else {
+        colaPersonas.agregar(id);
+    }>
+    <await (siguiente == id)>
+    imprimir(documento);
+    <if (!colaPersonas.vacia()) {
+        siguiente = colaPersonas.sacar();
+    } else {
+        siguiente = -1;
+    }>
+}
+
+d) Para el caso del coordinador, se puede usar una variable booleana para indicar si la impresora está libre o no, y una cola para almacenar los identificadores de las personas que están esperando para usar la impresora.
+
+bool impresoraLibre = true;
+Cola<int> colaPersonas;
+int actual = -1;
+
+process Coordinador 
+{
+    while (true) {
+        <await (impresotaLibre && !colaPersonas.vacia()); actual = colaPersonas.sacar();>
+        impresoraLibre = false;
+    }
+}
+
+process Persona [id: 0..N-1] 
+{
+    <colaPersonas.agregar(id)>
+    <await (actual == id)>
+    imprimir(documento);
+    impresoraLibre = true
+}
+
+6.  Dada  la  siguiente  solución  para  el  Problema  de  la  Sección  Crítica  entre  dos  procesos 
+(suponiendo que tanto SC como SNC son segmentos de código finitos, es decir que terminan 
+en algún momento), indicar si cumple con las 4 condiciones requeridas:
+
+int turno = 1;      
+Process SC1::  
+{ while (true) 
+      {   while (turno == 2) skip;  
+           SC; 
+           turno = 2; 
+           SNC; 
+       } 
+} 
+Process SC2::  
+{ while (true) 
+      {   while (turno == 1) skip;  
+           SC; 
+           turno = 1; 
+           SNC; 
+       } 
+} 
+
+Respuesta:
+
+Exclusión mutua: Cumple. Nunca va a pasar que los dos entren a SC.
+Ausencia de Deadlock (Livelock): Cumple. Nunca se quedan los dos bloqueados.
+Ausencia de Demora Innecesaria: No cumple. Ej: el procesador 2 quiere entrar a su sección crítica y no puede hacerlo porque para ello el procesador 1 debe cambiar el turno, y se queda esperando en su sección no crítica.
+Eventual Entrada: Cumple
+
+7.  Desarrolle una solución de grano fino usando sólo variables compartidas (no se puede usar 
+las sentencias await ni funciones especiales como TS o FA). En base a lo visto en la clase 3 
+de teoría, resuelva el problema de acceso a sección crítica usando un proceso coordinador. 
+En este caso, cuando un proceso SC[i] quiere entrar a su sección crítica le avisa al coordinador, 
+y espera a que éste le dé permiso. Al terminar de ejecutar su sección crítica, el proceso SC[i] 
+le avisa al coordinador. Nota: puede basarse en la solución para implementar barreras con 
+“Flags y coordinador” vista en la teoría 2.
+
+int actual = -1; // variable compartida que indica el proceso que tiene permiso para entrar a la sección crítica
+vector<bool> esperando(N, false); // vector de banderas que indica si un proceso está esperando para entrar a la sección crítica
+
+process Coordinador 
+{
+    while (true) {
+        for (int i = 0; i < N; i++) {
+            if (esperando[i]) {
+                actual = i; // le da permiso al proceso i
+                esperando[i] = false; // resetea la bandera de espera
+                while (actual == i) skip; // espera a que el proceso i termine su sección crítica
+            }
+        }
+    }
+}
+
+process Tarea [i: 0..N-1]
+{
+    while (true) {
+        esperando[i] = true; // indica que quiere entrar a la sección crítica
+        while (actual != i) skip; // espera a que el coordinador le dé permiso
+        // sección crítica...
+        actual = -1; // indica que terminó su sección crítica
+    }
+}

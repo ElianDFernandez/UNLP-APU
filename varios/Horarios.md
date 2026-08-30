@@ -74,6 +74,7 @@ Se utiliza el mismo material de teorías de la cursada y se trabaja en un **trab
 |            | Mediodía | Concurrente (P) | 11:00 – 14:00 |
 | **Martes** | Mañana | Redes (T) | 8:30 – 10:30 |
 |            | Media mañana | Proyecto (T) | 10:30 – 12:00(?) |
+|            | Tarde | TTPS (T) | 16:00 – 18:00 |
 | **Jueves** | Mañana | Redes (P) | 8:00 – 10:00 |
 |            | Tarde | Proyecto (P) | 15:30 – 18:30 |
 
