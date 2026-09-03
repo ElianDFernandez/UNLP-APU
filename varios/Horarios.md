@@ -80,6 +80,6 @@ Se utiliza el mismo material de teorías de la cursada y se trabaja en un **trab
 
 **Resumen:**
 - **Lunes:** Concurrente teoría (mañana) + Concurrente práctica (mediodía)
-- **Martes:** Redes teoría + Proyecto teoría (mañana corrida)
+- **Martes:** Redes teoría + Proyecto teoría + TTPS (dia corrido)
 - **Jueves:** Redes práctica (mañana) + Proyecto práctica (tarde)
 - **Miércoles, Viernes y Sábado:** Libres
