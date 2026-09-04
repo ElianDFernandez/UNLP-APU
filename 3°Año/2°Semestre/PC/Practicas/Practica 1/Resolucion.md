@@ -387,28 +387,54 @@ y espera a que éste le dé permiso. Al terminar de ejecutar su sección crític
 le avisa al coordinador. Nota: puede basarse en la solución para implementar barreras con 
 “Flags y coordinador” vista en la teoría 2.
 
-int actual = -1; // variable compartida que indica el proceso que tiene permiso para entrar a la sección crítica
-vector<bool> esperando(N, false); // vector de banderas que indica si un proceso está esperando para entrar a la sección crítica
+// Solucion de grano grueso:
 
-process Coordinador 
+int arribo[1:n] = ([n] 0); // Indica si un proeso quiere entrar a su sección crítica
+int continuar[1:n] = ([n] 0); // Indica si un proceso tiene permiso para entrar a su sección crítica
+
+
+process worker [i: 0..N-1] 
+{
+    while (true) {
+        arribo[i] = 1
+        <await (continuar[i] == 1)> // Espera a que el coordinador le dé permiso
+        // sección crítica...
+        continuar[i] = 0 // Indica que terminó su sección crítica
+    }
+}
+
+process coordinador 
 {
     while (true) {
         for (int i = 0; i < N; i++) {
-            if (esperando[i]) {
-                actual = i; // le da permiso al proceso i
-                esperando[i] = false; // resetea la bandera de espera
-                while (actual == i) skip; // espera a que el proceso i termine su sección crítica
-            }
+            < await (arribo[i] == 1)> 
+                arribo[i] = 0; // resetea la bandera de arribo
+        }
+        for (int i = 0; i < N; i++) {
+            <continuar[i] = 1> // le da permiso al proceso i
         }
     }
 }
 
-process Tarea [i: 0..N-1]
+// Solucion de grano fino:
+
+process worker [i: 0..N-1] 
 {
     while (true) {
-        esperando[i] = true; // indica que quiere entrar a la sección crítica
-        while (actual != i) skip; // espera a que el coordinador le dé permiso
+        arribo[i] = 1; // Indica que quiere entrar a su sección crítica
+        while (continuar[i] == 0) skip; // Espera a que el coordinador le dé permiso
         // sección crítica...
-        actual = -1; // indica que terminó su sección crítica
+        continuar[i] = 0; // Indica que terminó su sección crítica
+    }
+}
+
+process coordinador 
+{
+    while (true) {
+        for (int i = 0; i < N; i++) {
+            while (arribo[i] == 0) skip; // Espera a que el proceso i quiera entrar a su sección crítica
+            arribo[i] = 0; // resetea la bandera de arribo
+            continuar[i] = 1; // le da permiso al proceso i
+        }
     }
 }
