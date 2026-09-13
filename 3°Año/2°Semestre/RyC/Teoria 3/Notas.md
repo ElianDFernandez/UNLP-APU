@@ -41,5 +41,8 @@ Es decir, varios streams pueden coexistir en la misma conexión TCP, lo que perm
 
 En cuanto a compatibilidad, HTTP 2 es compatible con HTTP 1.1, lo que significa que los servidores y clientes pueden comunicarse utilizando cualquiera de las dos versiones según sea necesario. HTTP 1.1 y HTTP 1.0 dejan de ser compatibles con HTTP 2, ya que este último introduce cambios significativos en la forma en que se manejan las solicitudes y respuestas.
 
+**HTTP 3:** Es la versión más reciente del protocolo HTTP y se basa en el protocolo QUIC (Quick UDP Internet Connections). HTTP 3 mejora aún más la velocidad y la seguridad de la comunicación al utilizar UDP en lugar de TCP, lo que reduce la latencia y mejora la eficiencia en redes con alta pérdida de paquetes.
 
+**Coockies:** Son pequeños archivos de texto que los sitios web almacenan en el navegador del usuario para recordar información sobre su visita, como preferencias, historial de navegación o datos de inicio de sesión. Los cookies permiten a los sitios web ofrecer una experiencia más personalizada y mantener la sesión del usuario activa.
 
+**Proxy:** Es un servidor intermedio que actúa como intermediario entre el cliente y el servidor web. Los proxies pueden mejorar la seguridad, el rendimiento y la privacidad al filtrar solicitudes, almacenar en caché contenido y ocultar la dirección IP del cliente.
