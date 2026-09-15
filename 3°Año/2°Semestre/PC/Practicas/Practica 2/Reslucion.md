@@ -14,6 +14,113 @@ V(s); # Incrementa el semaforo s. → s = s+1; → <s = s+1; >
 
 # Ambas operaciones son atómicas, es decir, no pueden ser interrumpidas por otro proceso.
 ```
+**Exclusion Mutua:**
+```c
+sem mutex = 1;
+# Proceso A
+P(mutex); # Se bloquea hasta que mutex sea mayor a 0.
+# Seccion critica
+V(mutex); # Incrementa mutex, desbloqueando al proceso A.
+```
+
+**Sincronizacion por Condicion:**
+```c
+sem s = 0;
+# Proceso A
+P(s); # Se bloquea hasta que s sea mayor a 0.
+
+# Proceso B
+V(s); # Incrementa s, desbloqueando al proceso A.
+```
+
+**Productor/Consumidor:**
+```c
+sem mutex = 0;
+# Proceso Productor
+P(mutex); # Se bloquea hasta que mutex sea mayor a 0.
+# Seccion critica produccion
+V(mutex); # Incrementa mutex, desbloqueando al proceso Consumidor.
+
+# Proceso Consumidor
+P(mutex); # Se bloquea hasta que mutex sea mayor a 0.
+# Seccion critica consumo
+V(mutex); # Incrementa mutex, desbloqueando al proceso Productor.
+```
+
+# Ejercicio 4 (Explicacion practica)
+En una empresa de genetica hay N clientes que envian secuencias de AND para que sean analizadas y esperan los resultados para poder continuar. Para resolver estos analisis la eempresa cuenta con 1 servidor que resuelve los pedidos de acuerdo al orden de llegada de los mismos.
+
+Se necesitan N procesos clientes y 1 proceso servidor.
+
+```c
+sem mutex = 1; # Semaforo para exclusion mutua
+sem pedidos = 0; # Semaforo para sincronizacion de pedidos
+sem resultados[N] = ([N] 0); # Semaforos para sincronizacion de resultados
+cola C;
+int resultados[N]; # Arreglo para almacenar los resultados de cada cliente
+
+process cliente[i] {
+    secuencia S;
+    while (true) {
+        // Genera secuencia S
+        P(mutex);
+        push(C,(i,S)); // Se agrega el cliente y su secuencia a la cola
+        V(mutex);
+        V(pedidos); // Notifica que hay un nuevo pedido
+        // Espera a que el servidor le devuelva el resultado
+        P(resultados[i]); // Se bloquea hasta que el servidor le devuelva el resultado
+        // Procesa el resultado
+    }
+}
+
+process servidor {
+    while (true) {
+        P(pedidos); // Espera a que haya un pedido
+        P(mutex);
+        pop(C,(i,S)); // Se obtiene el cliente y su secuencia de la cola
+        V(mutex);
+        // Analiza la secuencia S
+        // Devuelve el resultado al cliente i
+        resultados[i] = analizar(S);
+        V(resultados[i]); // Notifica al cliente i que tiene un resultado
+    }
+}
+```
+
+# Ejercicio 6 (Explicacion practica, Pass the Baton)
+
+En una montaña hay 30 escaladores que en una parte de la subida deben utilzar un unico paso de a uno a la vez y de acuerdo al orden de llegada al mismo.
+
+```c
+cola c;
+sem espera[30] = ([30] 0); # Semaforos para sincronizacion de escaladores
+bool libre = true; # Variable para indicar si el paso esta libre
+
+process escalador[i: 0..29] {
+    while (true) {
+        // llega al paso 
+        Ps(mutex); // Se bloquea hasta que mutex sea mayor a 0.
+        if(libre) { // Si el paso esta libre
+            libre = false; // Se bloquea el paso
+            V(mutex); // Libera a quien quiera el proceso
+        } else {
+            push(c,i); // Se agrega el escalador a la cola
+            V(mutex); // Libera a quien quiera el proceso
+            P(espera[i]); // Se bloquea hasta que le toque pasar
+        }
+        // Libera a quien quiera el proceso
+        P(mutex); // Se bloquea hasta que mutex sea mayor a 0.
+        if(empty(c)) { // Si no hay escaladores esperando
+            libre = true; // Se libera el paso
+            V(mutex); // Libera a quien quiera el proceso
+        } else {
+            int j = pop(c); // Se obtiene el siguiente escalador de la cola
+            V(espera[j]); // Se desbloquea al siguiente escalador
+            V(mutex); // Libera a quien quiera el proceso
+        }
+    }
+}
+```
 
 > CONSIDERACIONES PARA RESOLVER LOS EJERCICIOS: 
  
