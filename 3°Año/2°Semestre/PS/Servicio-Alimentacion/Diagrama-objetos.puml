@@ -1,0 +1,145 @@
+@startuml
+' Diagrama de clases del sistema de alimentación
+hide circle
+skinparam linetype ortho
+skinparam class {
+    BackgroundColor White
+    BorderColor #2688d4
+    ArrowColor #2688d4
+}
+
+class Usuario {
+  - id : BIGINT
+  - nombre : VARCHAR
+  - apellido : VARCHAR
+  - correo : VARCHAR
+  - estado : BOOLEAN
+  + registrarSolicitud()
+}
+
+class Rol {
+  - id : BIGINT
+  - nombre : VARCHAR
+  + tienePermiso()
+}
+
+class Sector {
+  - id : BIGINT
+  - nombre : VARCHAR
+  - descripcion : TEXT
+  - estado : BOOLEAN
+  + definirCupo()
+}
+
+class Personal {
+  - id : BIGINT
+  - dni : VARCHAR
+  - nombre : VARCHAR
+  - apellido : VARCHAR
+  - estado : BOOLEAN
+  + obtenerMenuPredeterminado()
+}
+
+class TipoMenu {
+  - id : BIGINT
+  - nombre : VARCHAR
+}
+
+class TipoComida {
+  - id : BIGINT
+  - nombre : VARCHAR
+}
+
+class CupoSector {
+  - id : BIGINT
+  - cantidad : INT
+  + estaDisponible(cantidad : INT) : BOOLEAN
+}
+
+class SolicitudComida {
+  - id : BIGINT
+  - fecha : DATE
+  - estado : EstadoSolicitud
+  - creadoEn : TIMESTAMP
+  + agregarDetalle()
+  + autorizar()
+  + rechazar()
+}
+
+class DetalleSolicitud {
+  - id : BIGINT
+  - condicion : CondicionSolicitud
+  - estaAutorizado : BOOLEAN
+  - autorizadoEn : TIMESTAMP
+  + autorizar()
+  + noAutorizar()
+}
+
+class Entrega {
+  - id : BIGINT
+  - fechaHora : TIMESTAMP
+  - notas : TEXT
+  + registrar()
+}
+
+class DetalleEntrega {
+  - id : BIGINT
+  - creadoEn : TIMESTAMP
+  + validarAutorizacion()
+}
+
+enum EstadoSolicitud {
+  CONFIRMADA
+  AUTORIZADA
+  RECHAZADA
+}
+
+enum CondicionSolicitud {
+  REGULAR
+  EXCEPCION
+}
+
+' Relaciones estructurales
+Usuario "1" --> "1" Rol : tiene
+Rol "1" --> "0..*" Usuario : asigna
+Usuario "0..*" --> "0..1" Sector : es jefe de
+Sector "1" --> "0..*" Usuario : tiene jefes
+
+Personal "0..*" --> "0..1" Sector : pertenece a
+Sector "1" --> "0..*" Personal : agrupa
+Personal "0..*" --> "1" TipoMenu : menú predeterminado
+
+Sector "1" *-- "0..*" CupoSector : define
+CupoSector "0..*" --> "1" TipoComida : corresponde a
+
+Usuario "1" --> "0..*" SolicitudComida : registra
+Sector "1" --> "0..*" SolicitudComida : recibe
+SolicitudComida "1" *-- "1..*" DetalleSolicitud : contiene
+Personal "1" --> "0..*" DetalleSolicitud : recibe
+TipoComida "1" --> "0..*" DetalleSolicitud : corresponde a
+TipoMenu "1" --> "0..*" DetalleSolicitud : utiliza
+Usuario "0..1" --> "0..*" DetalleSolicitud : autoriza
+
+Entrega "1" *-- "1..*" DetalleEntrega : contiene
+DetalleEntrega "1" --> "1" DetalleSolicitud : entrega
+Usuario "1" --> "0..*" Entrega : registra
+Personal "0..1" --> "0..*" Entrega : responsable del retiro
+TipoMenu "1" --> "0..*" DetalleEntrega : menú entregado
+
+SolicitudComida --> EstadoSolicitud : posee
+DetalleSolicitud --> CondicionSolicitud : posee
+
+note right of DetalleSolicitud
+  Cada detalle representa una combinación
+  nominada de persona y tipo de comida.
+  La autorización se registra por detalle,
+  sin modificar la solicitud original.
+end note
+
+note right of Entrega
+  Una entrega puede incluir comidas de
+  varias personas. El responsable del retiro
+  puede ser distinto de los comensales.
+end note
+
+@enduml

@@ -1,0 +1,205 @@
+@startuml
+' Configuración visual del diagrama ER
+hide circle
+skinparam linetype ortho
+skinparam roundcorner 5
+skinparam class {
+    BackgroundColor White
+    ArrowColor #2688d4
+    BorderColor #2688d4
+}
+
+' Definición de Entidades (Tablas)
+entity "roles" as roles {
+  * id : BIGSERIAL [PK]
+  --
+  * nombre : VARCHAR(50) [UK]
+  descripcion : VARCHAR(255)
+  * creado_en : TIMESTAMPTZ
+  * actualizado_en : TIMESTAMPTZ
+}
+
+entity "permisos" as permisos {
+  * id : BIGSERIAL [PK]
+  --
+  * nombre : VARCHAR(100) [UK]
+  descripcion : VARCHAR(255)
+  * creado_en : TIMESTAMPTZ
+}
+
+entity "rol_permisos" as rol_permisos {
+  * rol_id : BIGINT [PK/FK]
+  * permiso_id : BIGINT [PK/FK]
+}
+
+entity "sectores" as sectores {
+  * id : BIGSERIAL [PK]
+  --
+  * nombre : VARCHAR(100) [UK]
+  descripcion : TEXT
+  * esta_activo : BOOLEAN
+  * creado_en : TIMESTAMPTZ
+  * actualizado_en : TIMESTAMPTZ
+}
+
+entity "usuarios" as usuarios {
+  * id : BIGSERIAL [PK]
+  --
+  * correo : VARCHAR(150) [UK]
+  * nombre : VARCHAR(100)
+  * apellido : VARCHAR(100)
+  * dni : VARCHAR(20) [UK]
+  * hash_contrasena : VARCHAR(255)
+  * esta_activo : BOOLEAN
+  * rol_id : BIGINT [FK]
+  sector_id : BIGINT [FK]
+  * creado_en : TIMESTAMPTZ
+  * actualizado_en : TIMESTAMPTZ
+}
+
+entity "tipos_personal" as tipos_personal {
+  * id : BIGSERIAL [PK]
+  --
+  * nombre : VARCHAR(50) [UK]
+  descripcion : VARCHAR(255)
+  * requiere_sector : BOOLEAN
+}
+
+entity "tipos_menu" as tipos_menu {
+  * id : BIGSERIAL [PK]
+  --
+  * nombre : VARCHAR(50) [UK]
+  descripcion : VARCHAR(255)
+  * esta_activo : BOOLEAN
+}
+
+entity "tipos_comida" as tipos_comida {
+  * id : BIGSERIAL [PK]
+  --
+  * nombre : VARCHAR(20) [UK]
+}
+
+entity "personal" as personal {
+  * id : BIGSERIAL [PK]
+  --
+  * dni : VARCHAR(20) [UK]
+  * nombre : VARCHAR(100)
+  * apellido : VARCHAR(100)
+  * tipo_personal_id : BIGINT [FK]
+  sector_id : BIGINT [FK]
+  * tipo_menu_predeterminado_id : BIGINT [FK]
+  * esta_activo : BOOLEAN
+  * creado_en : TIMESTAMPTZ
+  * actualizado_en : TIMESTAMPTZ
+}
+
+entity "cupos_sector" as cupos_sector {
+  * id : BIGSERIAL [PK]
+  --
+  * sector_id : BIGINT [FK]
+  * tipo_comida_id : BIGINT [FK, UK con sector_id]
+  * cantidad : INT
+  * creado_en : TIMESTAMPTZ
+  * actualizado_en : TIMESTAMPTZ
+}
+
+entity "solicitudes_comida" as solicitudes_comida {
+  * id : BIGSERIAL [PK]
+  --
+  * sector_id : BIGINT [FK]
+  * fecha_solicitud : DATE
+  * estado : VARCHAR(20)
+  * creado_por_usuario_id : BIGINT [FK]
+  motivo_rechazo : TEXT
+  * creado_en : TIMESTAMPTZ
+  * actualizado_en : TIMESTAMPTZ
+}
+
+entity "detalles_solicitud" as detalles_solicitud {
+  * id : BIGSERIAL [PK]
+  --
+  * solicitud_comida_id : BIGINT [FK]
+  * personal_id : BIGINT [FK]
+  * tipo_comida_id : BIGINT [FK]
+  * tipo_menu_id : BIGINT [FK] 
+  * condicion : VARCHAR(20)
+  esta_autorizado : BOOLEAN
+  autorizado_por_usuario_id : BIGINT [FK]
+  autorizado_en : TIMESTAMPTZ
+  * creado_en : TIMESTAMPTZ
+}
+
+entity "entregas" as entregas {
+  * id : BIGSERIAL [PK]
+  --
+  * fecha_hora_entrega : TIMESTAMPTZ
+  * usuario_entrega_id : BIGINT [FK]
+  persona_responsable_retiro_id : BIGINT [FK]
+  notas : TEXT
+  * creado_en : TIMESTAMPTZ
+}
+
+entity "detalles_entrega" as detalles_entrega {
+  * id : BIGSERIAL [PK]
+  --
+  * entrega_id : BIGINT [FK]
+  * detalle_solicitud_id : BIGINT [FK/UK]
+  * tipo_menu_entregado_id : BIGINT [FK]
+  * creado_en : TIMESTAMPTZ
+}
+
+entity "configuraciones_sistema" as configuraciones_sistema {
+  * id : BIGSERIAL [PK]
+  --
+  * clave_configuracion : VARCHAR(100) [UK]
+  * valor_configuracion : TEXT
+  descripcion : VARCHAR(255)
+  * actualizado_en : TIMESTAMPTZ
+}
+
+entity "registros_auditoria" as registros_auditoria {
+  * id : BIGSERIAL [PK]
+  --
+  usuario_id : BIGINT [FK]
+  * accion : VARCHAR(100)
+  * nombre_entidad : VARCHAR(100)
+  entidad_id : BIGINT
+  detalles : JSONB
+  * creado_en : TIMESTAMPTZ
+}
+
+' Relaciones (Cardinalidad)
+
+' Seguridad y Usuarios
+roles ||--o{ usuarios : "asigna"
+roles ||--o{ rol_permisos : "tiene"
+permisos ||--o{ rol_permisos : "pertenece"
+sectores |o--o{ usuarios : "pertenece (Jefe)"
+
+' Personal y Catálogos
+tipos_personal ||--o{ personal : "clasifica"
+tipos_menu ||--o{ personal : "menú por defecto"
+sectores |o--o{ personal : "agrupa"
+
+' Cupos y Pedidos
+sectores ||--o{ cupos_sector : "define límite"
+tipos_comida ||--o{ cupos_sector : "clasifica"
+sectores ||--o{ solicitudes_comida : "solicita"
+solicitudes_comida ||--o{ detalles_solicitud : "contiene detalle"
+personal ||--o{ detalles_solicitud : "recibe"
+tipos_menu ||--o{ detalles_solicitud : "tipo menú asignado"
+tipos_comida ||--o{ detalles_solicitud : "tipo de comida"
+usuarios ||--o{ solicitudes_comida : "registra pedido"
+usuarios |o--o{ detalles_solicitud : "autoriza"
+
+' Entregas
+usuarios ||--o{ entregas : "despacha"
+personal |o--o{ entregas : "es responsable del retiro"
+entregas ||--o{ detalles_entrega : "agrupa comidas"
+detalles_solicitud ||--o| detalles_entrega : "se entrega en (1:1 o 1:0)"
+tipos_menu ||--o{ detalles_entrega : "menú entregado real"
+
+' Auditoría
+usuarios |o--o{ registros_auditoria : "realiza acción"
+
+@enduml
