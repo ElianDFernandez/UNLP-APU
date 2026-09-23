@@ -1,145 +1,262 @@
 @startuml
 ' Diagrama de clases del sistema de alimentación
 hide circle
+title **Sistema de Gestión del Servicio de Alimentación**
+
+' -------------------------------------------
+' CONFIGURACIÓN ESTÉTICA BASE
+' -------------------------------------------
+skinparam backgroundColor #F8FAFC
+skinparam shadowing false
 skinparam linetype ortho
-skinparam class {
-    BackgroundColor White
-    BorderColor #2688d4
-    ArrowColor #2688d4
+skinparam nodesep 60
+skinparam ranksep 80
+skinparam defaultFontName "Segoe UI", "Helvetica Neue", sans-serif
+skinparam defaultFontSize 13
+skinparam classAttributeIconSize 0
+
+skinparam title {
+  FontColor #0F172A
+  FontSize 22
+  FontStyle bold
 }
 
-class Usuario {
-  - id : BIGINT
-  - nombre : VARCHAR
-  - apellido : VARCHAR
-  - correo : VARCHAR
-  - estado : BOOLEAN
-  + registrarSolicitud()
+' Estilo general de relaciones y paquetes
+skinparam package {
+  BackgroundColor transparent
+  BorderColor #94A3B8
+  FontColor #475569
+  FontSize 14
+  FontStyle bold
+  BorderThickness 2
 }
 
-class Rol {
-  - id : BIGINT
-  - nombre : VARCHAR
-  + tienePermiso()
+skinparam note {
+  BackgroundColor #F1F5F9
+  BorderColor #64748B
+  FontColor #334155
+  BorderThickness 1
+  RoundCorner 4
 }
 
-class Sector {
-  - id : BIGINT
-  - nombre : VARCHAR
-  - descripcion : TEXT
-  - estado : BOOLEAN
-  + definirCupo()
+skinparam arrow {
+  Color #64748B
+  FontColor #1E293B
+  FontSize 12
+  Thickness 1.2
 }
 
-class Personal {
-  - id : BIGINT
-  - dni : VARCHAR
-  - nombre : VARCHAR
-  - apellido : VARCHAR
-  - estado : BOOLEAN
-  + obtenerMenuPredeterminado()
+' -------------------------------------------
+' PALETA DE COLORES POR MÓDULO (Semántica)
+' -------------------------------------------
+
+' 1. Accesos e Identidad (Púrpura)
+skinparam class<<access>> {
+  BackgroundColor #F5F3FF
+  HeaderBackgroundColor #EDE9FE
+  BorderColor #8B5CF6
+  FontColor #2E1065
+  AttributeFontColor #4C1D95
 }
 
-class TipoMenu {
-  - id : BIGINT
-  - nombre : VARCHAR
+' 2. Organización Institucional (Azul)
+skinparam class<<org>> {
+  BackgroundColor #F0F9FF
+  HeaderBackgroundColor #E0F2FE
+  BorderColor #0EA5E9
+  FontColor #082F49
+  AttributeFontColor #0369A1
 }
 
-class TipoComida {
-  - id : BIGINT
-  - nombre : VARCHAR
+' 3. Catálogos de Alimentación (Ámbar)
+skinparam class<<catalog>> {
+  BackgroundColor #FFFBEB
+  HeaderBackgroundColor #FEF3C7
+  BorderColor #D97706
+  FontColor #451A03
+  AttributeFontColor #92400E
 }
 
-class CupoSector {
-  - id : BIGINT
-  - cantidad : INT
-  + estaDisponible(cantidad : INT) : BOOLEAN
+' 4. Operaciones (Verde)
+skinparam class<<ops>> {
+  BackgroundColor #ECFDF5
+  HeaderBackgroundColor #D1FAE5
+  BorderColor #10B981
+  FontColor #022C22
+  AttributeFontColor #047857
+}
+skinparam enum<<ops>> {
+  BackgroundColor #ECFDF5
+  HeaderBackgroundColor #D1FAE5
+  BorderColor #10B981
+  FontColor #022C22
 }
 
-class SolicitudComida {
-  - id : BIGINT
-  - fecha : DATE
-  - estado : EstadoSolicitud
-  - creadoEn : TIMESTAMP
-  + agregarDetalle()
-  + autorizar()
-  + rechazar()
+' -------------------------------------------
+' DEFINICIÓN DE CLASES POR PAQUETES LÓGICOS
+' -------------------------------------------
+
+package "Accesos e Identidad" {
+  class Persona <<access>> {
+    - id : BIGINT
+    - dni : VARCHAR
+    - nombre : VARCHAR
+    - apellido : VARCHAR
+  }
+
+  class Usuario <<access>> {
+    - id : BIGINT
+    - correo : VARCHAR
+    - estado : BOOLEAN
+    + registrarSolicitud()
+  }
+
+  class Rol <<access>> {
+    - id : BIGINT
+    - nombre : VARCHAR
+    + tienePermiso()
+  }
 }
 
-class DetalleSolicitud {
-  - id : BIGINT
-  - condicion : CondicionSolicitud
-  - estaAutorizado : BOOLEAN
-  - autorizadoEn : TIMESTAMP
-  + autorizar()
-  + noAutorizar()
+package "Organización Institucional" {
+  class Sector <<org>> {
+    - id : BIGINT
+    - nombre : VARCHAR
+    - descripcion : TEXT
+    - estado : BOOLEAN
+    + definirCupo()
+  }
+
+  class Personal <<org>> {
+    - id : BIGINT
+    - estado : BOOLEAN
+    + obtenerMenuPredeterminado()
+  }
+
+  class TipoPersonal <<org>> {
+    - id : BIGINT
+    - nombre : VARCHAR
+    - requiereSector : BOOLEAN
+  }
 }
 
-class Entrega {
-  - id : BIGINT
-  - fechaHora : TIMESTAMP
-  - notas : TEXT
-  + registrar()
+package "Catálogos de Alimentación" {
+  class TipoMenu <<catalog>> {
+    - id : BIGINT
+    - nombre : VARCHAR
+  }
+
+  class TipoComida <<catalog>> {
+    - id : BIGINT
+    - nombre : VARCHAR
+  }
+
+  class CupoSector <<catalog>> {
+    - id : BIGINT
+    - cantidad : INT
+    + estaDisponible(cantidad : INT) : BOOLEAN
+  }
 }
 
-class DetalleEntrega {
-  - id : BIGINT
-  - creadoEn : TIMESTAMP
-  + validarAutorizacion()
+package "Operaciones: Solicitudes y Entregas" {
+  class SolicitudComida <<ops>> {
+    - id : BIGINT
+    - fecha : DATE
+    - estado : EstadoSolicitud
+    - creadoEn : TIMESTAMP
+    + agregarDetalle()
+    + autorizar()
+    + rechazar()
+  }
+
+  class DetalleSolicitud <<ops>> {
+    - id : BIGINT
+    - condicion : CondicionSolicitud
+    - estaAutorizado : BOOLEAN
+    - autorizadoEn : TIMESTAMP
+    + autorizar()
+    + noAutorizar()
+  }
+
+  class Entrega <<ops>> {
+    - id : BIGINT
+    - fechaHora : TIMESTAMP
+    - notas : TEXT
+    + registrar()
+  }
+
+  class DetalleEntrega <<ops>> {
+    - id : BIGINT
+    - creadoEn : TIMESTAMP
+    + validarAutorizacion()
+  }
+
+  enum EstadoSolicitud <<ops>> {
+    CONFIRMADA
+    AUTORIZADA
+    RECHAZADA
+  }
+
+  enum CondicionSolicitud <<ops>> {
+    REGULAR
+    EXCEPCION
+  }
 }
 
-enum EstadoSolicitud {
-  CONFIRMADA
-  AUTORIZADA
-  RECHAZADA
-}
+' -------------------------------------------
+' RELACIONES DEL MODELO (Direccionadas)
+' -------------------------------------------
 
-enum CondicionSolicitud {
-  REGULAR
-  EXCEPCION
-}
+' Accesos
+Persona "1" *-right- "0..1" Usuario : tiene cuenta
+Usuario "1" *-right- "1" Rol : tiene
+Persona "1" *-- "0..1" Personal : es personal
 
-' Relaciones estructurales
-Usuario "1" --> "1" Rol : tiene
-Rol "1" --> "0..*" Usuario : asigna
-Usuario "0..*" --> "0..1" Sector : es jefe de
-Sector "1" --> "0..*" Usuario : tiene jefes
+' Organización
+Personal "0..*" -right-> "1" TipoPersonal : clasifica
+Personal "0..*" -down-> "0..1" Sector : pertenece a
+Sector "1" -up-> "0..*" Usuario : tiene jefes
 
-Personal "0..*" --> "0..1" Sector : pertenece a
-Sector "1" --> "0..*" Personal : agrupa
-Personal "0..*" --> "1" TipoMenu : menú predeterminado
-
+' Catálogos
 Sector "1" *-- "0..*" CupoSector : define
-CupoSector "0..*" --> "1" TipoComida : corresponde a
+CupoSector "0..*" -right-> "1" TipoComida : corresponde
+Personal "0..*" ---> "1" TipoMenu : menú predeterminado
 
+' Solicitudes
 Usuario "1" --> "0..*" SolicitudComida : registra
 Sector "1" --> "0..*" SolicitudComida : recibe
 SolicitudComida "1" *-- "1..*" DetalleSolicitud : contiene
-Personal "1" --> "0..*" DetalleSolicitud : recibe
-TipoComida "1" --> "0..*" DetalleSolicitud : corresponde a
-TipoMenu "1" --> "0..*" DetalleSolicitud : utiliza
-Usuario "0..1" --> "0..*" DetalleSolicitud : autoriza
+Personal "1" ---> "0..*" DetalleSolicitud : recibe
 
+' Detalles e Inventario
+TipoComida "1" -down-> "0..*" DetalleSolicitud : corresponde
+TipoMenu "1" -down-> "0..*" DetalleSolicitud : utiliza
+Usuario "0..1" ---> "0..*" DetalleSolicitud : autoriza
+
+' Entregas
 Entrega "1" *-- "1..*" DetalleEntrega : contiene
-DetalleEntrega "1" --> "1" DetalleSolicitud : entrega
-Usuario "1" --> "0..*" Entrega : registra
-Personal "0..1" --> "0..*" Entrega : responsable del retiro
-TipoMenu "1" --> "0..*" DetalleEntrega : menú entregado
+DetalleEntrega "1" -right-> "1" DetalleSolicitud : entrega
+Usuario "1" ---> "0..*" Entrega : registra
+Personal "1" ---> "0..*" Entrega : responsable retiro
+TipoMenu "1" ---> "0..*" DetalleEntrega : menú entregado
 
-SolicitudComida --> EstadoSolicitud : posee
-DetalleSolicitud --> CondicionSolicitud : posee
+' Enums
+SolicitudComida -right-> EstadoSolicitud : posee
+DetalleSolicitud -right-> CondicionSolicitud : posee
 
-note right of DetalleSolicitud
-  Cada detalle representa una combinación
-  nominada de persona y tipo de comida.
-  La autorización se registra por detalle,
-  sin modificar la solicitud original.
+' -------------------------------------------
+' NOTAS ACLARATORIAS
+' -------------------------------------------
+note bottom of DetalleSolicitud
+  Cada detalle representa una combinación nominada
+  de personal y tipo de comida. La autorización se 
+  registra por detalle, sin modificar la solicitud original.
 end note
 
-note right of Entrega
-  Una entrega puede incluir comidas de
-  varias personas. El responsable del retiro
-  puede ser distinto de los comensales.
+note bottom of Entrega
+  Una entrega puede incluir comidas de varias personas.
+  El responsable del retiro puede ser distinto de 
+  los comensales.
 end note
 
 @enduml
