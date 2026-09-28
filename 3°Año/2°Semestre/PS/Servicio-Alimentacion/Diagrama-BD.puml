@@ -1,0 +1,209 @@
+@startuml
+' Diagrama de base de datos del sistema de alimentación
+' Generado a partir del diagrama de clases
+
+skinparam backgroundColor #F8FAFC
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI", "Helvetica Neue", sans-serif
+skinparam defaultFontSize 13
+
+skinparam title {
+  FontColor #0F172A
+  FontSize 22
+  FontStyle bold
+}
+
+skinparam entity {
+  BackgroundColor #F0F9FF
+  BorderColor #3B82F6
+  FontColor #1E293B
+  AttributeFontColor #334155
+  StereotypeFontColor #6366F1
+  RoundCorner 8
+}
+
+skinparam arrow {
+  Color #64748B
+  FontColor #1E293B
+  FontSize 11
+  Thickness 1.2
+}
+
+title **Sistema de Gestión del Servicio de Alimentación — Modelo de Base de Datos**
+
+' ========================================
+' ACCESOS E IDENTIDAD
+' ========================================
+
+entity PERSONA {
+  * id : BIGINT <<PK>>
+  --
+  * dni : VARCHAR <<UK>>
+  nombre : VARCHAR
+  apellido : VARCHAR
+}
+
+entity USUARIO {
+  * id : BIGINT <<PK>>
+  --
+  * persona_id : BIGINT <<FK>>
+  * rol_id : BIGINT <<FK>>
+  correo : VARCHAR <<UK>>
+  estado : BOOLEAN
+}
+
+entity ROL {
+  * id : BIGINT <<PK>>
+  --
+  nombre : VARCHAR
+}
+
+' ========================================
+' ORGANIZACIÓN INSTITUCIONAL
+' ========================================
+
+entity SECTOR {
+  * id : BIGINT <<PK>>
+  --
+  nombre : VARCHAR
+  descripcion : TEXT
+  estado : BOOLEAN
+}
+
+entity PERSONAL {
+  * id : BIGINT <<PK>>
+  --
+  * persona_id : BIGINT <<FK>>
+  * tipo_personal_id : BIGINT <<FK>>
+  * tipo_menu_id : BIGINT <<FK>>
+  sector_id : BIGINT <<FK nullable>>
+  estado : BOOLEAN
+}
+
+entity TIPO_PERSONAL {
+  * id : BIGINT <<PK>>
+  --
+  nombre : VARCHAR
+  requiere_sector : BOOLEAN
+}
+
+' ========================================
+' CATÁLOGOS DE ALIMENTACIÓN
+' ========================================
+
+entity TIPO_MENU {
+  * id : BIGINT <<PK>>
+  --
+  nombre : VARCHAR "General | Vegetariano | Celíaco"
+}
+
+entity TIPO_COMIDA {
+  * id : BIGINT <<PK>>
+  --
+  nombre : VARCHAR "Desayuno | Almuerzo | Merienda | Cena"
+}
+
+entity CUPO_SECTOR {
+  * id : BIGINT <<PK>>
+  --
+  * sector_id : BIGINT <<FK>>
+  * tipo_comida_id : BIGINT <<FK>>
+  cantidad : INT
+}
+
+' ========================================
+' OPERACIONES: SOLICITUDES
+' ========================================
+
+entity SOLICITUD_COMIDA {
+  * id : BIGINT <<PK>>
+  --
+  * usuario_id : BIGINT <<FK>>
+  * sector_id : BIGINT <<FK>>
+  fecha : DATE
+  estado : VARCHAR "CONFIRMADA | AUTORIZADA | RECHAZADA"
+  creado_en : TIMESTAMP
+}
+
+entity DETALLE_SOLICITUD {
+  * id : BIGINT <<PK>>
+  --
+  * solicitud_comida_id : BIGINT <<FK>>
+  * personal_id : BIGINT <<FK>>
+  * tipo_comida_id : BIGINT <<FK>>
+  * tipo_menu_id : BIGINT <<FK>>
+  autorizado_por : BIGINT <<FK nullable>>
+  condicion : VARCHAR "REGULAR | EXCEPCION"
+  esta_autorizado : BOOLEAN
+  autorizado_en : TIMESTAMP
+}
+
+' ========================================
+' OPERACIONES: ENTREGAS
+' ========================================
+
+entity ENTREGA {
+  * id : BIGINT <<PK>>
+  --
+  * usuario_id : BIGINT <<FK>>
+  * personal_retira_id : BIGINT <<FK>>
+  fecha_hora : TIMESTAMP
+  notas : TEXT
+}
+
+entity DETALLE_ENTREGA {
+  * id : BIGINT <<PK>>
+  --
+  * entrega_id : BIGINT <<FK>>
+  * detalle_solicitud_id : BIGINT <<FK>>
+  * tipo_menu_id : BIGINT <<FK>>
+  creado_en : TIMESTAMP
+}
+
+' ========================================
+' RELACIONES — ACCESOS E IDENTIDAD
+' ========================================
+
+PERSONA ||--o| USUARIO : tiene cuenta
+USUARIO }o--|| ROL : tiene rol
+PERSONA ||--o| PERSONAL : es personal
+
+' ========================================
+' RELACIONES — ORGANIZACIÓN INSTITUCIONAL
+' ========================================
+
+PERSONAL }o--|| TIPO_PERSONAL : clasifica como
+PERSONAL }o--o| SECTOR : pertenece a
+SECTOR ||--o{ USUARIO : tiene jefes
+
+' ========================================
+' RELACIONES — CATÁLOGOS
+' ========================================
+
+SECTOR ||--o{ CUPO_SECTOR : define cupo
+CUPO_SECTOR }o--|| TIPO_COMIDA : corresponde a
+PERSONAL }o--|| TIPO_MENU : menu predeterminado
+
+' ========================================
+' RELACIONES — SOLICITUDES
+' ========================================
+
+USUARIO ||--o{ SOLICITUD_COMIDA : registra
+SECTOR ||--o{ SOLICITUD_COMIDA : recibe
+SOLICITUD_COMIDA ||--|{ DETALLE_SOLICITUD : contiene
+PERSONAL ||--o{ DETALLE_SOLICITUD : recibe
+TIPO_COMIDA ||--o{ DETALLE_SOLICITUD : corresponde
+TIPO_MENU ||--o{ DETALLE_SOLICITUD : utiliza
+USUARIO ||--o{ DETALLE_SOLICITUD : autoriza
+
+' ========================================
+' RELACIONES — ENTREGAS
+' ========================================
+
+ENTREGA ||--|{ DETALLE_ENTREGA : contiene
+DETALLE_ENTREGA }o--|| DETALLE_SOLICITUD : entrega
+USUARIO ||--o{ ENTREGA : registra
+PERSONAL ||--o{ ENTREGA : responsable retiro
+TIPO_MENU ||--o{ DETALLE_ENTREGA : menu entregado
+
+@enduml

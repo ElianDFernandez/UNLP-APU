@@ -1,0 +1,97 @@
+Issues
+
+Issue 1: Usuarios
+
+Alcance
+Crear modelos,relaciones y tablas (si ya entra) para:
+
+ - roles.
+ - permisos.
+ - rol_permisos.
+ - usuarios.
+ - layout base.
+ - vista usuarios, roles y permisos.
+
+Agregar restricciones de unicidad para correo, DNI y nombre donde corresponda.
+
+Issue 2: Personal
+
+Alcance
+- tipos_personal.
+- tipos_menu.
+- personal.
+- CRUD de personal.
+- Reglas de personal fijo y residente.
+- Activación/desactivación.
+- Validación de DNI.
+- Preservación de datos históricos.
+- Vista de personal
+
+Criterios de aceptación:
+
+- Personal fijo requiere sector
+- Residente puede no tener sector.
+- Personal inactivo no aparece para nuevos pedidos.
+
+Issue 3: Autenticacion y autorizacion
+
+Dependera de la implemetacion dada por la catedra
+
+Alcance
+- Login manual.
+- Hash seguro de contraseñas.
+- Sesiones con Flask-Session.
+- Logout.
+- Usuario autenticado.
+- Roles y permisos.
+- Bloqueo de usuarios.
+- Decoradores/middleware de permisos.
+
+Criterios de aceptación
+
+- Un usuario bloqueado no inicia sesion.
+- Las contraseñas nunca se devuelven ni se registran.
+- Los endpoints verifican autenticación antes de reglas de negocio.
+- El acceso a vistas y API se valida en backend.
+
+Issue 4: Implementar sectores y responsables
+
+Alcance
+- CRUD de sectores.
+- Estado activo/inactivo.
+- Asociación de Jefes de Servicio.
+- Un jefe pertenece a un único sector.
+- Un sector puede tener varios jefes.
+- No desactivar sectores con usuarios activos.
+- Vistas sectores y asignacion jefes.
+
+Issue 5: Cupos sector
+
+Alcance
+- tipos_comida.
+- cupos_sector.
+- CRUD de cupos y vistas.
+- Un cupo por sector y tipo de comida.
+- No crear cupos para sectores inactivos.
+- Consulta limitada al sector para Jefes de Servicio.
+
+Issue 6: Solicitud y detalle de comida
+
+Alcance
+- solicitudes_comida.
+- detalles_solicitud.
+- Crear pedidos diarios, semanales y mensuales. (La Api debe soportar fecha o rango de fechas).
+- Desayuno, almuerzo, merienda y cena independientes.
+- Cálculo de REGULAR y EXCEPCION según cupo.
+- Evitar duplicados por persona, sector, fecha y tipo de comida.
+- Consulta, modificación y eliminación cuando corresponda (Dependera del estado general de la solicitud).
+
+
+Criterios de aprobacion
+
+- Cambios posteriores del personal no modifican el histórico. (Tener cuidado con el uso de tipo menu).
+- Un pedido confirmado puede modificarse.
+- Un pedido autorizado o rechazado no puede modificarse.
+
+
+Issue 21...
