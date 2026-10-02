@@ -16,6 +16,7 @@ classDiagram
     class PlantEco {
         -EstrategiaMitigacion estrategiaMitigacion
         +setEstrategiaMitigacion(estrategia: EstrategiaMitigacion) void
+        +activarMitigacion() void
     }
 
     class EstrategiaMitigacion {

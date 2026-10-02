@@ -79,6 +79,7 @@ Patron de diseño de comportamiento.
 
 ## Proposito:
 Define una familia de algoritmos, encapsula cada uno y los hace intercambiables. Permite que el algortimo cambie de manera independiente del objeto que lo usa.
+Permite que un objeto cambie su comportamiento en tiempo de ejecución al cambiar la estrategia que utiliza.
 
 ## UML:
 
@@ -213,6 +214,8 @@ public class Context {
 
     public void setState(State state) {
         this.state = state;
+        // Aquí podrías agregar lógica adicional si es necesario al cambiar de estado
+        // Ejemplo: state.notificar();
     }
 
     public void request() {

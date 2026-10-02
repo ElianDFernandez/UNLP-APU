@@ -160,7 +160,7 @@ elegirSueldo(empleado) {
 2. Pseudocódigo para detectar switch statement:
 
 ```
-1. Recorrer el árbollllll:
+1. Recorrer el árbol:
     a. Para cada sentencia de asignación:
         i. Si el lado derecho contiene '.class', 'typeof' o similar, guardar el nombre de esa variable en un registro de "variables de tipo".
     b. Para cada expresión condicional:
