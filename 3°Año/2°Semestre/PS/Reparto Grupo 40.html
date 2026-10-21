@@ -1,0 +1,644 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Reparto Grupo 40</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: barra de navegación fija arriba; vista principal con estado, carga y reparto; una vista de detalle por persona */
+
+:root{
+  --bg:#f5f7f8; --surface:#ffffff; --ink:#18242c; --muted:#5a6b75; --line:#d6dee2;
+  --accent:#0f7d78; --accent-soft:#e1f1ef;
+  --add:#e3f3e6; --add-ink:#1f6b2e; --del:#fbe6e3; --del-ink:#9d3226; --ctx:#7a8a93;
+  --warn:#a2620a; --warn-soft:#fbf0dc; --info:#3d5fa8; --info-soft:#e5ebf7;
+  --code-bg:#f7f9fa; --code-head:#eef2f3;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11181c; --surface:#182227; --ink:#e3eaed; --muted:#97a8b1; --line:#2c3a41;
+  --accent:#4cc3bb; --accent-soft:#163533;
+  --add:#16301d; --add-ink:#8fd49b; --del:#3a1d1a; --del-ink:#f2998d; --ctx:#7f939d;
+  --warn:#e9b25a; --warn-soft:#3a2c14; --info:#8fb0f0; --info-soft:#1d2a44;
+  --code-bg:#121b1f; --code-head:#1c272d; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#11181c; --surface:#182227; --ink:#e3eaed; --muted:#97a8b1; --line:#2c3a41;
+  --accent:#4cc3bb; --accent-soft:#163533;
+  --add:#16301d; --add-ink:#8fd49b; --del:#3a1d1a; --del-ink:#f2998d; --ctx:#7f939d;
+  --warn:#e9b25a; --warn-soft:#3a2c14; --info:#8fb0f0; --info-soft:#1d2a44;
+  --code-bg:#121b1f; --code-head:#1c272d; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;padding-inline:16px;padding-block:0 64px}
+.wrap{max-width:980px;margin-inline:auto;display:flex;flex-direction:column;gap:44px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(2rem,5vw,2.7rem);font-weight:700;letter-spacing:-.01em}
+h2{font-size:1.45rem;font-weight:700}
+h3{font-size:1.08rem;font-weight:600;font-family:var(--f-body)}
+p{margin:0;max-width:74ch}
+p code,li code,td code,.note code,.why code,.tip code,h3 code,h2 code,label code{font-family:var(--f-mono);font-size:.82em;background:var(--accent-soft);padding:.06em .35em;border-radius:4px;overflow-wrap:anywhere}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.eyebrow{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.lead{color:var(--muted);font-size:1.1rem}
+.caption{font-size:.9rem;color:var(--muted)}
+header{padding-block:48px 24px;display:flex;flex-direction:column;gap:16px;border-bottom:1px solid var(--line)}
+section{display:flex;flex-direction:column;gap:16px;scroll-margin-top:16px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--f-mono);font-size:.76rem;padding:4px 10px;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
+.chip b{color:var(--accent);font-weight:600}
+.chip.add b{color:var(--add-ink)} .chip.del b{color:var(--del-ink)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:.92rem}
+th{text-align:left;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:8px 10px;border-bottom:2px solid var(--line)}
+td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+td.num{font-family:var(--f-mono);font-size:.8rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+.plus{color:var(--add-ink)} .minus{color:var(--del-ink)}
+.tag{display:inline-block;font-family:var(--f-mono);font-size:.66rem;font-weight:600;padding:2px 7px;border-radius:999px;white-space:nowrap}
+.tag.new{background:var(--add);color:var(--add-ink)}
+.tag.mod{background:var(--code-head);color:var(--muted)}
+.code{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--code-bg)}
+.code-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 8px 6px 12px;background:var(--code-head);border-bottom:1px solid var(--line)}
+.code-head span{font-family:var(--f-mono);font-size:.72rem;color:var(--muted);overflow-wrap:anywhere}
+.copy{font-family:var(--f-mono);font-size:.7rem;padding:3px 10px;border-radius:5px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.copy:hover{border-color:var(--accent)}
+.code pre{margin:0;overflow-x:auto;max-height:620px}
+.code code{display:block;font-family:var(--f-mono);font-size:.76rem;line-height:1.6;color:var(--ink);white-space:pre;min-width:max-content}
+.code code .l{display:block;padding-inline:12px 16px}
+.code code .l.a{background:var(--add);color:var(--add-ink)}
+.code code .l.d{background:var(--del);color:var(--del-ink)}
+.code code .l.h{color:var(--info);background:var(--info-soft)}
+.code code .l.c{color:var(--ink)}
+.code code .ln{display:inline-block;width:3.2em;color:var(--ctx);user-select:none;text-align:right;margin-right:1em}
+.code.plain code{padding:12px 14px}
+.note{border-left:3px solid var(--accent);padding:4px 0 4px 14px;display:flex;flex-direction:column;gap:6px;font-size:.96rem}
+.note ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px}
+.why{background:var(--accent-soft);border-radius:8px;padding:12px 16px;display:flex;flex-direction:column;gap:6px;font-size:.95rem}
+.why b,.tip b{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.07em;text-transform:uppercase}
+.why b{color:var(--accent)}
+.tip{background:var(--warn-soft);border-radius:8px;padding:12px 16px;display:flex;flex-direction:column;gap:6px;font-size:.95rem}
+.tip b{color:var(--warn)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+footer{color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);padding-top:16px}
+
+:root{--ok:#2f7d3b;--ok-soft:#e5f2e6;--bad:#b03a2e;--bad-soft:#f8e4e1;--done-bar:#7aa9a5}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ok:#7ccc87;--ok-soft:#1b3320;--bad:#f08a7e;--bad-soft:#3d1e1a;--done-bar:#3e6f6b}}
+:root[data-theme="dark"]{--ok:#7ccc87;--ok-soft:#1b3320;--bad:#f08a7e;--bad-soft:#3d1e1a;--done-bar:#3e6f6b}
+body{padding-inline:0}
+.topnav{position:sticky;top:env(safe-area-inset-top, 0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.topnav nav{max-width:980px;margin-inline:auto;padding:10px 16px;display:flex;gap:6px;overflow-x:auto}
+.topnav a{font-family:var(--f-mono);font-size:.8rem;padding:6px 12px;border-radius:999px;text-decoration:none;color:var(--ink);white-space:nowrap;border:1px solid transparent}
+.topnav a:hover{border-color:var(--line)}
+.topnav a.on{background:var(--accent);color:var(--surface)}
+main{padding-inline:16px}
+.view{max-width:980px;margin-inline:auto;display:flex;flex-direction:column;gap:40px;padding-top:8px;scroll-margin-top:60px}
+.view + .view{margin-top:80px;border-top:2px dashed var(--line);padding-top:40px}
+body.routed .view + .view{margin-top:0;border-top:0;padding-top:8px}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:700px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.tile b{font-family:var(--f-display);font-size:1.8rem;line-height:1;font-variant-numeric:tabular-nums}
+.tile span{font-size:.86rem;color:var(--muted)}
+.tile.ok b{color:var(--ok)} .tile.warn b{color:var(--warn)} .tile.bad b{color:var(--bad)}
+.st{display:inline-block;font-family:var(--f-mono);font-size:.7rem;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.st.ok{background:var(--ok-soft);color:var(--ok)} .st.warn{background:var(--warn-soft);color:var(--warn)} .st.bad{background:var(--bad-soft);color:var(--bad)}
+td code{white-space:nowrap}
+.bars{display:flex;flex-direction:column;gap:6px}
+.bar-row{display:grid;grid-template-columns:70px minmax(0,1fr) 110px;gap:12px;align-items:center;padding:4px 6px;border-radius:6px;color:var(--ink);text-decoration:none}
+.bar-row:hover{background:var(--surface)}
+.who{font-weight:600}
+.track{display:flex;height:18px;background:var(--code-head);border-radius:4px;overflow:hidden}
+.track i{display:block;height:100%} .track i.d{background:var(--done-bar)} .track i.t{background:var(--accent)}
+.total{font-family:var(--f-mono);font-size:.8rem;font-variant-numeric:tabular-nums;color:var(--muted)} .total b{color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:.88rem;color:var(--muted)}
+.legend span{display:inline-flex;gap:6px;align-items:center}
+.legend i{width:14px;height:10px;border-radius:2px;display:inline-block}
+.people{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:760px){.people{grid-template-columns:1fr}}
+.person{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.person.me{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.p-head{display:flex;justify-content:space-between;align-items:baseline}
+.p-head h3{font-family:var(--f-display);font-size:1.3rem;font-weight:500}
+.p-tot{font-family:var(--f-mono);font-size:.8rem;color:var(--accent);font-weight:600}
+.p-role{color:var(--muted);font-size:.93rem}
+.tasks{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:5px;font-size:.93rem}
+.tasks li{display:grid;grid-template-columns:10px minmax(0,1fr) auto;gap:8px;align-items:baseline}
+.tasks li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--done-bar)}
+.tasks li.termina::before{background:var(--warn)} .tasks li.asignado::before{background:var(--info)} .tasks li.nuevo::before{background:var(--accent)}
+.sz{font-family:var(--f-mono);font-size:.7rem;color:var(--muted)}
+.more{margin-top:auto;padding-top:6px;font-weight:600;text-decoration:none}
+.more:hover{text-decoration:underline}
+ol.plan{margin:0 0 0 12px;padding:0;list-style:none;counter-reset:s;border-left:2px solid var(--line)}
+ol.plan li{counter-increment:s;position:relative;padding:0 0 18px 28px;display:flex;flex-direction:column;gap:2px}
+ol.plan li::before{content:counter(s);position:absolute;left:-13px;top:0;width:24px;height:24px;border-radius:50%;background:var(--surface);border:2px solid var(--accent);color:var(--accent);font-family:var(--f-mono);font-size:.72rem;display:grid;place-items:center;font-weight:600}
+ol.plan li:last-child{padding-bottom:0}
+ol.plan time{font-family:var(--f-mono);font-size:.78rem;color:var(--accent);font-weight:600}
+ol.plan span{color:var(--muted);font-size:.95rem}
+.plain{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.back{font-family:var(--f-mono);font-size:.82rem;text-decoration:none;align-self:flex-start}
+.p-header{border-bottom:1px solid var(--line);padding-block:12px 24px;display:flex;flex-direction:column;gap:12px}
+.progress{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.progress .bar{flex:1 1 200px;height:6px;border-radius:999px;background:var(--line);overflow:hidden;display:block}
+.progress .bar i{display:block;height:100%;width:0;background:var(--ok);transition:width .25s}
+.ptext{font-family:var(--f-mono);font-size:.75rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.sub{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.already{display:flex;flex-direction:column;gap:8px}
+.task{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.t-head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:start}
+.tn{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-mono);font-weight:600;background:var(--accent-soft);color:var(--accent)}
+.task.termina .tn{background:var(--warn-soft);color:var(--warn)} .task.asignado .tn{background:var(--info-soft);color:var(--info)}
+.t-title{display:flex;flex-direction:column;gap:6px;min-width:0}
+.t-title h3{font-family:var(--f-display);font-size:1.2rem;font-weight:500}
+.t-meta{display:flex;flex-wrap:wrap;gap:6px}
+.kind,.tag{font-family:var(--f-mono);font-size:.68rem;padding:2px 8px;border-radius:999px;background:var(--code-head);color:var(--muted)}
+.task.termina .kind{background:var(--warn-soft);color:var(--warn)} .task.asignado .kind{background:var(--info-soft);color:var(--info)} .task.nuevo .kind{background:var(--accent-soft);color:var(--accent)}
+.reqs{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:.95rem}
+.reqs li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:8px;align-items:baseline}
+.reqs input{width:16px;height:16px;accent-color:var(--ok);transform:translateY(2px)}
+.reqs input:checked + label{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line)}
+.files{display:flex;flex-wrap:wrap;gap:6px}
+.files code{font-family:var(--f-mono);font-size:.76rem;background:var(--code-head);padding:3px 8px;border-radius:5px;overflow-wrap:anywhere}
+.deps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:640px){.deps{grid-template-columns:1fr}}
+.dep{border-radius:8px;padding:10px 14px;display:flex;flex-direction:column;gap:4px;font-size:.92rem;min-width:0}
+.dep b{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase}
+.dep.in{background:var(--info-soft)} .dep.in b{color:var(--info)}
+.dep.out{background:var(--warn-soft)} .dep.out b{color:var(--warn)}
+.qs{display:flex;flex-direction:column;gap:12px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 18px;display:flex;flex-direction:column;gap:8px;font-size:.95rem}
+.q-head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start}
+.q-head h3{font-size:1.02rem}
+.qn{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-mono);font-size:.75rem;font-weight:600;background:var(--info-soft);color:var(--info)}
+.q-block{display:flex;flex-direction:column;gap:3px}
+.q-block b{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.q-block p{color:var(--ink)}
+.q-block.ex{border-left:3px solid var(--info);padding-left:12px}
+.q-block.ex b{color:var(--info)}
+.opts{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:2px}
+.q-default{background:var(--accent-soft);border-radius:6px;padding:8px 12px;display:flex;flex-direction:column;gap:2px}
+.q-default b{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.07em;text-transform:uppercase;color:var(--accent)}
+.q-foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.85rem;color:var(--muted)}
+.q-who{display:inline-flex;flex-wrap:wrap;gap:4px;align-items:center}
+.ptag{font-family:var(--f-mono);font-size:.7rem;padding:1px 8px;border-radius:999px;border:1px solid var(--line);text-decoration:none}
+.code code.msgtxt{white-space:pre-wrap;min-width:0;padding:14px 16px;font-family:var(--f-body);font-size:.9rem}
+.ok-when{border-top:1px dashed var(--line);padding-top:10px;display:flex;flex-direction:column;gap:2px;font-size:.94rem}
+.ok-when b{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--ok)}
+</style>
+<div class="topnav"><nav aria-label="Secciones"><a href="#inicio" data-nav="inicio">Reparto</a><a href="#elian" data-nav="elian">Elian</a><a href="#juli" data-nav="juli">Juli</a><a href="#rama" data-nav="rama">Rama</a><a href="#gabriel" data-nav="gabriel">Gabriel</a><a href="#barbi" data-nav="barbi">Barbi</a><a href="#preguntas-ayudante" data-jump>Preguntas a Milton</a></nav></div>
+<main>
+<section class="view" id="inicio" data-view>
+<header>
+  <div class="eyebrow">Grupo 40 · Etapa 1 · estado al 08/10/2026</div>
+  <h1>Reparto Grupo 40</h1>
+  <p class="lead">Qué está hecho, qué falta y cómo repartirlo para que, al final, cada uno haya hecho más o menos la misma cantidad de trabajo. Tocá el nombre de cada uno para ver el detalle de sus tareas.</p>
+  <div class="chips"><span class="chip">entrega <b>16/10</b></span><span class="chip"><b>8</b> días</span><span class="chip">todos en <b>12</b> puntos</span></div>
+</header>
+
+<section>
+  <div class="eyebrow">Estado</div>
+  <h2>Qué está hecho y qué falta</h2>
+  <div class="tiles">
+    <div class="tile ok"><b>4</b><span>módulos hechos</span></div>
+    <div class="tile warn"><b>5</b><span>a medias</span></div>
+    <div class="tile bad"><b>7</b><span>sin empezar</span></div>
+    <div class="tile"><b>~⅓</b><span>del trabajo total hecho</span></div>
+  </div>
+  <div class="scroll"><table><thead><tr><th>Módulo</th><th>Pág.</th><th>Estado</th><th>Dónde está</th></tr></thead><tbody><tr><td>Layout y logout</td><td class="num">8–9</td><td><span class="st ok">hecho</span></td><td><code>main</code></td></tr><tr><td>Login y sesiones</td><td class="num">13–14</td><td><span class="st ok">hecho</span></td><td><code>main</code></td></tr><tr><td>Manejo de errores</td><td class="num">—</td><td><span class="st ok">hecho</span></td><td><code>main</code></td></tr><tr><td>Tipos de menú</td><td class="num">18</td><td><span class="st ok">hecho</span></td><td><code>feature/tipos-menu</code></td></tr><tr><td>Usuarios</td><td class="num">9–11</td><td><span class="st warn">a medias</span></td><td><code>development</code></td></tr><tr><td>Roles y permisos</td><td class="num">11–13</td><td><span class="st warn">a medias</span></td><td><code>development</code></td></tr><tr><td>Tipos de personal</td><td class="num">18</td><td><span class="st warn">a medias</span></td><td><code>6-tipos-personal</code></td></tr><tr><td>Sectores</td><td class="num">14–15</td><td><span class="st warn">a medias</span></td><td><code>feature/gestion-sectores</code></td></tr><tr><td>Ajustes del sistema</td><td class="num">21</td><td><span class="st warn">a medias</span></td><td><code>main</code></td></tr><tr><td>Perfil y contraseña</td><td class="num">9</td><td><span class="st bad">falta</span></td><td><code>—</code></td></tr><tr><td>Personal</td><td class="num">15–17</td><td><span class="st bad">falta</span></td><td><code>—</code></td></tr><tr><td>Importación CSV</td><td class="num">17</td><td><span class="st bad">falta</span></td><td><code>—</code></td></tr><tr><td>Tipos de comida y Cupos</td><td class="num">19–20</td><td><span class="st bad">falta</span></td><td><code>—</code></td></tr><tr><td>Modelo de pedidos y entregas</td><td class="num">7, 20</td><td><span class="st bad">falta</span></td><td><code>—</code></td></tr><tr><td>API</td><td class="num">21–34</td><td><span class="st bad">falta</span></td><td><code>—</code></td></tr><tr><td>Logs, versión y despliegue</td><td class="num">35–36</td><td><span class="st bad">falta</span></td><td><code>—</code></td></tr></tbody></table></div>
+</section>
+
+<section>
+  <div class="eyebrow">Carga</div>
+  <h2>Cómo queda cada uno</h2>
+  <p>Cada tarea tiene un tamaño estimado: chica = 1 punto, mediana = 2, grande = 3. La barra suma lo que cada uno ya hizo y lo que haría con este reparto.</p>
+  <div class="bars"><a class="bar-row" href="#elian"><span class="who">Elian</span><span class="track"><i class="d" style="width:58.3%"></i><i class="t" style="width:41.7%"></i></span><span class="total">7 + 5 = <b>12</b></span></a><a class="bar-row" href="#juli"><span class="who">Juli</span><span class="track"><i class="d" style="width:25.0%"></i><i class="t" style="width:75.0%"></i></span><span class="total">3 + 9 = <b>12</b></span></a><a class="bar-row" href="#rama"><span class="who">Rama</span><span class="track"><i class="d" style="width:25.0%"></i><i class="t" style="width:75.0%"></i></span><span class="total">3 + 9 = <b>12</b></span></a><a class="bar-row" href="#gabriel"><span class="who">Gabriel</span><span class="track"><i class="d" style="width:25.0%"></i><i class="t" style="width:75.0%"></i></span><span class="total">3 + 9 = <b>12</b></span></a><a class="bar-row" href="#barbi"><span class="who">Barbi</span><span class="track"><i class="d" style="width:25.0%"></i><i class="t" style="width:75.0%"></i></span><span class="total">3 + 9 = <b>12</b></span></a></div>
+  <div class="legend"><span><i style="background:var(--done-bar)"></i>ya hecho</span><span><i style="background:var(--accent)"></i>lo que falta, según la propuesta</span></div>
+  <div class="why"><b>Por qué así</b><p>Elian ya hizo la parte más pesada (login, usuarios y roles), así que le toca sobre todo terminar lo suyo. La base de la API pasa a Juli, que tiene menos hecho hasta ahora. Cada uno hace los endpoints de su propio módulo, porque ya conoce el modelo y las reglas.</p></div>
+</section>
+
+<section>
+  <div class="eyebrow">Propuesta</div>
+  <h2>Reparto por persona</h2>
+  <div class="legend"><span><i style="background:var(--warn)"></i>terminar lo que ya tiene</span><span><i style="background:var(--info)"></i>ya estaba en la división</span><span><i style="background:var(--accent)"></i>nuevo</span><span>S = 1 · M = 2 · L = 3</span></div>
+  <div class="people"><article class="person"><div class="p-head"><h3>Elian</h3><span class="p-tot">12 pts</span></div><p class="p-role">Usuarios, roles y seguridad</p><ul class="tasks"><li class="termina"><span>Usuarios: búsqueda, orden, paginación y reglas</span><span class="sz">M</span></li><li class="termina"><span>Los cuatro roles con sus permisos</span><span class="sz">S</span></li><li class="termina"><span>Sesión segura y con vencimiento</span><span class="sz">S</span></li><li class="nuevo"><span>Logs del backend</span><span class="sz">S</span></li></ul><a class="more" href="#elian">Ver el detalle de Elian →</a></article><article class="person"><div class="p-head"><h3>Juli</h3><span class="p-tot">12 pts</span></div><p class="p-role">Ajustes, base de la API y entregas</p><ul class="tasks"><li class="termina"><span>Volver a poner &quot;Ver perfil&quot;</span><span class="sz">S</span></li><li class="nuevo"><span>Ajustes del sistema</span><span class="sz">M</span></li><li class="nuevo"><span>Base de la API</span><span class="sz">L</span></li><li class="nuevo"><span>API de comidas autorizadas y entregas</span><span class="sz">L</span></li></ul><a class="more" href="#juli">Ver el detalle de Juli →</a></article><article class="person"><div class="p-head"><h3>Rama</h3><span class="p-tot">12 pts</span></div><p class="p-role">Sectores, perfil y autorizaciones</p><ul class="tasks"><li class="termina"><span>Sectores: completar el módulo</span><span class="sz">M</span></li><li class="asignado"><span>Perfil y cambio de contraseña</span><span class="sz">M</span></li><li class="nuevo"><span>API de autorizaciones</span><span class="sz">L</span></li><li class="nuevo"><span>API de resúmenes</span><span class="sz">M</span></li></ul><a class="more" href="#rama">Ver el detalle de Rama →</a></article><article class="person"><div class="p-head"><h3>Gabriel</h3><span class="p-tot">12 pts</span></div><p class="p-role">Personal y su API</p><ul class="tasks"><li class="termina"><span>Tipos de personal: terminar y mergear</span><span class="sz">S</span></li><li class="asignado"><span>Personal: CRUD con sus reglas</span><span class="sz">L</span></li><li class="nuevo"><span>Importación de personal por CSV</span><span class="sz">M</span></li><li class="nuevo"><span>API de personal</span><span class="sz">L</span></li></ul><a class="more" href="#gabriel">Ver el detalle de Gabriel →</a></article><article class="person me"><div class="p-head"><h3>Barbi</h3><span class="p-tot">12 pts</span></div><p class="p-role">Cupos, pedidos y catálogos</p><ul class="tasks"><li class="nuevo"><span>API de catálogos</span><span class="sz">S</span></li><li class="nuevo"><span>Tipos de comida y Cupos</span><span class="sz">M</span></li><li class="nuevo"><span>API de cupos</span><span class="sz">S</span></li><li class="nuevo"><span>Modelo de pedidos, autorizaciones y entregas</span><span class="sz">M</span></li><li class="nuevo"><span>API de pedidos</span><span class="sz">L</span></li></ul><a class="more" href="#barbi">Ver el detalle de Barbi →</a></article></div>
+</section>
+
+<section>
+  <div class="eyebrow">Orden</div>
+  <h2>Qué va primero</h2>
+  <ol class="plan">
+    <li><time>jue 08 – vie 09</time><b>Mergear lo que ya está y cerrar el modelo</b><span>Merge requests de tipos de menú, tipos de personal y sectores hacia development, de a uno y con una sola persona resolviendo conflictos. Barbi cierra el modelo de pedidos.</span></li>
+    <li><time>vie 09 – sáb 10</time><b>Base de la API y roles</b><span>Juli deja el login con token y los decoradores. Elian crea los 4 roles. Sin esto nadie prueba endpoints.</span></li>
+    <li><time>sáb 10 – lun 12</time><b>Módulos de administración</b><span>Personal, Cupos, Ajustes, Perfil, lo que falta de Sectores y Usuarios, y los endpoints simples.</span></li>
+    <li><time>lun 12 – mié 14</time><b>El circuito</b><span>Pedidos (Barbi), autorizaciones (Rama) y entregas (Juli), en ese orden. Después, los resúmenes (Rama).</span></li>
+    <li><time>jue 15</time><b>Despliegue y prueba completa</b><span>Logs, etiqueta v1.0.0 y prueba en el servidor de la cátedra, todos juntos.</span></li>
+    <li><time>vie 16</time><b>Entrega</b><span>Solo correcciones chicas.</span></li>
+  </ol>
+</section>
+
+<section>
+  <div class="eyebrow">Para todos</div>
+  <h2>Convenciones</h2>
+  <ul class="plain">
+    <li><b>Ramas y merge requests.</b> Una rama <code>feature/...</code> por tarea, commits chicos y merge request hacia <code>development</code>.</li>
+    <li><b>Validación.</b> Cada formulario tiene su validador en <code>web/validators/</code> y se valida también en el navegador.</li>
+    <li><b>Permisos.</b> Patrón <code>modulo_accion</code> en inglés (<code>user_*</code>, <code>menu_type_*</code>, <code>quota_*</code>…), y cada ruta con <code>@login_required</code> y <code>@check</code>.</li>
+    <li><b>Fechas.</b> <code>DateTime(timezone=True)</code> y el filtro <code>| fecha_local</code> para mostrarlas. Acordar un solo nombre para las columnas de fecha.</li>
+    <li><b>Paginación.</b> Todos los listados usan el valor de Ajustes, máximo 25.</li>
+    <li><b>Docstrings</b> en todo el código Python (pág. 35) y el email de GitLab configurado en cada repo.</li>
+  </ul>
+</section>
+<section id="preguntas-ayudante">
+  <div class="eyebrow">Consultas</div>
+  <h2>Preguntas para Milton</h2>
+  <p>Para Milton Sosa, nuestro ayudante. Son puntos donde el enunciado es ambiguo o pide consultar. Cada una trae lo que dice el enunciado, un ejemplo concreto del hospital, las opciones que vemos y la que vamos a seguir si no llega respuesta, para no frenar el trabajo. Conviene mandarlas juntas hoy.</p>
+  <div class="qs"><article class="q"><div class="q-head"><span class="qn">1</span><h3>¿Para el 16/10 se espera la API completa o alcanza con una parte?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>La pág. 6 dice que "la distribución detallada de estas funcionalidades entre la primera y la segunda etapa se especificará posteriormente". La pág. 7 incluye en la Etapa 1 "la API necesaria para implementar el circuito completo", y la pág. 36 aclara que "funcionalidades no terminadas en la etapa 1 podrán completarse en la etapa siguiente". La lista de la pág. 21 a la 34 tiene unos 30 endpoints, y hoy no existe ninguno.</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Si para el 16/10 tenemos login con token, catálogos, personal, cupos y pedidos, pero no autorizaciones, entregas ni resúmenes: ¿la entrega se considera completa, o se evalúa con esos endpoints como faltantes?</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Toda la API para el 16/10</li><li>Una parte mínima para el 16/10 y el resto en la etapa 2 (¿cuál?)</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Priorizar la base de la API, catálogos, personal, cupos y pedidos. Autorizaciones, entregas y resúmenes, si no llegan, pasan a la etapa 2.</span></div>
+<div class="q-foot"><span class="tag">pág. 6, 7, 21, 36</span><span class="q-who">Afecta a <a class="ptag" href="#juli">Juli</a><a class="ptag" href="#rama">Rama</a><a class="ptag" href="#gabriel">Gabriel</a><a class="ptag" href="#barbi">Barbi</a></span></div></article><article class="q"><div class="q-head"><span class="qn">2</span><h3>Un pedido semanal o mensual, ¿es un pedido por cada día o un solo pedido que cubre todo el rango?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>El <code>POST /api/requests</code> recibe "periodicidad (diaria, semanal o mensual), fecha o rango de fechas" (pág. 27). Pero la misma página dice que devuelve "409 si ya existe un pedido para el mismo sector y fecha", y el Servicio de Alimentación autoriza o rechaza "un pedido" entero (pág. 30).</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>El Jefe de Quirófano carga un pedido semanal del lunes 12 al viernes 16 con 10 personas para el almuerzo. El martes, Alimentación quiere rechazar solo ese día porque hay una jornada sin cirugías. Si es un solo pedido, rechazarlo rechaza toda la semana. Si son 5 pedidos (uno por día), puede rechazar solo el del martes.</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Un pedido por día: la carga semanal crea 5 o 7 pedidos</li><li>Un pedido por rango, con la fecha en cada detalle</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Un pedido por día. La carga semanal o mensual es una forma rápida de crear varios pedidos diarios de una vez.</span></div>
+<div class="q-foot"><span class="tag">pág. 27, 30</span><span class="q-who">Afecta a <a class="ptag" href="#barbi">Barbi</a><a class="ptag" href="#rama">Rama</a><a class="ptag" href="#juli">Juli</a></span></div></article><article class="q"><div class="q-head"><span class="qn">3</span><h3>Si un sector no tiene cupo cargado para una comida, ¿todas sus personas son Excepción o no se puede pedir esa comida?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>La pág. 19 dice que "las personas incorporadas al pedido hasta alcanzar el cupo disponible serán consideradas regulares" y "las incorporadas una vez alcanzado el cupo serán consideradas excepciones". No dice qué pasa si el sector no tiene cupo para esa comida.</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Lavadero tiene cupo de 5 para el almuerzo, pero nadie le cargó cupo para la cena. El Jefe de Lavadero pide cena para 2 personas. ¿Las dos quedan como Excepción (cupo 0), o el sistema no le deja pedir cena hasta que Alimentación cargue el cupo?</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Sin cupo, todas son Excepción</li><li>Sin cupo, no se puede pedir esa comida</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Sin cupo, toda persona queda como Excepción. Así el pedido no se frena y Alimentación decide al autorizar.</span></div>
+<div class="q-foot"><span class="tag">pág. 19</span><span class="q-who">Afecta a <a class="ptag" href="#barbi">Barbi</a></span></div></article><article class="q"><div class="q-head"><span class="qn">4</span><h3>¿Un Jefe de Servicio puede estar en más de un sector? ¿El sector es obligatorio para el Jefe?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>En la pág. 10 aparecen tachadas dos reglas: "Sector, obligatorio únicamente para usuarios con rol Jefe de Servicio" y "Un usuario con rol Jefe de Servicio deberá estar asociado a un único sector". Pero en Sectores (pág. 14) sigue diciendo "cada Jefe de Servicio podrá estar asociado a un único sector".</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>La misma persona es jefa de Guardia y de Laboratorio de Guardia. ¿Le asignamos los dos sectores a su usuario, o tiene que tener dos usuarios? Y un Jefe recién creado al que todavía no se le asignó sector: ¿se puede guardar?</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Un único sector, obligatorio</li><li>Un único sector, opcional al crear el usuario</li><li>Varios sectores por Jefe</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Un único sector, obligatorio para el Jefe de Servicio, como dice la pág. 14.</span></div>
+<div class="q-foot"><span class="tag">pág. 10, 14</span><span class="q-who">Afecta a <a class="ptag" href="#elian">Elian</a><a class="ptag" href="#rama">Rama</a></span></div></article><article class="q"><div class="q-head"><span class="qn">5</span><h3>¿Qué mecanismo de token esperan para la API? ¿Podemos usar una librería como PyJWT o itsdangerous?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>La pág. 22 pide "token de acceso en el header Authorization (Bearer)", validar "que el token sea válido y no haya expirado" y un <code>POST /api/auth/logout</code>. La pág. 35 dice que las librerías se pueden usar si todo el equipo las sabe explicar, pero que hay que "consultar con el ayudante si el uso de la misma está permitido".</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Con JWT, el logout no invalida el token por sí solo: el token sigue sirviendo hasta que vence, salvo que se guarde una lista de tokens revocados. Con un token aleatorio guardado en una tabla, el logout lo borra y deja de funcionar al instante.</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>JWT con PyJWT</li><li>Token firmado con itsdangerous (ya viene con Flask)</li><li>Token aleatorio guardado en la base, sin librerías nuevas</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Token aleatorio con <code>secrets.token_urlsafe</code> (librería estándar), guardado en una tabla con su fecha de vencimiento.</span></div>
+<div class="q-foot"><span class="tag">pág. 22, 35</span><span class="q-who">Afecta a <a class="ptag" href="#juli">Juli</a></span></div></article><article class="q"><div class="q-head"><span class="qn">6</span><h3>El modo mantenimiento, ¿bloquea también la aplicación de administración o solo la API y las interfaces operativas?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>La pág. 21 pide "posibilidad de deshabilitar el sitio para mantenimiento" y un "mensaje de mantenimiento", configurable solo por el Administrador. No dice a qué partes del sistema afecta.</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>El Administrador activa el mantenimiento a las 14 h para cargar cupos nuevos. Si el bloqueo también aplica a la administración, a las 15 h no puede entrar para desactivarlo. Mientras tanto, un Jefe de Servicio que intenta cargar un pedido por la API debería ver el mensaje de mantenimiento.</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Bloquea todo menos al Administrador</li><li>Bloquea solo la API y las interfaces de Vue (etapa 2)</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>El Administrador siempre puede entrar. La API responde 503 con el mensaje a los roles operativos, y la administración muestra un aviso.</span></div>
+<div class="q-foot"><span class="tag">pág. 21</span><span class="q-who">Afecta a <a class="ptag" href="#juli">Juli</a></span></div></article><article class="q"><div class="q-head"><span class="qn">7</span><h3>Si en Ajustes se configuran más de 25 registros por página, ¿vale ese valor o el máximo de 25?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>Cada módulo dice "paginación del lado del servidor, con un máximo de 25 registros por página" (pág. 10, 15, 17 y 20). Ajustes dice que "todos los listados deberán respetar este valor para el paginado" (pág. 21).</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>El Administrador pone 50 en Ajustes. El listado de usuarios, ¿muestra 50 por página o 25?</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Ajustes acepta de 1 a 25</li><li>Ajustes acepta cualquier valor y manda sobre el máximo</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Ajustes acepta valores de 1 a 25, así se cumplen las dos reglas.</span></div>
+<div class="q-foot"><span class="tag">pág. 10, 21</span><span class="q-who">Afecta a <a class="ptag" href="#juli">Juli</a></span></div></article><article class="q"><div class="q-head"><span class="qn">8</span><h3>¿Quien retira la comida tiene que estar registrado como personal?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>El <code>POST /api/deliveries</code> pide "quién es el responsable del retiro (puede ser una de las personas incluidas o alguien que retira en representación de otras)" (pág. 32), y la pág. 5 pide "registrar quién fue el responsable efectivo del retiro".</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Una enfermera de Terapia Intensiva retira 6 almuerzos para su equipo. Ella no tiene almuerzo autorizado ese día, pero está cargada como personal. Otro día retira un camillero que no está cargado en el sistema. ¿Se registra igual, con nombre y DNI escritos a mano?</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Solo personal registrado y activo</li><li>Cualquier persona, con DNI y nombre escritos en el momento</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Tiene que estar registrado como personal activo, y se lo busca por DNI.</span></div>
+<div class="q-foot"><span class="tag">pág. 5, 32</span><span class="q-who">Afecta a <a class="ptag" href="#juli">Juli</a><a class="ptag" href="#barbi">Barbi</a></span></div></article><article class="q"><div class="q-head"><span class="qn">9</span><h3>En "400 si la nueva cantidad es menor a lo ya entregado en el período", ¿a qué período se refiere?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>El <code>PUT /api/quotas/{id}</code> (pág. 31) dice que la modificación "se aplicará únicamente a los pedidos que se registren con posterioridad", pero también que devuelve "400 si la nueva cantidad es menor a lo ya entregado en el período". Los cupos no tienen fechas.</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Quirófano tiene cupo de 10 para el almuerzo y hoy ya se entregaron 8 almuerzos. Alimentación quiere bajar el cupo a 6. ¿Se rechaza porque hoy ya se entregaron 8, aunque el cambio sea para pedidos futuros?</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>El período es el día de hoy</li><li>El período es otro (¿semana, mes?)</li><li>No hace falta esa validación, porque el cambio no es retroactivo</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Comparar contra lo entregado hoy para ese sector y esa comida.</span></div>
+<div class="q-foot"><span class="tag">pág. 31</span><span class="q-who">Afecta a <a class="ptag" href="#barbi">Barbi</a></span></div></article><article class="q"><div class="q-head"><span class="qn">10</span><h3>¿Personal y Usuarios pueden compartir la tabla de personas (DNI, nombre y apellido)?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>La pág. 16 dice que el personal "no necesariamente tendrá una cuenta" y que "los Jefes de Servicio son usuarios registrados y a la vez pueden ser personal autorizado para las comidas". Usuarios ya guarda DNI, nombre y apellido en una tabla <code>personas</code>.</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Ana Pérez (DNI 30123456) es Jefa de Pediatría y también come en el hospital. Si Personal tiene su propia tabla con DNI, Ana queda cargada dos veces, y si cambia el apellido en un lado no cambia en el otro. Compartiendo la tabla, existe una sola Ana.</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Compartir la tabla personas</li><li>Tablas separadas para Usuarios y Personal</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Compartir: Personal apunta a <code>personas</code>, que ya usa Usuarios.</span></div>
+<div class="q-foot"><span class="tag">pág. 15–16</span><span class="q-who">Afecta a <a class="ptag" href="#gabriel">Gabriel</a><a class="ptag" href="#elian">Elian</a></span></div></article><article class="q"><div class="q-head"><span class="qn">11</span><h3>¿Podemos usar los cortes responsive de Bootstrap en lugar de los del enunciado?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>La pág. 36 pide contemplar como mínimo tres resoluciones (menos de 767 px, de 768 a 1024 px y más de 1025 px), y dice: "si quiere utilizar las sugeridas por el framework que utilice comuníquelo al ayudante".</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Bootstrap 5 corta en 576, 768, 992 y 1200 px. Una tablet de 1000 px de ancho, para el enunciado, es "tablet". Para Bootstrap ya es "escritorio" (992 px o más).</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Usar los de Bootstrap 5</li><li>Ajustar a 767 / 1024 px</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Usar los de Bootstrap 5 (576, 768, 992 y 1200 px), que es lo que ya usa el layout.</span></div>
+<div class="q-foot"><span class="tag">pág. 36</span><span class="q-who">Afecta a <a class="ptag" href="#juli">Juli</a><a class="ptag" href="#rama">Rama</a><a class="ptag" href="#gabriel">Gabriel</a><a class="ptag" href="#barbi">Barbi</a><a class="ptag" href="#elian">Elian</a></span></div></article></div>
+  <div class="code"><div class="code-head"><span>mensaje para el ayudante</span><button type="button" class="copy">Copiar</button></div><pre><code class="msgtxt">Hola Milton! Somos el Grupo 40. Tenemos algunas dudas sobre la Etapa 1. Para cada una te dejamos un ejemplo y lo que pensamos hacer si te parece bien:
+
+1. ¿Para el 16/10 se espera la API completa o alcanza con una parte? (pág. 6, 7, 21, 36)
+   Ejemplo: Si para el 16/10 tenemos login con token, catálogos, personal, cupos y pedidos, pero no autorizaciones, entregas ni resúmenes: ¿la entrega se considera completa, o se evalúa con esos endpoints como faltantes?
+   Opciones: Toda la API para el 16/10 / Una parte mínima para el 16/10 y el resto en la etapa 2 (¿cuál?)
+   Pensamos: Priorizar la base de la API, catálogos, personal, cupos y pedidos. Autorizaciones, entregas y resúmenes, si no llegan, pasan a la etapa 2.
+
+2. Un pedido semanal o mensual, ¿es un pedido por cada día o un solo pedido que cubre todo el rango? (pág. 27, 30)
+   Ejemplo: El Jefe de Quirófano carga un pedido semanal del lunes 12 al viernes 16 con 10 personas para el almuerzo. El martes, Alimentación quiere rechazar solo ese día porque hay una jornada sin cirugías. Si es un solo pedido, rechazarlo rechaza toda la semana. Si son 5 pedidos (uno por día), puede rechazar solo el del martes.
+   Opciones: Un pedido por día: la carga semanal crea 5 o 7 pedidos / Un pedido por rango, con la fecha en cada detalle
+   Pensamos: Un pedido por día. La carga semanal o mensual es una forma rápida de crear varios pedidos diarios de una vez.
+
+3. Si un sector no tiene cupo cargado para una comida, ¿todas sus personas son Excepción o no se puede pedir esa comida? (pág. 19)
+   Ejemplo: Lavadero tiene cupo de 5 para el almuerzo, pero nadie le cargó cupo para la cena. El Jefe de Lavadero pide cena para 2 personas. ¿Las dos quedan como Excepción (cupo 0), o el sistema no le deja pedir cena hasta que Alimentación cargue el cupo?
+   Opciones: Sin cupo, todas son Excepción / Sin cupo, no se puede pedir esa comida
+   Pensamos: Sin cupo, toda persona queda como Excepción. Así el pedido no se frena y Alimentación decide al autorizar.
+
+4. ¿Un Jefe de Servicio puede estar en más de un sector? ¿El sector es obligatorio para el Jefe? (pág. 10, 14)
+   Ejemplo: La misma persona es jefa de Guardia y de Laboratorio de Guardia. ¿Le asignamos los dos sectores a su usuario, o tiene que tener dos usuarios? Y un Jefe recién creado al que todavía no se le asignó sector: ¿se puede guardar?
+   Opciones: Un único sector, obligatorio / Un único sector, opcional al crear el usuario / Varios sectores por Jefe
+   Pensamos: Un único sector, obligatorio para el Jefe de Servicio, como dice la pág. 14.
+
+5. ¿Qué mecanismo de token esperan para la API? ¿Podemos usar una librería como PyJWT o itsdangerous? (pág. 22, 35)
+   Ejemplo: Con JWT, el logout no invalida el token por sí solo: el token sigue sirviendo hasta que vence, salvo que se guarde una lista de tokens revocados. Con un token aleatorio guardado en una tabla, el logout lo borra y deja de funcionar al instante.
+   Opciones: JWT con PyJWT / Token firmado con itsdangerous (ya viene con Flask) / Token aleatorio guardado en la base, sin librerías nuevas
+   Pensamos: Token aleatorio con secrets.token_urlsafe (librería estándar), guardado en una tabla con su fecha de vencimiento.
+
+6. El modo mantenimiento, ¿bloquea también la aplicación de administración o solo la API y las interfaces operativas? (pág. 21)
+   Ejemplo: El Administrador activa el mantenimiento a las 14 h para cargar cupos nuevos. Si el bloqueo también aplica a la administración, a las 15 h no puede entrar para desactivarlo. Mientras tanto, un Jefe de Servicio que intenta cargar un pedido por la API debería ver el mensaje de mantenimiento.
+   Opciones: Bloquea todo menos al Administrador / Bloquea solo la API y las interfaces de Vue (etapa 2)
+   Pensamos: El Administrador siempre puede entrar. La API responde 503 con el mensaje a los roles operativos, y la administración muestra un aviso.
+
+7. Si en Ajustes se configuran más de 25 registros por página, ¿vale ese valor o el máximo de 25? (pág. 10, 21)
+   Ejemplo: El Administrador pone 50 en Ajustes. El listado de usuarios, ¿muestra 50 por página o 25?
+   Opciones: Ajustes acepta de 1 a 25 / Ajustes acepta cualquier valor y manda sobre el máximo
+   Pensamos: Ajustes acepta valores de 1 a 25, así se cumplen las dos reglas.
+
+8. ¿Quien retira la comida tiene que estar registrado como personal? (pág. 5, 32)
+   Ejemplo: Una enfermera de Terapia Intensiva retira 6 almuerzos para su equipo. Ella no tiene almuerzo autorizado ese día, pero está cargada como personal. Otro día retira un camillero que no está cargado en el sistema. ¿Se registra igual, con nombre y DNI escritos a mano?
+   Opciones: Solo personal registrado y activo / Cualquier persona, con DNI y nombre escritos en el momento
+   Pensamos: Tiene que estar registrado como personal activo, y se lo busca por DNI.
+
+9. En &quot;400 si la nueva cantidad es menor a lo ya entregado en el período&quot;, ¿a qué período se refiere? (pág. 31)
+   Ejemplo: Quirófano tiene cupo de 10 para el almuerzo y hoy ya se entregaron 8 almuerzos. Alimentación quiere bajar el cupo a 6. ¿Se rechaza porque hoy ya se entregaron 8, aunque el cambio sea para pedidos futuros?
+   Opciones: El período es el día de hoy / El período es otro (¿semana, mes?) / No hace falta esa validación, porque el cambio no es retroactivo
+   Pensamos: Comparar contra lo entregado hoy para ese sector y esa comida.
+
+10. ¿Personal y Usuarios pueden compartir la tabla de personas (DNI, nombre y apellido)? (pág. 15–16)
+   Ejemplo: Ana Pérez (DNI 30123456) es Jefa de Pediatría y también come en el hospital. Si Personal tiene su propia tabla con DNI, Ana queda cargada dos veces, y si cambia el apellido en un lado no cambia en el otro. Compartiendo la tabla, existe una sola Ana.
+   Opciones: Compartir la tabla personas / Tablas separadas para Usuarios y Personal
+   Pensamos: Compartir: Personal apunta a personas, que ya usa Usuarios.
+
+11. ¿Podemos usar los cortes responsive de Bootstrap en lugar de los del enunciado? (pág. 36)
+   Ejemplo: Bootstrap 5 corta en 576, 768, 992 y 1200 px. Una tablet de 1000 px de ancho, para el enunciado, es &quot;tablet&quot;. Para Bootstrap ya es &quot;escritorio&quot; (992 px o más).
+   Opciones: Usar los de Bootstrap 5 / Ajustar a 767 / 1024 px
+   Pensamos: Usar los de Bootstrap 5 (576, 768, 992 y 1200 px), que es lo que ya usa el layout.
+
+Gracias!</code></pre></div>
+</section>
+
+<footer>Estimaciones aproximadas, para comparar carga y no para medir horas. Estado tomado de las ramas de GitLab el 08/10/2026.</footer>
+</section>
+
+<section class="view person-view" id="elian" data-view>
+<a class="back" href="#inicio">← Volver al reparto</a>
+<header class="p-header"><div class="eyebrow">Grupo 40 · detalle</div><h1>Elian</h1><p class="lead">Usuarios, roles y seguridad</p>
+<div class="chips"><span class="chip">total <b>12 pts</b></span><span class="chip">hecho <b>7</b></span><span class="chip">por hacer <b>5</b></span><span class="chip">rama actual <b>development</b></span></div>
+<div class="progress"><span class="bar"><i data-bar="elian"></i></span><span class="ptext" data-ptext="elian">0 de 21 ítems tildados</span></div></header>
+<div class="already"><div class="sub">Lo que ya hiciste</div><ul class="tasks"><li><span>Login y sesiones</span><span class="sz">M</span></li><li><span>CRUD de usuarios</span><span class="sz">L</span></li><li><span>Roles y permisos</span><span class="sz">M</span></li></ul></div>
+<article class="task termina"><div class="t-head"><span class="tn">1</span><div class="t-title"><h3>Usuarios: búsqueda, orden, paginación y reglas</h3><div class="t-meta"><span class="kind">terminar lo suyo</span><span class="tag">tamaño M</span><span class="tag">pág. 9–11</span></div></div></div>
+<p>Completar el módulo de usuarios con lo que pide el enunciado y todavía no está.</p><div class="sub">Qué tiene que tener</div><ul class="reqs"><li><input type="checkbox" id="elian-1-1" data-k="elian-1-1"><label for="elian-1-1">Búsqueda por correo, nombre o apellido, DNI, activo, rol y sector, combinables entre sí</label></li><li><input type="checkbox" id="elian-1-2" data-k="elian-1-2"><label for="elian-1-2">Orden por fecha de creación, apellido y nombre, y correo, ascendente y descendente</label></li><li><input type="checkbox" id="elian-1-3" data-k="elian-1-3"><label for="elian-1-3">Paginación del lado del servidor, hasta 25 por página (después, el valor de Ajustes)</label></li><li><input type="checkbox" id="elian-1-4" data-k="elian-1-4"><label for="elian-1-4">Campo <code>sector_id</code> en Usuario: solo para Jefe de Servicio, obligatorio en ese caso</label></li><li><input type="checkbox" id="elian-1-5" data-k="elian-1-5"><label for="elian-1-5">Si un Jefe cambia de rol, se borra su sector. No se puede asignar un sector inactivo</label></li><li><input type="checkbox" id="elian-1-6" data-k="elian-1-6"><label for="elian-1-6">Fechas de creación y última modificación, con zona horaria</label></li><li><input type="checkbox" id="elian-1-7" data-k="elian-1-7"><label for="elian-1-7">En la edición, la contraseña es opcional: vacía conserva la actual</label></li><li><input type="checkbox" id="elian-1-8" data-k="elian-1-8"><label for="elian-1-8">No se puede eliminar un usuario con pedidos, autorizaciones o entregas: se desactiva</label></li><li><input type="checkbox" id="elian-1-9" data-k="elian-1-9"><label for="elian-1-9">Validador aparte en <code>web/validators/usuarios.py</code>: formato de email, nombre y apellido, contraseña mínima y confirmación</label></li></ul>
+<div class="sub">Archivos</div><div class="files"><code>core/auth/usuarios.py</code><code>web/controllers/usuarios.py</code><code>web/validators/usuarios.py</code><code>templates/usuarios/*</code></div><div class="deps"><div class="dep in"><b>Necesitás</b><span>Rama: modelo <code>Sector</code> mergeado (para <code>sector_id</code>). Juli: valor de registros por página.</span></div></div>
+<div class="ok-when"><b>Está listo cuando</b><span>El listado filtra, ordena y pagina. Un Jefe sin sector no se puede guardar.</span></div></article><article class="task termina"><div class="t-head"><span class="tn">2</span><div class="t-title"><h3>Los cuatro roles con sus permisos</h3><div class="t-meta"><span class="kind">terminar lo suyo</span><span class="tag">tamaño S</span><span class="tag">pág. 7–8, 11–12</span></div></div></div>
+<p>Que existan en la base los cuatro roles del enunciado y que cada uno tenga sus permisos.</p><div class="sub">Qué tiene que tener</div><ul class="reqs"><li><input type="checkbox" id="elian-2-1" data-k="elian-2-1"><label for="elian-2-1">Crear en el seeder Jefe de Servicio, Servicio de Alimentación y Sector Comedor, además de Administrador</label></li><li><input type="checkbox" id="elian-2-2" data-k="elian-2-2"><label for="elian-2-2">Armar la tabla de permisos por rol con todo el grupo: cada módulo agrega los suyos (<code>menu_type_*</code>, <code>quota_*</code>, <code>personnel_*</code>…)</label></li><li><input type="checkbox" id="elian-2-3" data-k="elian-2-3"><label for="elian-2-3"><code>rol_id</code> obligatorio: el enunciado dice que cada usuario tiene un único rol</label></li><li><input type="checkbox" id="elian-2-4" data-k="elian-2-4"><label for="elian-2-4">Un Administrador no puede ser bloqueado</label></li></ul>
+<div class="sub">Archivos</div><div class="files"><code>core/seeders/__init__.py</code><code>core/auth/usuarios.py</code><code>web/controllers/usuarios.py</code></div><div class="deps"><div class="dep out"><b>Te esperan</b><span>Todos: los endpoints de la API controlan permisos de estos roles.</span></div></div>
+<div class="ok-when"><b>Está listo cuando</b><span><code>flask seed_roles_permisos</code> crea los 4 roles. Bloquear a un admin muestra un error.</span></div></article><article class="task termina"><div class="t-head"><span class="tn">3</span><div class="t-title"><h3>Sesión segura y con vencimiento</h3><div class="t-meta"><span class="kind">terminar lo suyo</span><span class="tag">tamaño S</span><span class="tag">pág. 14</span></div></div></div>
+<p>Cumplir "las cookies de sesión deben ser seguras y tener fecha de expiración".</p><div class="sub">Qué tiene que tener</div><ul class="reqs"><li><input type="checkbox" id="elian-3-1" data-k="elian-3-1"><label for="elian-3-1"><code>SESSION_PERMANENT</code> y <code>PERMANENT_SESSION_LIFETIME</code> (por ejemplo, 8 horas)</label></li><li><input type="checkbox" id="elian-3-2" data-k="elian-3-2"><label for="elian-3-2"><code>SESSION_COOKIE_HTTPONLY = True</code> y <code>SESSION_COOKIE_SAMESITE = "Lax"</code></label></li><li><input type="checkbox" id="elian-3-3" data-k="elian-3-3"><label for="elian-3-3"><code>SESSION_COOKIE_SECURE = True</code> en <code>ProductionConfig</code> (en local no, porque no hay HTTPS)</label></li><li><input type="checkbox" id="elian-3-4" data-k="elian-3-4"><label for="elian-3-4">Que producción no arranque si falta <code>SECRET_KEY</code> en lugar de usar "secret-key"</label></li></ul>
+<div class="sub">Archivos</div><div class="files"><code>web/config.py</code><code>web/controllers/auth.py</code></div>
+<div class="ok-when"><b>Está listo cuando</b><span>Pasado el tiempo configurado, la sesión vence y pide login de nuevo.</span></div></article><article class="task nuevo"><div class="t-head"><span class="tn">4</span><div class="t-title"><h3>Logs del backend</h3><div class="t-meta"><span class="kind">nuevo</span><span class="tag">tamaño S</span><span class="tag">pág. 35</span></div></div></div>
+<p>Registro básico de eventos y errores para depurar.</p><div class="sub">Qué tiene que tener</div><ul class="reqs"><li><input type="checkbox" id="elian-4-1" data-k="elian-4-1"><label for="elian-4-1">Configurar <code>logging</code> en <code>create_app</code> con un archivo rotativo, por ejemplo <code>logs/app.log</code></label></li><li><input type="checkbox" id="elian-4-2" data-k="elian-4-2"><label for="elian-4-2">Registrar login correcto y fallido (sin la contraseña), errores 500 y operaciones de alta, edición y baja</label></li><li><input type="checkbox" id="elian-4-3" data-k="elian-4-3"><label for="elian-4-3">Nunca escribir contraseñas ni tokens en el log (pág. 11)</label></li><li><input type="checkbox" id="elian-4-4" data-k="elian-4-4"><label for="elian-4-4">Agregar <code>logs/</code> al <code>.gitignore</code></label></li></ul>
+<div class="sub">Archivos</div><div class="files"><code>web/__init__.py</code><code>web/handlers/error.py</code><code>.gitignore</code></div>
+<div class="ok-when"><b>Está listo cuando</b><span>Un login fallido deja una línea en el log, sin la contraseña.</span></div></article>
+<div class="already"><div class="sub">Preguntas a Milton que te afectan</div><div class="qs"><article class="q"><div class="q-head"><span class="qn">4</span><h3>¿Un Jefe de Servicio puede estar en más de un sector? ¿El sector es obligatorio para el Jefe?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>En la pág. 10 aparecen tachadas dos reglas: "Sector, obligatorio únicamente para usuarios con rol Jefe de Servicio" y "Un usuario con rol Jefe de Servicio deberá estar asociado a un único sector". Pero en Sectores (pág. 14) sigue diciendo "cada Jefe de Servicio podrá estar asociado a un único sector".</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>La misma persona es jefa de Guardia y de Laboratorio de Guardia. ¿Le asignamos los dos sectores a su usuario, o tiene que tener dos usuarios? Y un Jefe recién creado al que todavía no se le asignó sector: ¿se puede guardar?</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Un único sector, obligatorio</li><li>Un único sector, opcional al crear el usuario</li><li>Varios sectores por Jefe</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Un único sector, obligatorio para el Jefe de Servicio, como dice la pág. 14.</span></div>
+<div class="q-foot"><span class="tag">pág. 10, 14</span><span class="q-who">Afecta a <a class="ptag" href="#elian">Elian</a><a class="ptag" href="#rama">Rama</a></span></div></article><article class="q"><div class="q-head"><span class="qn">10</span><h3>¿Personal y Usuarios pueden compartir la tabla de personas (DNI, nombre y apellido)?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>La pág. 16 dice que el personal "no necesariamente tendrá una cuenta" y que "los Jefes de Servicio son usuarios registrados y a la vez pueden ser personal autorizado para las comidas". Usuarios ya guarda DNI, nombre y apellido en una tabla <code>personas</code>.</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Ana Pérez (DNI 30123456) es Jefa de Pediatría y también come en el hospital. Si Personal tiene su propia tabla con DNI, Ana queda cargada dos veces, y si cambia el apellido en un lado no cambia en el otro. Compartiendo la tabla, existe una sola Ana.</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Compartir la tabla personas</li><li>Tablas separadas para Usuarios y Personal</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Compartir: Personal apunta a <code>personas</code>, que ya usa Usuarios.</span></div>
+<div class="q-foot"><span class="tag">pág. 15–16</span><span class="q-who">Afecta a <a class="ptag" href="#gabriel">Gabriel</a><a class="ptag" href="#elian">Elian</a></span></div></article><article class="q"><div class="q-head"><span class="qn">11</span><h3>¿Podemos usar los cortes responsive de Bootstrap en lugar de los del enunciado?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>La pág. 36 pide contemplar como mínimo tres resoluciones (menos de 767 px, de 768 a 1024 px y más de 1025 px), y dice: "si quiere utilizar las sugeridas por el framework que utilice comuníquelo al ayudante".</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Bootstrap 5 corta en 576, 768, 992 y 1200 px. Una tablet de 1000 px de ancho, para el enunciado, es "tablet". Para Bootstrap ya es "escritorio" (992 px o más).</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Usar los de Bootstrap 5</li><li>Ajustar a 767 / 1024 px</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Usar los de Bootstrap 5 (576, 768, 992 y 1200 px), que es lo que ya usa el layout.</span></div>
+<div class="q-foot"><span class="tag">pág. 36</span><span class="q-who">Afecta a <a class="ptag" href="#juli">Juli</a><a class="ptag" href="#rama">Rama</a><a class="ptag" href="#gabriel">Gabriel</a><a class="ptag" href="#barbi">Barbi</a><a class="ptag" href="#elian">Elian</a></span></div></article></div></div>
+<a class="back" href="#inicio">← Volver al reparto</a></section><section class="view person-view" id="juli" data-view>
+<a class="back" href="#inicio">← Volver al reparto</a>
+<header class="p-header"><div class="eyebrow">Grupo 40 · detalle</div><h1>Juli</h1><p class="lead">Ajustes, base de la API y entregas</p>
+<div class="chips"><span class="chip">total <b>12 pts</b></span><span class="chip">hecho <b>3</b></span><span class="chip">por hacer <b>9</b></span><span class="chip">rama actual <b>main</b></span></div>
+<div class="progress"><span class="bar"><i data-bar="juli"></i></span><span class="ptext" data-ptext="juli">0 de 24 ítems tildados</span></div></header>
+<div class="already"><div class="sub">Lo que ya hiciste</div><ul class="tasks"><li><span>Layout y logout</span><span class="sz">M</span></li><li><span>Manejo de errores</span><span class="sz">S</span></li></ul></div>
+<article class="task termina"><div class="t-head"><span class="tn">1</span><div class="t-title"><h3>Volver a poner &quot;Ver perfil&quot;</h3><div class="t-meta"><span class="kind">terminar lo suyo</span><span class="tag">tamaño S</span><span class="tag">pág. 9</span></div></div></div>
+<p>El menú de cuenta tiene que tener "Ver perfil" y "Cerrar sesión".</p><div class="sub">Qué tiene que tener</div><ul class="reqs"><li><input type="checkbox" id="juli-1-1" data-k="juli-1-1"><label for="juli-1-1">Agregar "Ver perfil" al menú desplegable del usuario en <code>layout.html</code></label></li><li><input type="checkbox" id="juli-1-2" data-k="juli-1-2"><label for="juli-1-2">Que apunte al endpoint de perfil de Rama, usando <code>has_endpoint</code> para mostrarlo deshabilitado hasta que exista</label></li></ul>
+<div class="sub">Archivos</div><div class="files"><code>templates/layout.html</code></div><div class="deps"><div class="dep in"><b>Necesitás</b><span>Rama: nombre del endpoint de perfil.</span></div></div>
+<div class="ok-when"><b>Está listo cuando</b><span>El menú de cuenta muestra las dos opciones.</span></div></article><article class="task nuevo"><div class="t-head"><span class="tn">2</span><div class="t-title"><h3>Ajustes del sistema</h3><div class="t-meta"><span class="kind">nuevo</span><span class="tag">tamaño M</span><span class="tag">pág. 21</span></div></div></div>
+<p>Que Ajustes guarde la configuración y que el resto de la app la use.</p><div class="sub">Qué tiene que tener</div><ul class="reqs"><li><input type="checkbox" id="juli-2-1" data-k="juli-2-1"><label for="juli-2-1">Tabla de configuración con registros por página, modo mantenimiento (sí o no) y mensaje de mantenimiento</label></li><li><input type="checkbox" id="juli-2-2" data-k="juli-2-2"><label for="juli-2-2">Formulario editable solo por Administrador, con permisos <code>config_index</code> y <code>config_update</code></label></li><li><input type="checkbox" id="juli-2-3" data-k="juli-2-3"><label for="juli-2-3">Una función <code>get_config()</code> que usen todos los listados para la paginación</label></li><li><input type="checkbox" id="juli-2-4" data-k="juli-2-4"><label for="juli-2-4">Con mantenimiento activo: aviso en el layout y la API responde 503 a los roles operativos</label></li><li><input type="checkbox" id="juli-2-5" data-k="juli-2-5"><label for="juli-2-5">Validar registros por página entre 1 y 25</label></li><li><input type="checkbox" id="juli-2-6" data-k="juli-2-6"><label for="juli-2-6">Seeder con valores iniciales (25, desactivado, mensaje por defecto)</label></li></ul>
+<div class="sub">Archivos</div><div class="files"><code>core/configuracion.py</code><code>web/controllers/ajustes.py</code><code>web/validators/ajustes.py</code><code>templates/ajustes/index.html</code><code>templates/layout.html</code></div><div class="deps"><div class="dep out"><b>Te esperan</b><span>Todos los listados (paginación) y Barbi (<code>/api/configuration</code>).</span></div></div>
+<div class="ok-when"><b>Está listo cuando</b><span>Cambiar los registros por página a 10 cambia todos los listados.</span></div></article><article class="task nuevo"><div class="t-head"><span class="tn">3</span><div class="t-title"><h3>Base de la API</h3><div class="t-meta"><span class="kind">nuevo</span><span class="tag">tamaño L</span><span class="tag">pág. 21–22</span></div></div></div>
+<p>La estructura común que van a usar todos los endpoints.</p><div class="sub">Qué tiene que tener</div><ul class="reqs"><li><input type="checkbox" id="juli-3-1" data-k="juli-3-1"><label for="juli-3-1">Blueprint <code>/api</code> que responde siempre JSON</label></li><li><input type="checkbox" id="juli-3-2" data-k="juli-3-2"><label for="juli-3-2"><code>POST /api/auth/login</code>: correo y contraseña, devuelve un token. Rechaza usuarios bloqueados</label></li><li><input type="checkbox" id="juli-3-3" data-k="juli-3-3"><label for="juli-3-3">Token guardado en una tabla con fecha de vencimiento (así el logout lo puede invalidar)</label></li><li><input type="checkbox" id="juli-3-4" data-k="juli-3-4"><label for="juli-3-4"><code>POST /api/auth/logout</code> y <code>GET /api/auth/me</code> (id, nombre, apellido, email, rol y sector)</label></li><li><input type="checkbox" id="juli-3-5" data-k="juli-3-5"><label for="juli-3-5">Decorador que lee <code>Authorization: Bearer</code> y responde 401 antes de cualquier otra regla</label></li><li><input type="checkbox" id="juli-3-6" data-k="juli-3-6"><label for="juli-3-6">Decorador de permisos que reutiliza los de Elian y responde 403</label></li><li><input type="checkbox" id="juli-3-7" data-k="juli-3-7"><label for="juli-3-7">Errores en JSON solo para <code>/api</code>: 400, 401, 403, 404 y 409 con el detalle en el cuerpo</label></li><li><input type="checkbox" id="juli-3-8" data-k="juli-3-8"><label for="juli-3-8">Función para obtener el usuario actual, que usan los demás para forzar el sector del Jefe</label></li><li><input type="checkbox" id="juli-3-9" data-k="juli-3-9"><label for="juli-3-9">Documentar en el README cómo llamar a la API (ejemplo con <code>curl</code>)</label></li></ul>
+<div class="sub">Archivos</div><div class="files"><code>web/api/__init__.py</code><code>web/api/auth.py</code><code>web/api/errors.py</code><code>core/auth/tokens.py</code></div><div class="deps"><div class="dep in"><b>Necesitás</b><span>Elian: los 4 roles.</span></div><div class="dep out"><b>Te esperan</b><span>Todos: sin esto no se puede probar ningún endpoint. Tiene que estar el sábado 10.</span></div></div>
+<div class="ok-when"><b>Está listo cuando</b><span>Con <code>curl</code>: login devuelve token, <code>me</code> responde con token y da 401 sin token.</span></div></article><article class="task nuevo"><div class="t-head"><span class="tn">4</span><div class="t-title"><h3>API de comidas autorizadas y entregas</h3><div class="t-meta"><span class="kind">nuevo</span><span class="tag">tamaño L</span><span class="tag">pág. 31–33</span></div></div></div>
+<p>Lo que usa el Sector Comedor para entregar.</p><div class="sub">Qué tiene que tener</div><ul class="reqs"><li><input type="checkbox" id="juli-4-1" data-k="juli-4-1"><label for="juli-4-1"><code>GET /api/authorized-meals</code>: filtros por fecha, DNI, nombre y apellido, sector y comida. 400 si no viene ningún filtro</label></li><li><input type="checkbox" id="juli-4-2" data-k="juli-4-2"><label for="juli-4-2">Solo pedidos autorizados. Indica si cada comida ya se entregó</label></li><li><input type="checkbox" id="juli-4-3" data-k="juli-4-3"><label for="juli-4-3"><code>GET /api/authorized-meals/{person_id}</code>: las comidas autorizadas de una persona en una fecha (hoy por defecto)</label></li><li><input type="checkbox" id="juli-4-4" data-k="juli-4-4"><label for="juli-4-4"><code>POST /api/deliveries</code>: varias personas en una operación, con el responsable del retiro</label></li><li><input type="checkbox" id="juli-4-5" data-k="juli-4-5"><label for="juli-4-5">Fecha, hora y usuario los pone el servidor, nunca el cliente</label></li><li><input type="checkbox" id="juli-4-6" data-k="juli-4-6"><label for="juli-4-6">409 si alguna ya fue entregada; 400 si no tiene autorización para esa comida y fecha</label></li><li><input type="checkbox" id="juli-4-7" data-k="juli-4-7"><label for="juli-4-7"><code>GET /api/deliveries</code>, <code>/api/deliveries/{id}</code> y <code>/api/deliveries/summary</code> (autorizado contra entregado)</label></li></ul>
+<div class="sub">Archivos</div><div class="files"><code>web/api/entregas.py</code><code>core/entregas.py</code></div><div class="deps"><div class="dep in"><b>Necesitás</b><span>Barbi: modelo de entregas. Rama: autorizaciones, para tener datos que entregar.</span></div></div>
+<div class="ok-when"><b>Está listo cuando</b><span>Entregar dos veces la misma comida devuelve 409.</span></div></article>
+<div class="already"><div class="sub">Preguntas a Milton que te afectan</div><div class="qs"><article class="q"><div class="q-head"><span class="qn">1</span><h3>¿Para el 16/10 se espera la API completa o alcanza con una parte?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>La pág. 6 dice que "la distribución detallada de estas funcionalidades entre la primera y la segunda etapa se especificará posteriormente". La pág. 7 incluye en la Etapa 1 "la API necesaria para implementar el circuito completo", y la pág. 36 aclara que "funcionalidades no terminadas en la etapa 1 podrán completarse en la etapa siguiente". La lista de la pág. 21 a la 34 tiene unos 30 endpoints, y hoy no existe ninguno.</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Si para el 16/10 tenemos login con token, catálogos, personal, cupos y pedidos, pero no autorizaciones, entregas ni resúmenes: ¿la entrega se considera completa, o se evalúa con esos endpoints como faltantes?</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Toda la API para el 16/10</li><li>Una parte mínima para el 16/10 y el resto en la etapa 2 (¿cuál?)</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Priorizar la base de la API, catálogos, personal, cupos y pedidos. Autorizaciones, entregas y resúmenes, si no llegan, pasan a la etapa 2.</span></div>
+<div class="q-foot"><span class="tag">pág. 6, 7, 21, 36</span><span class="q-who">Afecta a <a class="ptag" href="#juli">Juli</a><a class="ptag" href="#rama">Rama</a><a class="ptag" href="#gabriel">Gabriel</a><a class="ptag" href="#barbi">Barbi</a></span></div></article><article class="q"><div class="q-head"><span class="qn">2</span><h3>Un pedido semanal o mensual, ¿es un pedido por cada día o un solo pedido que cubre todo el rango?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>El <code>POST /api/requests</code> recibe "periodicidad (diaria, semanal o mensual), fecha o rango de fechas" (pág. 27). Pero la misma página dice que devuelve "409 si ya existe un pedido para el mismo sector y fecha", y el Servicio de Alimentación autoriza o rechaza "un pedido" entero (pág. 30).</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>El Jefe de Quirófano carga un pedido semanal del lunes 12 al viernes 16 con 10 personas para el almuerzo. El martes, Alimentación quiere rechazar solo ese día porque hay una jornada sin cirugías. Si es un solo pedido, rechazarlo rechaza toda la semana. Si son 5 pedidos (uno por día), puede rechazar solo el del martes.</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Un pedido por día: la carga semanal crea 5 o 7 pedidos</li><li>Un pedido por rango, con la fecha en cada detalle</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Un pedido por día. La carga semanal o mensual es una forma rápida de crear varios pedidos diarios de una vez.</span></div>
+<div class="q-foot"><span class="tag">pág. 27, 30</span><span class="q-who">Afecta a <a class="ptag" href="#barbi">Barbi</a><a class="ptag" href="#rama">Rama</a><a class="ptag" href="#juli">Juli</a></span></div></article><article class="q"><div class="q-head"><span class="qn">5</span><h3>¿Qué mecanismo de token esperan para la API? ¿Podemos usar una librería como PyJWT o itsdangerous?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>La pág. 22 pide "token de acceso en el header Authorization (Bearer)", validar "que el token sea válido y no haya expirado" y un <code>POST /api/auth/logout</code>. La pág. 35 dice que las librerías se pueden usar si todo el equipo las sabe explicar, pero que hay que "consultar con el ayudante si el uso de la misma está permitido".</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Con JWT, el logout no invalida el token por sí solo: el token sigue sirviendo hasta que vence, salvo que se guarde una lista de tokens revocados. Con un token aleatorio guardado en una tabla, el logout lo borra y deja de funcionar al instante.</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>JWT con PyJWT</li><li>Token firmado con itsdangerous (ya viene con Flask)</li><li>Token aleatorio guardado en la base, sin librerías nuevas</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Token aleatorio con <code>secrets.token_urlsafe</code> (librería estándar), guardado en una tabla con su fecha de vencimiento.</span></div>
+<div class="q-foot"><span class="tag">pág. 22, 35</span><span class="q-who">Afecta a <a class="ptag" href="#juli">Juli</a></span></div></article><article class="q"><div class="q-head"><span class="qn">6</span><h3>El modo mantenimiento, ¿bloquea también la aplicación de administración o solo la API y las interfaces operativas?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>La pág. 21 pide "posibilidad de deshabilitar el sitio para mantenimiento" y un "mensaje de mantenimiento", configurable solo por el Administrador. No dice a qué partes del sistema afecta.</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>El Administrador activa el mantenimiento a las 14 h para cargar cupos nuevos. Si el bloqueo también aplica a la administración, a las 15 h no puede entrar para desactivarlo. Mientras tanto, un Jefe de Servicio que intenta cargar un pedido por la API debería ver el mensaje de mantenimiento.</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Bloquea todo menos al Administrador</li><li>Bloquea solo la API y las interfaces de Vue (etapa 2)</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>El Administrador siempre puede entrar. La API responde 503 con el mensaje a los roles operativos, y la administración muestra un aviso.</span></div>
+<div class="q-foot"><span class="tag">pág. 21</span><span class="q-who">Afecta a <a class="ptag" href="#juli">Juli</a></span></div></article><article class="q"><div class="q-head"><span class="qn">7</span><h3>Si en Ajustes se configuran más de 25 registros por página, ¿vale ese valor o el máximo de 25?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>Cada módulo dice "paginación del lado del servidor, con un máximo de 25 registros por página" (pág. 10, 15, 17 y 20). Ajustes dice que "todos los listados deberán respetar este valor para el paginado" (pág. 21).</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>El Administrador pone 50 en Ajustes. El listado de usuarios, ¿muestra 50 por página o 25?</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Ajustes acepta de 1 a 25</li><li>Ajustes acepta cualquier valor y manda sobre el máximo</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Ajustes acepta valores de 1 a 25, así se cumplen las dos reglas.</span></div>
+<div class="q-foot"><span class="tag">pág. 10, 21</span><span class="q-who">Afecta a <a class="ptag" href="#juli">Juli</a></span></div></article><article class="q"><div class="q-head"><span class="qn">8</span><h3>¿Quien retira la comida tiene que estar registrado como personal?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>El <code>POST /api/deliveries</code> pide "quién es el responsable del retiro (puede ser una de las personas incluidas o alguien que retira en representación de otras)" (pág. 32), y la pág. 5 pide "registrar quién fue el responsable efectivo del retiro".</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Una enfermera de Terapia Intensiva retira 6 almuerzos para su equipo. Ella no tiene almuerzo autorizado ese día, pero está cargada como personal. Otro día retira un camillero que no está cargado en el sistema. ¿Se registra igual, con nombre y DNI escritos a mano?</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Solo personal registrado y activo</li><li>Cualquier persona, con DNI y nombre escritos en el momento</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Tiene que estar registrado como personal activo, y se lo busca por DNI.</span></div>
+<div class="q-foot"><span class="tag">pág. 5, 32</span><span class="q-who">Afecta a <a class="ptag" href="#juli">Juli</a><a class="ptag" href="#barbi">Barbi</a></span></div></article><article class="q"><div class="q-head"><span class="qn">11</span><h3>¿Podemos usar los cortes responsive de Bootstrap en lugar de los del enunciado?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>La pág. 36 pide contemplar como mínimo tres resoluciones (menos de 767 px, de 768 a 1024 px y más de 1025 px), y dice: "si quiere utilizar las sugeridas por el framework que utilice comuníquelo al ayudante".</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Bootstrap 5 corta en 576, 768, 992 y 1200 px. Una tablet de 1000 px de ancho, para el enunciado, es "tablet". Para Bootstrap ya es "escritorio" (992 px o más).</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Usar los de Bootstrap 5</li><li>Ajustar a 767 / 1024 px</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Usar los de Bootstrap 5 (576, 768, 992 y 1200 px), que es lo que ya usa el layout.</span></div>
+<div class="q-foot"><span class="tag">pág. 36</span><span class="q-who">Afecta a <a class="ptag" href="#juli">Juli</a><a class="ptag" href="#rama">Rama</a><a class="ptag" href="#gabriel">Gabriel</a><a class="ptag" href="#barbi">Barbi</a><a class="ptag" href="#elian">Elian</a></span></div></article></div></div>
+<a class="back" href="#inicio">← Volver al reparto</a></section><section class="view person-view" id="rama" data-view>
+<a class="back" href="#inicio">← Volver al reparto</a>
+<header class="p-header"><div class="eyebrow">Grupo 40 · detalle</div><h1>Rama</h1><p class="lead">Sectores, perfil y autorizaciones</p>
+<div class="chips"><span class="chip">total <b>12 pts</b></span><span class="chip">hecho <b>3</b></span><span class="chip">por hacer <b>9</b></span><span class="chip">rama actual <b>feature/gestion-sectores</b></span></div>
+<div class="progress"><span class="bar"><i data-bar="rama"></i></span><span class="ptext" data-ptext="rama">0 de 24 ítems tildados</span></div></header>
+<div class="already"><div class="sub">Lo que ya hiciste</div><ul class="tasks"><li><span>Ajustes para el despliegue y psycopg 3</span><span class="sz">S</span></li><li><span>Sectores: listado, alta y seeder</span><span class="sz">M</span></li></ul></div>
+<article class="task termina"><div class="t-head"><span class="tn">1</span><div class="t-title"><h3>Sectores: completar el módulo</h3><div class="t-meta"><span class="kind">terminar lo suyo</span><span class="tag">tamaño M</span><span class="tag">pág. 14–15, 22–23</span></div></div></div>
+<p>Terminar lo que falta de sectores, incluidos sus dos endpoints.</p><div class="sub">Qué tiene que tener</div><ul class="reqs"><li><input type="checkbox" id="rama-1-1" data-k="rama-1-1"><label for="rama-1-1">Edición, con nombre único</label></li><li><input type="checkbox" id="rama-1-2" data-k="rama-1-2"><label for="rama-1-2">Asignar uno o más Jefes de Servicio: que existan, que tengan ese rol y que no estén en otro sector</label></li><li><input type="checkbox" id="rama-1-3" data-k="rama-1-3"><label for="rama-1-3">Búsqueda por Jefe asignado (el listado ya filtra por nombre y estado)</label></li><li><input type="checkbox" id="rama-1-4" data-k="rama-1-4"><label for="rama-1-4">Baja: si tiene personal, usuarios o pedidos se desactiva en lugar de borrarse. No se desactiva con usuarios activos</label></li><li><input type="checkbox" id="rama-1-5" data-k="rama-1-5"><label for="rama-1-5">Permisos <code>sector_*</code> en las rutas y en el menú (hoy el ítem no pide permiso)</label></li><li><input type="checkbox" id="rama-1-6" data-k="rama-1-6"><label for="rama-1-6">Fechas con zona horaria y el filtro <code>| fecha_local</code></label></li><li><input type="checkbox" id="rama-1-7" data-k="rama-1-7"><label for="rama-1-7">Validador en <code>web/validators/sectores.py</code></label></li><li><input type="checkbox" id="rama-1-8" data-k="rama-1-8"><label for="rama-1-8"><code>GET /api/sectors</code> (solo activos por defecto, <code>estado=todos</code> para todos; 403 al Jefe) y <code>GET /api/sectors/{id}</code> (404)</label></li></ul>
+<div class="sub">Archivos</div><div class="files"><code>core/sectores.py</code><code>web/controllers/sectores.py</code><code>web/validators/sectores.py</code><code>templates/sectores/*</code><code>web/api/sectores.py</code></div><div class="deps"><div class="dep in"><b>Necesitás</b><span>Elian: <code>sector_id</code> en Usuario para asignar jefes. Juli: base de la API para los endpoints.</span></div><div class="dep out"><b>Te esperan</b><span>Elian (usuarios), Gabriel (personal) y Barbi (cupos) referencian sectores.</span></div></div>
+<div class="ok-when"><b>Está listo cuando</b><span>Asignar como jefe a alguien de otro sector muestra un error.</span></div></article><article class="task asignado"><div class="t-head"><span class="tn">2</span><div class="t-title"><h3>Perfil y cambio de contraseña</h3><div class="t-meta"><span class="kind">ya asignado</span><span class="tag">tamaño M</span><span class="tag">pág. 9</span></div></div></div>
+<p>Que cada usuario vea sus datos y pueda cambiar su contraseña.</p><div class="sub">Qué tiene que tener</div><ul class="reqs"><li><input type="checkbox" id="rama-2-1" data-k="rama-2-1"><label for="rama-2-1">Vista de perfil con nombre, apellido, DNI, correo, rol y sector</label></li><li><input type="checkbox" id="rama-2-2" data-k="rama-2-2"><label for="rama-2-2">Modificar los datos propios (sin poder cambiarse el rol ni el estado)</label></li><li><input type="checkbox" id="rama-2-3" data-k="rama-2-3"><label for="rama-2-3">Cambiar contraseña: pide la actual, la nueva y la confirmación</label></li><li><input type="checkbox" id="rama-2-4" data-k="rama-2-4"><label for="rama-2-4">Rechazar si la actual no coincide; guardar la nueva con hash</label></li><li><input type="checkbox" id="rama-2-5" data-k="rama-2-5"><label for="rama-2-5">Validador aparte y avisos claros</label></li></ul>
+<div class="sub">Archivos</div><div class="files"><code>web/controllers/perfil.py</code><code>web/validators/perfil.py</code><code>templates/perfil/*</code></div><div class="deps"><div class="dep out"><b>Te esperan</b><span>Juli: el link "Ver perfil" del layout.</span></div></div>
+<div class="ok-when"><b>Está listo cuando</b><span>Con la contraseña actual equivocada, no se cambia.</span></div></article><article class="task nuevo"><div class="t-head"><span class="tn">3</span><div class="t-title"><h3>API de autorizaciones</h3><div class="t-meta"><span class="kind">nuevo</span><span class="tag">tamaño L</span><span class="tag">pág. 28–30</span></div></div></div>
+<p>Lo que usa el Servicio de Alimentación para revisar pedidos.</p><div class="sub">Qué tiene que tener</div><ul class="reqs"><li><input type="checkbox" id="rama-3-1" data-k="rama-3-1"><label for="rama-3-1"><code>GET /api/authorizations</code>: filtros por fechas, sector, comida, tipo de menú y estado; paginado</label></li><li><input type="checkbox" id="rama-3-2" data-k="rama-3-2"><label for="rama-3-2">Devolver solo fechas con pedidos, no un calendario vacío</label></li><li><input type="checkbox" id="rama-3-3" data-k="rama-3-3"><label for="rama-3-3">Cantidades pedidas y autorizadas siempre por separado, calculadas desde las solicitudes nominadas</label></li><li><input type="checkbox" id="rama-3-4" data-k="rama-3-4"><label for="rama-3-4"><code>GET /api/authorizations/{id}</code>: detalle por comida y tipo de menú</label></li><li><input type="checkbox" id="rama-3-5" data-k="rama-3-5"><label for="rama-3-5"><code>PUT /api/authorizations/{id}</code>: autorizar o no a cada persona en cada comida. 400 si la solicitud no es del pedido; 409 si ya estaba resuelto</label></li><li><input type="checkbox" id="rama-3-6" data-k="rama-3-6"><label for="rama-3-6"><code>POST /api/authorizations/{id}/reject</code>: rechazar todo el pedido, con motivo. 409 si ya estaba autorizado</label></li><li><input type="checkbox" id="rama-3-7" data-k="rama-3-7"><label for="rama-3-7">Guardar quién autorizó o rechazó y cuándo</label></li></ul>
+<div class="sub">Archivos</div><div class="files"><code>web/api/autorizaciones.py</code><code>core/autorizaciones.py</code></div><div class="deps"><div class="dep in"><b>Necesitás</b><span>Barbi: modelo de pedidos y la API de pedidos para tener datos.</span></div><div class="dep out"><b>Te esperan</b><span>Juli: entregas usa lo autorizado.</span></div></div>
+<div class="ok-when"><b>Está listo cuando</b><span>Autorizar parcialmente un pedido deja las cantidades pedidas sin tocar.</span></div></article><article class="task nuevo"><div class="t-head"><span class="tn">4</span><div class="t-title"><h3>API de resúmenes</h3><div class="t-meta"><span class="kind">nuevo</span><span class="tag">tamaño M</span><span class="tag">pág. 33–34</span></div></div></div>
+<p>Totales para control y planificación.</p><div class="sub">Qué tiene que tener</div><ul class="reqs"><li><input type="checkbox" id="rama-4-1" data-k="rama-4-1"><label for="rama-4-1"><code>GET /api/summaries/requests</code>: totales pedidos, agrupables por día, semana, mes, sector, comida o tipo de menú</label></li><li><input type="checkbox" id="rama-4-2" data-k="rama-4-2"><label for="rama-4-2">El Jefe de Servicio ve solo su sector</label></li><li><input type="checkbox" id="rama-4-3" data-k="rama-4-3"><label for="rama-4-3"><code>GET /api/summaries/authorizations</code>: pedido contra autorizado, con la diferencia</label></li><li><input type="checkbox" id="rama-4-4" data-k="rama-4-4"><label for="rama-4-4"><code>GET /api/summaries/deliveries</code>: autorizado contra entregado, con la diferencia</label></li></ul>
+<div class="sub">Archivos</div><div class="files"><code>web/api/resumenes.py</code><code>core/resumenes.py</code></div><div class="deps"><div class="dep in"><b>Necesitás</b><span>Barbi, Rama y Juli: pedidos, autorizaciones y entregas con datos.</span></div></div>
+<div class="ok-when"><b>Está listo cuando</b><span>Los totales coinciden con contar a mano en la base.</span></div></article>
+<div class="already"><div class="sub">Preguntas a Milton que te afectan</div><div class="qs"><article class="q"><div class="q-head"><span class="qn">1</span><h3>¿Para el 16/10 se espera la API completa o alcanza con una parte?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>La pág. 6 dice que "la distribución detallada de estas funcionalidades entre la primera y la segunda etapa se especificará posteriormente". La pág. 7 incluye en la Etapa 1 "la API necesaria para implementar el circuito completo", y la pág. 36 aclara que "funcionalidades no terminadas en la etapa 1 podrán completarse en la etapa siguiente". La lista de la pág. 21 a la 34 tiene unos 30 endpoints, y hoy no existe ninguno.</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Si para el 16/10 tenemos login con token, catálogos, personal, cupos y pedidos, pero no autorizaciones, entregas ni resúmenes: ¿la entrega se considera completa, o se evalúa con esos endpoints como faltantes?</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Toda la API para el 16/10</li><li>Una parte mínima para el 16/10 y el resto en la etapa 2 (¿cuál?)</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Priorizar la base de la API, catálogos, personal, cupos y pedidos. Autorizaciones, entregas y resúmenes, si no llegan, pasan a la etapa 2.</span></div>
+<div class="q-foot"><span class="tag">pág. 6, 7, 21, 36</span><span class="q-who">Afecta a <a class="ptag" href="#juli">Juli</a><a class="ptag" href="#rama">Rama</a><a class="ptag" href="#gabriel">Gabriel</a><a class="ptag" href="#barbi">Barbi</a></span></div></article><article class="q"><div class="q-head"><span class="qn">2</span><h3>Un pedido semanal o mensual, ¿es un pedido por cada día o un solo pedido que cubre todo el rango?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>El <code>POST /api/requests</code> recibe "periodicidad (diaria, semanal o mensual), fecha o rango de fechas" (pág. 27). Pero la misma página dice que devuelve "409 si ya existe un pedido para el mismo sector y fecha", y el Servicio de Alimentación autoriza o rechaza "un pedido" entero (pág. 30).</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>El Jefe de Quirófano carga un pedido semanal del lunes 12 al viernes 16 con 10 personas para el almuerzo. El martes, Alimentación quiere rechazar solo ese día porque hay una jornada sin cirugías. Si es un solo pedido, rechazarlo rechaza toda la semana. Si son 5 pedidos (uno por día), puede rechazar solo el del martes.</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Un pedido por día: la carga semanal crea 5 o 7 pedidos</li><li>Un pedido por rango, con la fecha en cada detalle</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Un pedido por día. La carga semanal o mensual es una forma rápida de crear varios pedidos diarios de una vez.</span></div>
+<div class="q-foot"><span class="tag">pág. 27, 30</span><span class="q-who">Afecta a <a class="ptag" href="#barbi">Barbi</a><a class="ptag" href="#rama">Rama</a><a class="ptag" href="#juli">Juli</a></span></div></article><article class="q"><div class="q-head"><span class="qn">4</span><h3>¿Un Jefe de Servicio puede estar en más de un sector? ¿El sector es obligatorio para el Jefe?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>En la pág. 10 aparecen tachadas dos reglas: "Sector, obligatorio únicamente para usuarios con rol Jefe de Servicio" y "Un usuario con rol Jefe de Servicio deberá estar asociado a un único sector". Pero en Sectores (pág. 14) sigue diciendo "cada Jefe de Servicio podrá estar asociado a un único sector".</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>La misma persona es jefa de Guardia y de Laboratorio de Guardia. ¿Le asignamos los dos sectores a su usuario, o tiene que tener dos usuarios? Y un Jefe recién creado al que todavía no se le asignó sector: ¿se puede guardar?</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Un único sector, obligatorio</li><li>Un único sector, opcional al crear el usuario</li><li>Varios sectores por Jefe</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Un único sector, obligatorio para el Jefe de Servicio, como dice la pág. 14.</span></div>
+<div class="q-foot"><span class="tag">pág. 10, 14</span><span class="q-who">Afecta a <a class="ptag" href="#elian">Elian</a><a class="ptag" href="#rama">Rama</a></span></div></article><article class="q"><div class="q-head"><span class="qn">11</span><h3>¿Podemos usar los cortes responsive de Bootstrap en lugar de los del enunciado?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>La pág. 36 pide contemplar como mínimo tres resoluciones (menos de 767 px, de 768 a 1024 px y más de 1025 px), y dice: "si quiere utilizar las sugeridas por el framework que utilice comuníquelo al ayudante".</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Bootstrap 5 corta en 576, 768, 992 y 1200 px. Una tablet de 1000 px de ancho, para el enunciado, es "tablet". Para Bootstrap ya es "escritorio" (992 px o más).</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Usar los de Bootstrap 5</li><li>Ajustar a 767 / 1024 px</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Usar los de Bootstrap 5 (576, 768, 992 y 1200 px), que es lo que ya usa el layout.</span></div>
+<div class="q-foot"><span class="tag">pág. 36</span><span class="q-who">Afecta a <a class="ptag" href="#juli">Juli</a><a class="ptag" href="#rama">Rama</a><a class="ptag" href="#gabriel">Gabriel</a><a class="ptag" href="#barbi">Barbi</a><a class="ptag" href="#elian">Elian</a></span></div></article></div></div>
+<a class="back" href="#inicio">← Volver al reparto</a></section><section class="view person-view" id="gabriel" data-view>
+<a class="back" href="#inicio">← Volver al reparto</a>
+<header class="p-header"><div class="eyebrow">Grupo 40 · detalle</div><h1>Gabriel</h1><p class="lead">Personal y su API</p>
+<div class="chips"><span class="chip">total <b>12 pts</b></span><span class="chip">hecho <b>3</b></span><span class="chip">por hacer <b>9</b></span><span class="chip">rama actual <b>6-tipos-personal</b></span></div>
+<div class="progress"><span class="bar"><i data-bar="gabriel"></i></span><span class="ptext" data-ptext="gabriel">0 de 23 ítems tildados</span></div></header>
+<div class="already"><div class="sub">Lo que ya hiciste</div><ul class="tasks"><li><span>Hoja de estilos</span><span class="sz">S</span></li><li><span>Tipos de personal</span><span class="sz">M</span></li></ul></div>
+<article class="task termina"><div class="t-head"><span class="tn">1</span><div class="t-title"><h3>Tipos de personal: terminar y mergear</h3><div class="t-meta"><span class="kind">terminar lo suyo</span><span class="tag">tamaño S</span><span class="tag">pág. 18</span></div></div></div>
+<p>Cerrar la rama <code>6-tipos-personal</code>.</p><div class="sub">Qué tiene que tener</div><ul class="reqs"><li><input type="checkbox" id="gabriel-1-1" data-k="gabriel-1-1"><label for="gabriel-1-1">Agregar la baja (hoy hay listado, alta y edición)</label></li><li><input type="checkbox" id="gabriel-1-2" data-k="gabriel-1-2"><label for="gabriel-1-2">Pasar las fechas a zona horaria y usar <code>| fecha_local</code>, como tipos de menú</label></li><li><input type="checkbox" id="gabriel-1-3" data-k="gabriel-1-3"><label for="gabriel-1-3">Merge request hacia <code>development</code>, coordinando con tipos de menú y sectores por los conflictos</label></li></ul>
+<div class="sub">Archivos</div><div class="files"><code>core/tipos_personal.py</code><code>web/controllers/tipos_personal.py</code><code>templates/tipos_personal/*</code></div><div class="deps"><div class="dep out"><b>Te esperan</b><span>Personal necesita esta tabla.</span></div></div>
+<div class="ok-when"><b>Está listo cuando</b><span>La rama está en <code>development</code>.</span></div></article><article class="task asignado"><div class="t-head"><span class="tn">2</span><div class="t-title"><h3>Personal: CRUD con sus reglas</h3><div class="t-meta"><span class="kind">ya asignado</span><span class="tag">tamaño L</span><span class="tag">pág. 15–17</span></div></div></div>
+<p>Registrar a las personas que pueden recibir comida.</p><div class="sub">Qué tiene que tener</div><ul class="reqs"><li><input type="checkbox" id="gabriel-2-1" data-k="gabriel-2-1"><label for="gabriel-2-1">Campos: DNI, nombre, apellido, tipo de personal, sector, tipo de menú, activo y fechas</label></li><li><input type="checkbox" id="gabriel-2-2" data-k="gabriel-2-2"><label for="gabriel-2-2">Decidir con el grupo si reutiliza la tabla <code>personas</code> (como el .puml) o tiene su propio DNI</label></li><li><input type="checkbox" id="gabriel-2-3" data-k="gabriel-2-3"><label for="gabriel-2-3">DNI único y con formato válido</label></li><li><input type="checkbox" id="gabriel-2-4" data-k="gabriel-2-4"><label for="gabriel-2-4">Personal fijo: un sector activo obligatorio. Residente: sin sector</label></li><li><input type="checkbox" id="gabriel-2-5" data-k="gabriel-2-5"><label for="gabriel-2-5">Al pasar de fijo a residente se borra el sector; de residente a fijo, el sector es obligatorio</label></li><li><input type="checkbox" id="gabriel-2-6" data-k="gabriel-2-6"><label for="gabriel-2-6">No se elimina si tiene pedidos o entregas: se marca inactivo</label></li><li><input type="checkbox" id="gabriel-2-7" data-k="gabriel-2-7"><label for="gabriel-2-7">Búsqueda por DNI, nombre o apellido, sector, tipo y estado; orden por apellido y nombre, DNI y fecha; paginación</label></li><li><input type="checkbox" id="gabriel-2-8" data-k="gabriel-2-8"><label for="gabriel-2-8">Permisos <code>personnel_*</code> para Administrador, Jefe de Servicio y Servicio de Alimentación</label></li><li><input type="checkbox" id="gabriel-2-9" data-k="gabriel-2-9"><label for="gabriel-2-9">Validador en <code>web/validators/personal.py</code></label></li></ul>
+<div class="sub">Archivos</div><div class="files"><code>core/personal.py</code><code>web/controllers/personal.py</code><code>web/validators/personal.py</code><code>templates/personal/*</code></div><div class="deps"><div class="dep in"><b>Necesitás</b><span>Rama: sectores. Barbi: tipos de menú. Lo suyo: tipos de personal.</span></div><div class="dep out"><b>Te esperan</b><span>Barbi: los pedidos se arman con personal.</span></div></div>
+<div class="ok-when"><b>Está listo cuando</b><span>Un residente con sector o un fijo sin sector no se puede guardar.</span></div></article><article class="task nuevo"><div class="t-head"><span class="tn">3</span><div class="t-title"><h3>Importación de personal por CSV</h3><div class="t-meta"><span class="kind">nuevo</span><span class="tag">tamaño M</span><span class="tag">pág. 17</span></div></div></div>
+<p>Cargar mucho personal de una vez.</p><div class="sub">Qué tiene que tener</div><ul class="reqs"><li><input type="checkbox" id="gabriel-3-1" data-k="gabriel-3-1"><label for="gabriel-3-1">Definir el formato del CSV, por ejemplo <code>dni,nombre,apellido,tipo_personal,sector,tipo_menu</code>, y documentarlo</label></li><li><input type="checkbox" id="gabriel-3-2" data-k="gabriel-3-2"><label for="gabriel-3-2">Pantalla para subir el archivo</label></li><li><input type="checkbox" id="gabriel-3-3" data-k="gabriel-3-3"><label for="gabriel-3-3">Validar cada fila con las mismas reglas del alta manual</label></li><li><input type="checkbox" id="gabriel-3-4" data-k="gabriel-3-4"><label for="gabriel-3-4">Informe final: procesados, importados y rechazados, con el motivo de cada rechazo</label></li><li><input type="checkbox" id="gabriel-3-5" data-k="gabriel-3-5"><label for="gabriel-3-5">Un archivo de ejemplo en el repo para probar</label></li></ul>
+<div class="sub">Archivos</div><div class="files"><code>core/personal.py</code><code>web/controllers/personal.py</code><code>templates/personal/importar.html</code></div>
+<div class="ok-when"><b>Está listo cuando</b><span>Un CSV con una fila mala importa las buenas y lista la mala con su motivo.</span></div></article><article class="task nuevo"><div class="t-head"><span class="tn">4</span><div class="t-title"><h3>API de personal</h3><div class="t-meta"><span class="kind">nuevo</span><span class="tag">tamaño L</span><span class="tag">pág. 23–26</span></div></div></div>
+<p>Lo que usa el Jefe de Servicio para armar pedidos.</p><div class="sub">Qué tiene que tener</div><ul class="reqs"><li><input type="checkbox" id="gabriel-4-1" data-k="gabriel-4-1"><label for="gabriel-4-1"><code>GET /api/personnel</code>: filtros y paginación. El Jefe ve su sector y los residentes, forzado por el backend</label></li><li><input type="checkbox" id="gabriel-4-2" data-k="gabriel-4-2"><label for="gabriel-4-2"><code>GET /api/personnel/{id}</code>: 403 si el Jefe consulta a alguien de otro sector</label></li><li><input type="checkbox" id="gabriel-4-3" data-k="gabriel-4-3"><label for="gabriel-4-3"><code>GET /api/sectors/{id}/personnel</code>: 403 si el Jefe pide otro sector</label></li><li><input type="checkbox" id="gabriel-4-4" data-k="gabriel-4-4"><label for="gabriel-4-4"><code>POST</code>: el Jefe solo crea personal fijo de su sector; los residentes los crea Alimentación. 409 si el DNI existe</label></li><li><input type="checkbox" id="gabriel-4-5" data-k="gabriel-4-5"><label for="gabriel-4-5"><code>PUT</code>: el Jefe no modifica residentes ni cambia de sector a nadie</label></li><li><input type="checkbox" id="gabriel-4-6" data-k="gabriel-4-6"><label for="gabriel-4-6"><code>DELETE</code>: borra si no hay historial; si hay, desactiva</label></li></ul>
+<div class="sub">Archivos</div><div class="files"><code>web/api/personal.py</code></div><div class="deps"><div class="dep in"><b>Necesitás</b><span>Juli: base de la API.</span></div></div>
+<div class="ok-when"><b>Está listo cuando</b><span>Un Jefe que pide <code>sector_id</code> de otro sector recibe 403.</span></div></article>
+<div class="already"><div class="sub">Preguntas a Milton que te afectan</div><div class="qs"><article class="q"><div class="q-head"><span class="qn">1</span><h3>¿Para el 16/10 se espera la API completa o alcanza con una parte?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>La pág. 6 dice que "la distribución detallada de estas funcionalidades entre la primera y la segunda etapa se especificará posteriormente". La pág. 7 incluye en la Etapa 1 "la API necesaria para implementar el circuito completo", y la pág. 36 aclara que "funcionalidades no terminadas en la etapa 1 podrán completarse en la etapa siguiente". La lista de la pág. 21 a la 34 tiene unos 30 endpoints, y hoy no existe ninguno.</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Si para el 16/10 tenemos login con token, catálogos, personal, cupos y pedidos, pero no autorizaciones, entregas ni resúmenes: ¿la entrega se considera completa, o se evalúa con esos endpoints como faltantes?</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Toda la API para el 16/10</li><li>Una parte mínima para el 16/10 y el resto en la etapa 2 (¿cuál?)</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Priorizar la base de la API, catálogos, personal, cupos y pedidos. Autorizaciones, entregas y resúmenes, si no llegan, pasan a la etapa 2.</span></div>
+<div class="q-foot"><span class="tag">pág. 6, 7, 21, 36</span><span class="q-who">Afecta a <a class="ptag" href="#juli">Juli</a><a class="ptag" href="#rama">Rama</a><a class="ptag" href="#gabriel">Gabriel</a><a class="ptag" href="#barbi">Barbi</a></span></div></article><article class="q"><div class="q-head"><span class="qn">10</span><h3>¿Personal y Usuarios pueden compartir la tabla de personas (DNI, nombre y apellido)?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>La pág. 16 dice que el personal "no necesariamente tendrá una cuenta" y que "los Jefes de Servicio son usuarios registrados y a la vez pueden ser personal autorizado para las comidas". Usuarios ya guarda DNI, nombre y apellido en una tabla <code>personas</code>.</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Ana Pérez (DNI 30123456) es Jefa de Pediatría y también come en el hospital. Si Personal tiene su propia tabla con DNI, Ana queda cargada dos veces, y si cambia el apellido en un lado no cambia en el otro. Compartiendo la tabla, existe una sola Ana.</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Compartir la tabla personas</li><li>Tablas separadas para Usuarios y Personal</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Compartir: Personal apunta a <code>personas</code>, que ya usa Usuarios.</span></div>
+<div class="q-foot"><span class="tag">pág. 15–16</span><span class="q-who">Afecta a <a class="ptag" href="#gabriel">Gabriel</a><a class="ptag" href="#elian">Elian</a></span></div></article><article class="q"><div class="q-head"><span class="qn">11</span><h3>¿Podemos usar los cortes responsive de Bootstrap en lugar de los del enunciado?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>La pág. 36 pide contemplar como mínimo tres resoluciones (menos de 767 px, de 768 a 1024 px y más de 1025 px), y dice: "si quiere utilizar las sugeridas por el framework que utilice comuníquelo al ayudante".</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Bootstrap 5 corta en 576, 768, 992 y 1200 px. Una tablet de 1000 px de ancho, para el enunciado, es "tablet". Para Bootstrap ya es "escritorio" (992 px o más).</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Usar los de Bootstrap 5</li><li>Ajustar a 767 / 1024 px</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Usar los de Bootstrap 5 (576, 768, 992 y 1200 px), que es lo que ya usa el layout.</span></div>
+<div class="q-foot"><span class="tag">pág. 36</span><span class="q-who">Afecta a <a class="ptag" href="#juli">Juli</a><a class="ptag" href="#rama">Rama</a><a class="ptag" href="#gabriel">Gabriel</a><a class="ptag" href="#barbi">Barbi</a><a class="ptag" href="#elian">Elian</a></span></div></article></div></div>
+<a class="back" href="#inicio">← Volver al reparto</a></section><section class="view person-view" id="barbi" data-view>
+<a class="back" href="#inicio">← Volver al reparto</a>
+<header class="p-header"><div class="eyebrow">Grupo 40 · detalle</div><h1>Barbi</h1><p class="lead">Cupos, pedidos y catálogos</p>
+<div class="chips"><span class="chip">total <b>12 pts</b></span><span class="chip">hecho <b>3</b></span><span class="chip">por hacer <b>9</b></span><span class="chip">rama actual <b>feature/tipos-menu</b></span></div>
+<div class="progress"><span class="bar"><i data-bar="barbi"></i></span><span class="ptext" data-ptext="barbi">0 de 26 ítems tildados</span></div></header>
+<div class="already"><div class="sub">Lo que ya hiciste</div><ul class="tasks"><li><span>Templates iniciales</span><span class="sz">S</span></li><li><span>Tipos de menú y fechas locales</span><span class="sz">M</span></li></ul></div>
+<article class="task nuevo"><div class="t-head"><span class="tn">1</span><div class="t-title"><h3>API de catálogos</h3><div class="t-meta"><span class="kind">nuevo</span><span class="tag">tamaño S</span><span class="tag">pág. 23</span></div></div></div>
+<p>Los combos de las interfaces de Vue.</p><div class="sub">Qué tiene que tener</div><ul class="reqs"><li><input type="checkbox" id="barbi-1-1" data-k="barbi-1-1"><label for="barbi-1-1"><code>GET /api/menu-types</code>: lista completa, cualquier usuario autenticado</label></li><li><input type="checkbox" id="barbi-1-2" data-k="barbi-1-2"><label for="barbi-1-2"><code>GET /api/personnel-types</code>: lista completa</label></li><li><input type="checkbox" id="barbi-1-3" data-k="barbi-1-3"><label for="barbi-1-3"><code>GET /api/configuration</code>: los parámetros de Ajustes que necesiten las interfaces</label></li></ul>
+<div class="sub">Archivos</div><div class="files"><code>web/api/catalogos.py</code></div><div class="deps"><div class="dep in"><b>Necesitás</b><span>Juli: base de la API y Ajustes. Gabriel: tipos de personal.</span></div></div>
+<div class="ok-when"><b>Está listo cuando</b><span>Los tres responden con token y dan 401 sin token.</span></div></article><article class="task nuevo"><div class="t-head"><span class="tn">2</span><div class="t-title"><h3>Tipos de comida y Cupos</h3><div class="t-meta"><span class="kind">nuevo</span><span class="tag">tamaño M</span><span class="tag">pág. 19–20</span></div></div></div>
+<p>Los cupos por sector que definen Regular o Excepción. Hay una guía con el código ya probado.</p><div class="sub">Qué tiene que tener</div><ul class="reqs"><li><input type="checkbox" id="barbi-2-1" data-k="barbi-2-1"><label for="barbi-2-1">Tabla de tipos de comida (Desayuno, Almuerzo, Merienda, Cena) cargada por seeder</label></li><li><input type="checkbox" id="barbi-2-2" data-k="barbi-2-2"><label for="barbi-2-2">Cupo por sector y comida: un solo cupo por combinación y cantidad mayor que cero</label></li><li><input type="checkbox" id="barbi-2-3" data-k="barbi-2-3"><label for="barbi-2-3">No se crea un cupo para un sector inactivo</label></li><li><input type="checkbox" id="barbi-2-4" data-k="barbi-2-4"><label for="barbi-2-4">Búsqueda por sector y comida, orden por sector, paginación</label></li><li><input type="checkbox" id="barbi-2-5" data-k="barbi-2-5"><label for="barbi-2-5">Función <code>calcular_condicion</code>: Regular hasta llenar el cupo, después Excepción</label></li><li><input type="checkbox" id="barbi-2-6" data-k="barbi-2-6"><label for="barbi-2-6">Permisos <code>quota_*</code></label></li></ul>
+<div class="sub">Archivos</div><div class="files"><code>core/tipos_comida.py</code><code>core/cupos.py</code><code>web/controllers/cupos.py</code><code>web/validators/cupos.py</code><code>templates/cupos/*</code></div><div class="deps"><div class="dep in"><b>Necesitás</b><span>Rama: modelo <code>Sector</code>.</span></div><div class="dep out"><b>Te esperan</b><span>Pedidos usa la regla de Regular o Excepción.</span></div></div>
+<div class="ok-when"><b>Está listo cuando</b><span>Guía de Cupos completa: los 12 casos de prueba pasan.</span></div></article><article class="task nuevo"><div class="t-head"><span class="tn">3</span><div class="t-title"><h3>API de cupos</h3><div class="t-meta"><span class="kind">nuevo</span><span class="tag">tamaño S</span><span class="tag">pág. 30–31</span></div></div></div>
+<p>Los cupos los administra el Servicio de Alimentación por la API.</p><div class="sub">Qué tiene que tener</div><ul class="reqs"><li><input type="checkbox" id="barbi-3-1" data-k="barbi-3-1"><label for="barbi-3-1"><code>GET /api/quotas</code>: Alimentación y Comedor ven todos; el Jefe solo los de su sector</label></li><li><input type="checkbox" id="barbi-3-2" data-k="barbi-3-2"><label for="barbi-3-2"><code>POST</code> y <code>PUT</code>: solo Alimentación. 400 si el sector está inactivo</label></li><li><input type="checkbox" id="barbi-3-3" data-k="barbi-3-3"><label for="barbi-3-3">Modificar un cupo no cambia pedidos ya cargados</label></li><li><input type="checkbox" id="barbi-3-4" data-k="barbi-3-4"><label for="barbi-3-4"><code>GET /api/quotas/{id}</code> con el mismo control por sector</label></li></ul>
+<div class="sub">Archivos</div><div class="files"><code>web/api/cupos.py</code></div><div class="deps"><div class="dep in"><b>Necesitás</b><span>Juli: base de la API.</span></div></div>
+<div class="ok-when"><b>Está listo cuando</b><span>Un Jefe que pide cupos de otro sector recibe 403.</span></div></article><article class="task nuevo"><div class="t-head"><span class="tn">4</span><div class="t-title"><h3>Modelo de pedidos, autorizaciones y entregas</h3><div class="t-meta"><span class="kind">nuevo</span><span class="tag">tamaño M</span><span class="tag">pág. 7, 20</span></div></div></div>
+<p>Las tablas del circuito, a partir del .puml corregido.</p><div class="sub">Qué tiene que tener</div><ul class="reqs"><li><input type="checkbox" id="barbi-4-1" data-k="barbi-4-1"><label for="barbi-4-1">Cerrar con el grupo las tres decisiones: la fecha del pedido, el sector del usuario y el único en la entrega</label></li><li><input type="checkbox" id="barbi-4-2" data-k="barbi-4-2"><label for="barbi-4-2">Solicitud con sector, fecha, estado (confirmado, autorizado, rechazado) y quién la creó</label></li><li><input type="checkbox" id="barbi-4-3" data-k="barbi-4-3"><label for="barbi-4-3">Detalle nominado: persona, comida, tipo de menú copiado de la ficha, Regular o Excepción y estado de autorización</label></li><li><input type="checkbox" id="barbi-4-4" data-k="barbi-4-4"><label for="barbi-4-4">Quién autorizó o rechazó, cuándo y el motivo</label></li><li><input type="checkbox" id="barbi-4-5" data-k="barbi-4-5"><label for="barbi-4-5">Entrega con responsable del retiro y usuario del comedor; detalle de entrega único por solicitud</label></li><li><input type="checkbox" id="barbi-4-6" data-k="barbi-4-6"><label for="barbi-4-6">Restricción única para no repetir persona, sector, fecha y comida</label></li></ul>
+<div class="sub">Archivos</div><div class="files"><code>core/pedidos.py</code><code>core/entregas.py</code><code>core/database.py</code></div><div class="deps"><div class="dep in"><b>Necesitás</b><span>Gabriel: Personal. Lo suyo: tipos de menú y cupos.</span></div><div class="dep out"><b>Te esperan</b><span>Rama (autorizaciones) y Juli (entregas). Tiene que estar el viernes 9.</span></div></div>
+<div class="ok-when"><b>Está listo cuando</b><span><code>create_tables</code> crea todas las tablas con sus restricciones.</span></div></article><article class="task nuevo"><div class="t-head"><span class="tn">5</span><div class="t-title"><h3>API de pedidos</h3><div class="t-meta"><span class="kind">nuevo</span><span class="tag">tamaño L</span><span class="tag">pág. 26–28</span></div></div></div>
+<p>Lo que usa el Jefe de Servicio para cargar pedidos.</p><div class="sub">Qué tiene que tener</div><ul class="reqs"><li><input type="checkbox" id="barbi-5-1" data-k="barbi-5-1"><label for="barbi-5-1"><code>GET /api/requests</code>: el sector sale del usuario, nunca del cliente; filtros y totales por comida y tipo de menú</label></li><li><input type="checkbox" id="barbi-5-2" data-k="barbi-5-2"><label for="barbi-5-2"><code>POST</code>: periodicidad diaria, semanal o mensual, y la lista de personas por comida</label></li><li><input type="checkbox" id="barbi-5-3" data-k="barbi-5-3"><label for="barbi-5-3">Personal fijo solo de su sector; residentes de cualquiera; nadie inactivo</label></li><li><input type="checkbox" id="barbi-5-4" data-k="barbi-5-4"><label for="barbi-5-4">Clasificar a cada persona como Regular o Excepción con <code>calcular_condicion</code></label></li><li><input type="checkbox" id="barbi-5-5" data-k="barbi-5-5"><label for="barbi-5-5">409 si ya existe un pedido para el mismo sector y fecha</label></li><li><input type="checkbox" id="barbi-5-6" data-k="barbi-5-6"><label for="barbi-5-6"><code>GET /{id}</code>: pedido y, si ya se revisó, lo autorizado por separado</label></li><li><input type="checkbox" id="barbi-5-7" data-k="barbi-5-7"><label for="barbi-5-7"><code>PUT</code> y <code>DELETE</code>: solo si está confirmado; al modificar, recalcular la condición. 409 si ya se resolvió</label></li></ul>
+<div class="sub">Archivos</div><div class="files"><code>web/api/pedidos.py</code><code>core/pedidos.py</code></div><div class="deps"><div class="dep in"><b>Necesitás</b><span>Juli: base de la API. Gabriel: Personal.</span></div><div class="dep out"><b>Te esperan</b><span>Rama: autorizaciones necesita pedidos cargados.</span></div></div>
+<div class="ok-when"><b>Está listo cuando</b><span>Con cupo 3, la cuarta persona queda como Excepción.</span></div></article>
+<div class="already"><div class="sub">Preguntas a Milton que te afectan</div><div class="qs"><article class="q"><div class="q-head"><span class="qn">1</span><h3>¿Para el 16/10 se espera la API completa o alcanza con una parte?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>La pág. 6 dice que "la distribución detallada de estas funcionalidades entre la primera y la segunda etapa se especificará posteriormente". La pág. 7 incluye en la Etapa 1 "la API necesaria para implementar el circuito completo", y la pág. 36 aclara que "funcionalidades no terminadas en la etapa 1 podrán completarse en la etapa siguiente". La lista de la pág. 21 a la 34 tiene unos 30 endpoints, y hoy no existe ninguno.</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Si para el 16/10 tenemos login con token, catálogos, personal, cupos y pedidos, pero no autorizaciones, entregas ni resúmenes: ¿la entrega se considera completa, o se evalúa con esos endpoints como faltantes?</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Toda la API para el 16/10</li><li>Una parte mínima para el 16/10 y el resto en la etapa 2 (¿cuál?)</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Priorizar la base de la API, catálogos, personal, cupos y pedidos. Autorizaciones, entregas y resúmenes, si no llegan, pasan a la etapa 2.</span></div>
+<div class="q-foot"><span class="tag">pág. 6, 7, 21, 36</span><span class="q-who">Afecta a <a class="ptag" href="#juli">Juli</a><a class="ptag" href="#rama">Rama</a><a class="ptag" href="#gabriel">Gabriel</a><a class="ptag" href="#barbi">Barbi</a></span></div></article><article class="q"><div class="q-head"><span class="qn">2</span><h3>Un pedido semanal o mensual, ¿es un pedido por cada día o un solo pedido que cubre todo el rango?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>El <code>POST /api/requests</code> recibe "periodicidad (diaria, semanal o mensual), fecha o rango de fechas" (pág. 27). Pero la misma página dice que devuelve "409 si ya existe un pedido para el mismo sector y fecha", y el Servicio de Alimentación autoriza o rechaza "un pedido" entero (pág. 30).</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>El Jefe de Quirófano carga un pedido semanal del lunes 12 al viernes 16 con 10 personas para el almuerzo. El martes, Alimentación quiere rechazar solo ese día porque hay una jornada sin cirugías. Si es un solo pedido, rechazarlo rechaza toda la semana. Si son 5 pedidos (uno por día), puede rechazar solo el del martes.</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Un pedido por día: la carga semanal crea 5 o 7 pedidos</li><li>Un pedido por rango, con la fecha en cada detalle</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Un pedido por día. La carga semanal o mensual es una forma rápida de crear varios pedidos diarios de una vez.</span></div>
+<div class="q-foot"><span class="tag">pág. 27, 30</span><span class="q-who">Afecta a <a class="ptag" href="#barbi">Barbi</a><a class="ptag" href="#rama">Rama</a><a class="ptag" href="#juli">Juli</a></span></div></article><article class="q"><div class="q-head"><span class="qn">3</span><h3>Si un sector no tiene cupo cargado para una comida, ¿todas sus personas son Excepción o no se puede pedir esa comida?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>La pág. 19 dice que "las personas incorporadas al pedido hasta alcanzar el cupo disponible serán consideradas regulares" y "las incorporadas una vez alcanzado el cupo serán consideradas excepciones". No dice qué pasa si el sector no tiene cupo para esa comida.</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Lavadero tiene cupo de 5 para el almuerzo, pero nadie le cargó cupo para la cena. El Jefe de Lavadero pide cena para 2 personas. ¿Las dos quedan como Excepción (cupo 0), o el sistema no le deja pedir cena hasta que Alimentación cargue el cupo?</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Sin cupo, todas son Excepción</li><li>Sin cupo, no se puede pedir esa comida</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Sin cupo, toda persona queda como Excepción. Así el pedido no se frena y Alimentación decide al autorizar.</span></div>
+<div class="q-foot"><span class="tag">pág. 19</span><span class="q-who">Afecta a <a class="ptag" href="#barbi">Barbi</a></span></div></article><article class="q"><div class="q-head"><span class="qn">8</span><h3>¿Quien retira la comida tiene que estar registrado como personal?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>El <code>POST /api/deliveries</code> pide "quién es el responsable del retiro (puede ser una de las personas incluidas o alguien que retira en representación de otras)" (pág. 32), y la pág. 5 pide "registrar quién fue el responsable efectivo del retiro".</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Una enfermera de Terapia Intensiva retira 6 almuerzos para su equipo. Ella no tiene almuerzo autorizado ese día, pero está cargada como personal. Otro día retira un camillero que no está cargado en el sistema. ¿Se registra igual, con nombre y DNI escritos a mano?</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Solo personal registrado y activo</li><li>Cualquier persona, con DNI y nombre escritos en el momento</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Tiene que estar registrado como personal activo, y se lo busca por DNI.</span></div>
+<div class="q-foot"><span class="tag">pág. 5, 32</span><span class="q-who">Afecta a <a class="ptag" href="#juli">Juli</a><a class="ptag" href="#barbi">Barbi</a></span></div></article><article class="q"><div class="q-head"><span class="qn">9</span><h3>En "400 si la nueva cantidad es menor a lo ya entregado en el período", ¿a qué período se refiere?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>El <code>PUT /api/quotas/{id}</code> (pág. 31) dice que la modificación "se aplicará únicamente a los pedidos que se registren con posterioridad", pero también que devuelve "400 si la nueva cantidad es menor a lo ya entregado en el período". Los cupos no tienen fechas.</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Quirófano tiene cupo de 10 para el almuerzo y hoy ya se entregaron 8 almuerzos. Alimentación quiere bajar el cupo a 6. ¿Se rechaza porque hoy ya se entregaron 8, aunque el cambio sea para pedidos futuros?</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>El período es el día de hoy</li><li>El período es otro (¿semana, mes?)</li><li>No hace falta esa validación, porque el cambio no es retroactivo</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Comparar contra lo entregado hoy para ese sector y esa comida.</span></div>
+<div class="q-foot"><span class="tag">pág. 31</span><span class="q-who">Afecta a <a class="ptag" href="#barbi">Barbi</a></span></div></article><article class="q"><div class="q-head"><span class="qn">11</span><h3>¿Podemos usar los cortes responsive de Bootstrap en lugar de los del enunciado?</h3></div>
+<div class="q-block"><b>Qué dice el enunciado</b><p>La pág. 36 pide contemplar como mínimo tres resoluciones (menos de 767 px, de 768 a 1024 px y más de 1025 px), y dice: "si quiere utilizar las sugeridas por el framework que utilice comuníquelo al ayudante".</p></div>
+<div class="q-block ex"><b>Ejemplo</b><p>Bootstrap 5 corta en 576, 768, 992 y 1200 px. Una tablet de 1000 px de ancho, para el enunciado, es "tablet". Para Bootstrap ya es "escritorio" (992 px o más).</p></div>
+<div class="q-block"><b>Opciones</b><ul class="opts"><li>Usar los de Bootstrap 5</li><li>Ajustar a 767 / 1024 px</li></ul></div>
+<div class="q-default"><b>Si no responde, hacemos</b><span>Usar los de Bootstrap 5 (576, 768, 992 y 1200 px), que es lo que ya usa el layout.</span></div>
+<div class="q-foot"><span class="tag">pág. 36</span><span class="q-who">Afecta a <a class="ptag" href="#juli">Juli</a><a class="ptag" href="#rama">Rama</a><a class="ptag" href="#gabriel">Gabriel</a><a class="ptag" href="#barbi">Barbi</a><a class="ptag" href="#elian">Elian</a></span></div></article></div></div>
+<a class="back" href="#inicio">← Volver al reparto</a></section>
+</main>
+<script>
+(function(){
+  var views = Array.prototype.slice.call(document.querySelectorAll('[data-view]'));
+  var navs = Array.prototype.slice.call(document.querySelectorAll('[data-nav]'));
+  document.body.classList.add('routed');
+  function show(){
+    var id = (location.hash || '#inicio').slice(1);
+    var target = null;
+    if (document.getElementById(id) && !document.getElementById(id).hasAttribute('data-view')) { target = document.getElementById(id); id = 'inicio'; }
+    if (!document.getElementById(id)) id = 'inicio';
+    views.forEach(function(v){ v.hidden = v.id !== id; });
+    navs.forEach(function(a){ a.classList.toggle('on', a.getAttribute('data-nav') === id); });
+    if (target) target.scrollIntoView(); else window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', show);
+  show();
+
+  var KEY = 'reparto-grupo40-checks', st = {};
+  try { st = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { st = {}; }
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[data-k]'));
+  function progress(){
+    ['elian', 'juli', 'rama', 'gabriel', 'barbi'].forEach(function(p){
+      var mine = boxes.filter(function(b){ return b.getAttribute('data-k').indexOf(p + '-') === 0; });
+      var done = mine.filter(function(b){ return b.checked; }).length;
+      var bar = document.querySelector('[data-bar="' + p + '"]'), txt = document.querySelector('[data-ptext="' + p + '"]');
+      if (bar) bar.style.width = (mine.length ? 100 * done / mine.length : 0) + '%';
+      if (txt) txt.textContent = done + ' de ' + mine.length + ' ítems tildados';
+    });
+  }
+  boxes.forEach(function(b){
+    b.checked = !!st[b.getAttribute('data-k')];
+    b.addEventListener('change', function(){
+      st[b.getAttribute('data-k')] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {}
+      progress();
+    });
+  });
+  progress();
+  document.querySelectorAll('.copy').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var code = btn.closest('.code').querySelector('code');
+      var ok = function(){ btn.textContent = 'Copiado'; setTimeout(function(){ btn.textContent = 'Copiar'; }, 1500); };
+      var fb = function(){ var r = document.createRange(); r.selectNodeContents(code); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); btn.textContent = 'Seleccionado'; setTimeout(function(){ btn.textContent = 'Copiar'; }, 1500); };
+      try { navigator.clipboard.writeText(code.textContent).then(ok, fb); } catch (e) { fb(); }
+    });
+  });
+})();
+</script>
+</body></html>
