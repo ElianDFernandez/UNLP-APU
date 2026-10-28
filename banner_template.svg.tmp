@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="640" viewBox="0 0 1000 640" font-family="'Cascadia Code', Consolas, 'Courier New', monospace">
+
+  <!-- fondo -->
+  <rect width="1000" height="640" fill="#0a0a0c"/>
+
+  <!-- esquinas -->
+  <g fill="#4ade80" font-size="16">
+    <text x="24" y="36">+</text>
+    <text x="976" y="36" text-anchor="end">+</text>
+    <text x="24" y="616">+</text>
+    <text x="976" y="616" text-anchor="end">+</text>
+  </g>
+
+  <!-- encabezado -->
+  <text x="48" y="66" fill="#f2f2f2" font-size="34" font-weight="700" letter-spacing="1">APU</text>
+  <text x="48" y="96" fill="#4ade80" font-size="16">@ElianDFernandez</text>
+  <text x="952" y="66" fill="#8b8b93" font-size="15" text-anchor="end">[ UNLP &#183; Inform&#225;tica ]</text>
+  <line x1="40" y1="118" x2="960" y2="118" stroke="#2a2a30" stroke-width="1" stroke-dasharray="6 6"/>
+
+  <!-- panel izquierdo: terminal -->
+  <g>
+    <rect x="40" y="140" width="300" height="310" rx="10" fill="#111114" stroke="#2a2a30"/>
+    <line x1="40" y1="172" x2="340" y2="172" stroke="#2a2a30"/>
+    <circle cx="62" cy="156" r="5" fill="#ff5f56"/>
+    <circle cx="80" cy="156" r="5" fill="#ffbd2e"/>
+    <circle cx="98" cy="156" r="5" fill="#27c93f"/>
+    <text x="118" y="160" fill="#8b8b93" font-size="11">apu@unlp: ~ ./logo.sh</text>
+
+    <image href="data:image/png;base64,__LOGO_B64__" xlink:href="data:image/png;base64,__LOGO_B64__" x="80" y="185" width="220" height="220" preserveAspectRatio="xMidYMid meet"/>
+
+    <line x1="40" y1="418" x2="340" y2="418" stroke="#2a2a30"/>
+    <text x="58" y="438" fill="#8b8b93" font-size="11.5">apu@unlp:~$ <tspan fill="#4ade80" font-weight="700">whoami Facultad APU</tspan></text>
+  </g>
+
+  <!-- panel derecho: info -->
+  <g>
+    <rect x="370" y="140" width="590" height="310" rx="10" fill="#111114" stroke="#2a2a30"/>
+    <text x="394" y="180" fill="#5b8fd6" font-size="16" font-weight="700">Analista Programador Universitario</text>
+    <line x1="394" y1="192" x2="936" y2="192" stroke="#2a2a30" stroke-dasharray="4 4"/>
+
+    <text x="394" y="222" fill="#c9c9c9" font-size="12">Repositorio personal de mi camino como Analista Programador Universitario &#128187;</text>
+
+    <!-- filas -->
+    <g font-size="13.5">
+      <text x="400" y="258" fill="#4ade80">&#183;</text>
+      <text x="416" y="258" fill="#d9a13b">Universidad:</text>
+      <line x1="528" y1="253" x2="636" y2="253" stroke="#4a4a52" stroke-dasharray="2 5"/>
+      <text x="936" y="258" fill="#e8e8e8" text-anchor="end">Universidad Nacional de La Plata</text>
+
+      <text x="400" y="292" fill="#4ade80">&#183;</text>
+      <text x="416" y="292" fill="#d9a13b">Carrera:</text>
+      <line x1="528" y1="287" x2="636" y2="287" stroke="#4a4a52" stroke-dasharray="2 5"/>
+      <text x="936" y="292" fill="#e8e8e8" text-anchor="end">Analista Programador Universitario</text>
+    </g>
+  </g>
+
+  <!-- panel inferior: lenguajes -->
+  <g>
+    <rect x="40" y="472" width="920" height="104" rx="10" fill="#111114" stroke="#2a2a30"/>
+    <text x="60" y="503" fill="#8b8b93" font-size="13" letter-spacing="1">[ ALGUNOS LENGUAJES Y TECNOLOG&#205;AS USADOS ]</text>
+
+    <!-- barra segmentada -->
+    <g>
+      <rect x="60"    y="516" width="142.5" height="12" rx="6" fill="#F7DF1E"/>
+      <rect x="207.5" y="516" width="142.5" height="12" rx="6" fill="#61DAFB"/>
+      <rect x="355"   y="516" width="142.5" height="12" rx="6" fill="#ED8B00"/>
+      <rect x="502.5" y="516" width="142.5" height="12" rx="6" fill="#777BB4"/>
+      <rect x="650"   y="516" width="142.5" height="12" rx="6" fill="#00599C"/>
+      <rect x="797.5" y="516" width="142.5" height="12" rx="6" fill="#4B5563"/>
+    </g>
+
+    <!-- leyenda -->
+    <g font-size="12">
+      <circle cx="68"    cy="552" r="4" fill="#F7DF1E"/>
+      <text x="80" y="556" fill="#F7DF1E">JavaScript</text>
+      <circle cx="215.5" cy="552" r="4" fill="#61DAFB"/>
+      <text x="227.5" y="556" fill="#61DAFB">React</text>
+      <circle cx="363"   cy="552" r="4" fill="#ED8B00"/>
+      <text x="375" y="556" fill="#ED8B00">Java</text>
+      <circle cx="510.5" cy="552" r="4" fill="#777BB4"/>
+      <text x="522.5" y="556" fill="#777BB4">PHP</text>
+      <circle cx="658"   cy="552" r="4" fill="#00599C"/>
+      <text x="670" y="556" fill="#2b7fc4">Pascal</text>
+      <circle cx="805.5" cy="552" r="4" fill="#4B5563"/>
+      <text x="817.5" y="556" fill="#8b8b93">Others</text>
+    </g>
+  </g>
+
+  <!-- pie -->
+  <text x="48" y="612" fill="#6b6b73" font-size="11">[ Facultad de Inform&#225;tica &#183; UNLP ]</text>
+  <text x="952" y="612" fill="#4ade80" font-size="11" text-anchor="end">github.com/ElianDFernandez/UNLP-APU</text>
+
+</svg>
